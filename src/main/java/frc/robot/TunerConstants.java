@@ -4,14 +4,20 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
 import edu.wpi.first.math.util.Units;
+import frc.lib.util.COTSTalonFXSwerveConstants;
 
 public class TunerConstants {
+        public class Swerve {
     // Both sets of gains need to be tuned to your individual robot.
-
+         public static final COTSTalonFXSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
+        COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L2);
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     private static final Slot0Configs steerGains = new Slot0Configs()
@@ -64,6 +70,41 @@ public class TunerConstants {
     private static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
             .withPigeon2Id(kPigeonId)
             .withCANbusName(kCANbusName);
+
+    public static final SensorDirectionValue cancoderInvert = chosenModule.cancoderInvert;
+
+     public static final InvertedValue angleMotorInvert = chosenModule.angleMotorInvert;
+     public static final InvertedValue driveMotorInvert = chosenModule.driveMotorInvert;
+
+     public static final double driveGearRatio = chosenModule.driveGearRatio;
+     public static final double angleGearRatio = chosenModule.angleGearRatio;
+
+     public static final int angleCurrentLimit = 25;
+        public static final int angleCurrentThreshold = 40;
+        public static final double angleCurrentThresholdTime = 0.1;
+        public static final boolean angleEnableCurrentLimit = true;
+
+        public static final int driveCurrentLimit = 35;
+        public static final int driveCurrentThreshold = 60;
+        public static final double driveCurrentThresholdTime = 0.1;
+        public static final boolean driveEnableCurrentLimit = true;
+
+        public static final double angleKP = chosenModule.angleKP;
+        public static final double angleKI = chosenModule.angleKI;
+        public static final double angleKD = chosenModule.angleKD;
+
+        public static final double driveKP = 0.12; //TODO: This must be tuned to specific robot
+        public static final double driveKI = 0.0;
+        public static final double driveKD = 0.0;
+        public static final double driveKF = 0.0;
+
+        public static final double openLoopRamp = 0.25;
+        public static final double closedLoopRamp = 0.0;
+
+        
+
+     public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
+     public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
     private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
             .withDriveMotorGearRatio(kDriveGearRatio)
@@ -132,4 +173,5 @@ public class TunerConstants {
 
     public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants, FrontLeft,
             FrontRight, BackLeft, BackRight);
+}
 }
