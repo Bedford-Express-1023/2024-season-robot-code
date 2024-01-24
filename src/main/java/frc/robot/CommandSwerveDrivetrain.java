@@ -28,16 +28,9 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
-    private double m_lastSimTime;
-    public SwerveDriveOdometry swerveOdometry;
-     public Pigeon2 gyro;
-     public SwerveModule[] mSwerveMods;
-     public int moduleNumber;
-     private CANcoder angleEncoder;
-     private TalonFX mAngleMotor;
-     private TalonFX mDriveMotor;
-     private double angleOffset;
-
+    private double m_lastSimTime;   
+  
+    
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         if (Utils.isSimulation()) {
@@ -70,55 +63,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-      public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw().getValue());
-    }
+ 
 
+
+  
+
+  
 
     
-    public SwerveModulePosition[] getModulePositions(){
-        SwerveModulePosition[] positions = new SwerveModulePosition[4];
-        for(SwerveModule mod : mSwerveMods){
-            positions[mod.moduleNumber] = mod.getPosition();
-        }
-        return positions;
-    }
 
-    public void SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstant){
-        this.moduleNumber = moduleNumber;
-        this.angleOffset = moduleConstant.CANcoderOffset;
-        
-        /* Angle Encoder Config */
-        angleEncoder = new CANcoder(moduleConstant.CANcoderId);
-        angleEncoder.getConfigurator().apply(Robot.ctreConfigs.swerveCANcoderConfig);
-
-        /* Angle Motor Config */
-        mAngleMotor = new TalonFX(moduleConstant.SteerMotorId);
-        mAngleMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
-        resetToAbsolute();
-
-        /* Drive Motor Config */
-        mDriveMotor = new TalonFX(moduleConstant.DriveMotorId);
-        mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
-        mDriveMotor.getConfigurator().setPosition(0.0);
-    }
-
-    public Rotation2d getCANcoder(){
-        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());
-    }
-
-    public void resetToAbsolute(){
-        double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
-        mAngleMotor.setPosition(absolutePosition);
-    }
-
-    public void periodic(){
-        swerveOdometry.update(getGyroYaw(), getModulePositions());
-
-        for(SwerveModule mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
-        }
-    }
+    
 }
