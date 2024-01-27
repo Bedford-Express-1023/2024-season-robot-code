@@ -22,11 +22,11 @@ public final class Constants {
         public static final int SHOOTER_LEFT_PIVOT_CAN = 100; //FIXME
         public static final int SHOOTER_RIGHT_PIVOT_CAN = 100; //FIXME
 
-
-        public static final double maxShoulderVelocity = 0.9;
-        public static final double maxShoulderAcceleration = 10;
-        public static final double maxArmVelocity = .7;
-        public static final double maxArmAcceleration = 1;
+        public static final double minPivotAngle = 0; //FIXME
+        public static final double maxPivotAngle = 0; //FIXME
+        public static final double targetShooterPivotIndexAngle = 0; //FIXME
+        public static final double minShooterPivotIndexAngle = 0; //FIXME
+        public static final double maxShooterPivotIndexAngle = 0; //FIXME
     }
 
     public static final class Indexer {
@@ -44,6 +44,9 @@ public final class Constants {
         public static double intakeSpeed = 0.8;
         public static double intakeUpPosition = 0;
         public static double intakeDownPosition = 0.3;
+        public static double targetIntakePivotIndexAngle = 0;
+        public static double minIntakePivotIndexAngle = 0; //FIXME
+        public static double maxIntakePivotIndexAngle = 0; //FIXME
     }
 
     public static final class Climber{
@@ -51,5 +54,6 @@ public final class Constants {
         public static int CLIMBER_RIGHT_CAN = 100; //FIXME
         public static double climberDownPosition = -0.1;
         public static double climberUpPosition = 5;
+        public static double climberStatorCurrentLimit = 5;
     }
 }

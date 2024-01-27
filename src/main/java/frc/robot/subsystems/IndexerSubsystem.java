@@ -36,6 +36,10 @@ public class IndexerSubsystem extends SubsystemBase {
     }
   }
 
+  public void StopIndex() {
+    indexerMotor.set(0);
+  }
+
   @Override
   public void periodic() {
     indexerBeamBreakValue = indexerBeamBreak.get();

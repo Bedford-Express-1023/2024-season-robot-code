@@ -14,6 +14,9 @@ public class IntakeSubsystem extends SubsystemBase {
   private final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN); //FIXME
   private final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN); //FIXME
 
+  private double intakePivotMotorAngle;
+  public boolean intakeReadyToIndex;
+
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
   }
@@ -34,8 +37,20 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(0);
   }
 
+  public void IntakePrepareToIndex() {
+    intakePivotMotor.setPosition(Constants.Intake.targetIntakePivotIndexAngle);
+  }
+
   @Override
   public void periodic() {
+    intakePivotMotorAngle = (intakePivotMotor.getPosition().getValueAsDouble() * 360);
+
+    if ((intakePivotMotorAngle > Constants.Intake.minIntakePivotIndexAngle) && (intakePivotMotorAngle < Constants.Intake.maxIntakePivotIndexAngle)) {
+      intakeReadyToIndex = true;
+    }
+    else {
+      intakeReadyToIndex = false;
+    }
     // This method will be called once per scheduler run
   }
 }
