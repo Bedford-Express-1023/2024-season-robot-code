@@ -40,6 +40,10 @@ public class ShooterSubsystem extends SubsystemBase {
     rightShooterPivotMotor.setPosition(Constants.Shooter.targetShooterPivotIndexAngle);
   }
 
+  public void PointTowardsSpeaker() {
+    
+  }
+
   @Override
   public void periodic() {
     leftShooterPivotMotorAngle = (leftShooterPivotMotor.getPosition().getValueAsDouble() * 360);

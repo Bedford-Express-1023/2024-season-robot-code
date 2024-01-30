@@ -5,8 +5,10 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class PointTowardsSpeaker extends Command {
+  ShooterSubsystem s_ShooterSubsystem;
   /** Creates a new PointTowardsSpeaker. */
   public PointTowardsSpeaker() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -18,7 +20,9 @@ public class PointTowardsSpeaker extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    s_ShooterSubsystem.PointTowardsSpeaker();
+  }
 
   // Called once the command ends or is interrupted.
   @Override

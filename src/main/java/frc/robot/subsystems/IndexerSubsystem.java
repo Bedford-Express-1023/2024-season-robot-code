@@ -36,7 +36,7 @@ public class IndexerSubsystem extends SubsystemBase {
     }
   }
 
-  public void StopIndex() {
+  public void StopIndex() { 
     indexerMotor.set(0);
   }
 

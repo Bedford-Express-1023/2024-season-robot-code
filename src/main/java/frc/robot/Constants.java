@@ -1,21 +1,11 @@
 package frc.robot;
 
 //import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
-import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
     public static final int BLINKIN1 = 9;
     public static final int BLINKIN2 = 0;
-
 
     public static final class Shooter {
         public static final int SHOOTER_MOTOR_CAN = 100; //FIXME
