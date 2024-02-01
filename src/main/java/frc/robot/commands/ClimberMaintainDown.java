@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Subsystems.ClimberSubsystem;
 
 public class ClimberMaintainDown extends Command {
   ClimberSubsystem s_ClimberSubsystem;
