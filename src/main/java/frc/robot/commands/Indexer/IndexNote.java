@@ -2,12 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Indexer;
+package frc.robot.Commands.Indexer;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Subsystems.IndexerSubsystem;
+import frc.robot.Subsystems.IntakeSubsystem;
+import frc.robot.Subsystems.ShooterSubsystem;
 
 public class IndexNote extends Command {
   IndexerSubsystem s_IndexerSubsystem;
