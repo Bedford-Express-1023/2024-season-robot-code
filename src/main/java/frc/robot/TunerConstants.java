@@ -8,7 +8,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.Swerve;
 
 public class TunerConstants {
         // Both sets of gains need to be tuned to your individual robot.
@@ -52,7 +52,7 @@ public class TunerConstants {
         private static final boolean kInvertRightSide = true;
 
         private static final String kCANbusName = "rio";
-        private static final int kPigeonId = 23;
+        public static final int kPigeonId = 23;
 
         // GENERATE_BLOCK
 
@@ -62,6 +62,13 @@ public class TunerConstants {
         // Simulated voltage necessary to overcome friction
         private static final double kSteerFrictionVoltage = 0.25;
         private static final double kDriveFrictionVoltage = 0.25;
+
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.56515;
+        public static final double DRIVETRAIN_WHEELBASE_METERS = 0.56515;
+        public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.25;
+
+        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
+            Math.hypot(TunerConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, TunerConstants.DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
         private static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
                         .withPigeon2Id(kPigeonId)
@@ -139,7 +146,7 @@ public class TunerConstants {
                         Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches),
                         kInvertRightSide);
 
-        public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants,
+        public static final Swerve DriveTrain = new Swerve(DrivetrainConstants,
                         FrontLeft,
                         FrontRight, BackLeft, BackRight);
 }

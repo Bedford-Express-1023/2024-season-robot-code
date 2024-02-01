@@ -25,16 +25,25 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem
  * so it can be used in command-based projects easily.
  */
+//WALKER
 public class Swerve extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    
 
+   
+
+   
     public Swerve(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
+
+       
+    
         if (Utils.isSimulation()) {
             startSimThread();
         }
+    
 
  AutoBuilder.configureHolonomic(
     this::newPose, 
@@ -52,10 +61,11 @@ if (alliance.isPresent()) { return alliance.get() == DriverStation.Alliance.Red;
  this); }
 
     
-    public Swerve(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants modules, SwerveModuleConstants frontright, SwerveModuleConstants backleft, SwerveModuleConstants backright) { super(driveTrainConstants, modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
+ public Swerve(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
+    super(driveTrainConstants, modules);
+    if (Utils.isSimulation()) {
+        startSimThread();
+    }
     
     AutoBuilder.configureHolonomic(
     this::newPose, 
@@ -77,6 +87,7 @@ if (alliance.isPresent()) { return alliance.get() == DriverStation.Alliance.Red;
         return this.m_odometry.getEstimatedPosition();
     }
 
+  
     public void resetPose(Pose2d Pose){
         this.m_odometry.resetPosition(new Rotation2d(0), this.m_modulePositions.clone(), Pose);
     }
@@ -88,6 +99,7 @@ if (alliance.isPresent()) { return alliance.get() == DriverStation.Alliance.Red;
     public void RobotRelative(ChassisSpeeds targetpostion){
         this.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(targetpostion));
     }
+
 
     public Command applyRequest(Supplier<SwerveRequest> supplier) {
         return run(() -> this.setControl(supplier.get()));
@@ -107,4 +119,6 @@ if (alliance.isPresent()) { return alliance.get() == DriverStation.Alliance.Red;
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
+
+    
 }
