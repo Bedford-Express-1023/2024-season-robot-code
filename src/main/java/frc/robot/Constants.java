@@ -17,10 +17,8 @@ public final class Constants {
         public static final double targetShooterPivotIndexAngle = 0; //FIXME
         public static final double minShooterPivotIndexAngle = 0; //FIXME
         public static final double maxShooterPivotIndexAngle = 0; //FIXME
-
         public static final double shooterVelocityAmplifierConstant = 0; //FIXME
-        public static final double shooterVelocityPlatformConstant = 0; //FIXME
-
+        public static final double shooterVelocityPlatformConstant = 0;
     }
 
     public static final class Indexer {

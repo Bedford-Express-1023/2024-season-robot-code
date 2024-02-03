@@ -26,7 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public Slot0Configs slot0Configs = new Slot0Configs();
   public VelocityVoltage shooterVelocityAmplifier = new VelocityVoltage(Constants.Shooter.shooterVelocityAmplifierConstant, 0, false, 0, 0, false, false, false);
-  public VelocityVoltage shooterVelocityPlatform = new VelocityVoltage(0, Constants.Shooter.shooterVelocityPlatformConstant, false, 0, 0, false, false, false);
+  public VelocityVoltage shooterVelocityPlatform = new VelocityVoltage(Constants.Shooter.shooterVelocityPlatformConstant, 0, false, 0, 0, false, false, false);
   public VelocityVoltage shooterVelocity = new VelocityVoltage(0, 0, false, 0, 0, false, false, false);
 
   /** Creates a new ShooterSubsystem. */
@@ -36,7 +36,6 @@ public class ShooterSubsystem extends SubsystemBase {
     slot0Configs.kI = 0.05;
     slot0Configs.kD = 0.01;
     shooterMotor.getConfigurator().apply(slot0Configs, 0.050);
-
   }
 
   public void ShootAtAmplifier() {
