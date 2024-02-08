@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LinearInterpolator;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -23,11 +24,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private double shooterCurrentVelocity;
   private double shooterTargetVelocity;
+  private double[][] shooterTable;
 
   public Slot0Configs slot0Configs = new Slot0Configs();
   public VelocityVoltage shooterVelocityAmplifier = new VelocityVoltage(Constants.Shooter.shooterVelocityAmplifierConstant, 0, false, 0, 0, false, false, false);
   public VelocityVoltage shooterVelocityPlatform = new VelocityVoltage(0, Constants.Shooter.shooterVelocityPlatformConstant, false, 0, 0, false, false, false);
-  public VelocityVoltage shooterVelocity = new VelocityVoltage(0, 0, false, 0, 0, false, false, false);
+
+  public static final LinearInterpolator shooterInterpolator = new LinearInterpolator(Constants.Shooter.shooterTable);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -35,8 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
     slot0Configs.kP = 0.1;
     slot0Configs.kI = 0.05;
     slot0Configs.kD = 0.01;
-    shooterMotor.getConfigurator().apply(slot0Configs, 0.050);
-
+    shooterMotor.getConfigurator().apply(slot0Configs, 0.050);    
   }
 
   public void ShootAtAmplifier() {
@@ -48,8 +50,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void ShootWithLimelight() {
-    shooterTargetVelocity = 0; //FIXME insert interpolation equation here
-    
     shooterMotor.setControl(new VelocityVoltage(shooterTargetVelocity, 0, false, 0, 0, false, false, false));
   }
 
@@ -79,6 +79,8 @@ public class ShooterSubsystem extends SubsystemBase {
     else {
       shooterReadyToIndex = false;
     }
+
+    shooterTargetVelocity = shooterInterpolator.getInterpolatedValue(); //FIXME insert current limelight data
 
     // This method will be called once per scheduler run
   }
