@@ -18,8 +18,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.Swerve;
 import frc.robot.TunerConstants;
+import frc.robot.Commands.Shooter.ShootAtAmplifier;
 
 public class RobotContainer extends SubsystemBase {
+//Subsystems
+  private final Swerve drivetrain = TunerConstants.DriveTrain; //  drivetrain
+//Commands
+  private final ShootAtAmplifier shootAtAmplifier = new ShootAtAmplifier();
+
   public static double LeftXAxis;
   public static double LeftYAxis;
   public static double RightXAxis;
@@ -30,7 +36,6 @@ public class RobotContainer extends SubsystemBase {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
-  private final Swerve drivetrain = TunerConstants.DriveTrain; //  drivetrain
 
   private final FieldCentric drive = new FieldCentric()
       .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 15% deadband
@@ -48,6 +53,7 @@ public class RobotContainer extends SubsystemBase {
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-LeftYAxis, -LeftXAxis))));
+    joystick.x().whileTrue(shootAtAmplifier); 
     configureBindings();
   }
 

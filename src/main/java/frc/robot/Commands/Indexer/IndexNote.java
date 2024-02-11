@@ -28,11 +28,12 @@ public class IndexNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((shooterReadyToIndex = true) && (intakeReadyToIndex)) {
-    s_IndexerSubsystem.IndexNote();
+    if ((shooterReadyToIndex = true) && (intakeReadyToIndex = true)) {
+      s_IndexerSubsystem.IndexNote();
     }
     else {
       s_ShooterSubsystem.ShooterPrepareToIndex();
+      s_IntakeSubsystem.IntakePrepareToIndex();
     }
   }
 
