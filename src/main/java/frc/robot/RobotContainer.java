@@ -16,15 +16,19 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Subsystems.Swerve;
-import frc.robot.TunerConstants;
-import frc.robot.Commands.Shooter.ShootAtAmplifier;
+import frc.robot.Commands.Intake.IntakeNote;
+import frc.robot.Commands.Intake.IntakeStop;
+import frc.robot.generated.TunerConstants;
+//import frc.robot.Commands.Shooter.ShootAtAmplifier;
 
 public class RobotContainer extends SubsystemBase {
 //Subsystems
-  private final Swerve drivetrain = TunerConstants.DriveTrain; //  drivetrain
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; //  drivetrain
+
 //Commands
-  private final ShootAtAmplifier shootAtAmplifier = new ShootAtAmplifier();
+  //private final ShootAtAmplifier shootAtAmplifier = new ShootAtAmplifier();
+  IntakeNote intakeNote = new IntakeNote();
+  public final IntakeStop intakeStop = new IntakeStop();
 
   public static double LeftXAxis;
   public static double LeftYAxis;
@@ -53,12 +57,11 @@ public class RobotContainer extends SubsystemBase {
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-LeftYAxis, -LeftXAxis))));
-    joystick.x().whileTrue(shootAtAmplifier); 
+    joystick.x().whileTrue(intakeNote);
     configureBindings();
   }
 
   private void configureBindings() {
-    
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 

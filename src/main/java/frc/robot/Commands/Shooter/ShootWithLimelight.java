@@ -5,12 +5,10 @@
 package frc.robot.Commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class ShootWithLimelight extends Command {
   ShooterSubsystem s_ShooterSubsystem;
-  Limelight s_Limelight;
   /** Creates a new ShootWithLimelight. */
   public ShootWithLimelight() {
     // Use addRequirements() here to declare subsystem dependencies.

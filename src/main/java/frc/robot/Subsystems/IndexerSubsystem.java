@@ -16,7 +16,7 @@ public class IndexerSubsystem extends SubsystemBase {
     private final CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.INDEXER_CAN, MotorType.kBrushed); //FIXME
     private final DigitalInput indexerBeamBreak = new DigitalInput(Constants.Indexer.INDEXER_BEAM_BREAK_DIO); 
     
-    private boolean indexerBeamBreakValue;
+    //private boolean indexerBeamBreakValue;
 
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsystem() {
@@ -27,13 +27,13 @@ public class IndexerSubsystem extends SubsystemBase {
     indexerMotor.set(0.1);
   }
 
-  public void IndexNote() {
+  public void IndexNote() {/* 
     if (indexerBeamBreakValue = true) {
       indexerMotor.set(0.1);
     }
     else {
       indexerMotor.set(0);
-    }
+    }*/
   }
 
   public void StopIndex() { 
@@ -42,7 +42,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    indexerBeamBreakValue = indexerBeamBreak.get();
+    //indexerBeamBreakValue = indexerBeamBreak.get();
     // This method will be called once per scheduler run
   }
 }

@@ -23,8 +23,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final TalonFX shooterPivotMotorFollower = new TalonFX(Constants.Shooter.SHOOTER_RIGHT_PIVOT_CAN); //right pivot motor
 
   private final Follower pivotFollower = new Follower(Constants.Shooter.SHOOTER_LEFT_PIVOT_CAN, true);
-  public static final LinearInterpolator shooterInterpolator = new LinearInterpolator(Constants.Shooter.shooterTable);
-  public static final LinearInterpolator shooterPivotInterpolator = new LinearInterpolator(Constants.Shooter.pivotTable);
+  //public static final LinearInterpolator shooterInterpolator = new LinearInterpolator(Constants.Shooter.shooterTable);
+  //public static final LinearInterpolator shooterPivotInterpolator = new LinearInterpolator(Constants.Shooter.pivotTable);
 
   private double shooterCurrentAngle; //in degrees
   private double shooterTargetAngle; //in degrees
@@ -107,8 +107,8 @@ public class ShooterSubsystem extends SubsystemBase {
       shooterReadyToIndex = false;
     }
 
-    shooterTargetRPM = shooterInterpolator.getInterpolatedValue(0); //FIXME insert current limelight y axis data
-    shooterTargetAngle = shooterPivotInterpolator.getInterpolatedValue(0); //FIXME insert current limelight y axis data
+    //shooterTargetRPM = shooterInterpolator.getInterpolatedValue(0); //FIXME insert current limelight y axis data
+    //shooterTargetAngle = shooterPivotInterpolator.getInterpolatedValue(0); //FIXME insert current limelight y axis data
 
     SmartDashboard.putNumber("amplifier target RPM", amplifierTargetRPM);
     SmartDashboard.putNumber("amplifier target angle", amplifierTargetAngle);

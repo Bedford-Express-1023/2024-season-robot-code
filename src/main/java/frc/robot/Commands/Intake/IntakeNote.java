@@ -5,6 +5,7 @@
 package frc.robot.Commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Subsystems.IntakeSubsystem;
 
 public class IntakeNote extends Command {
@@ -21,16 +22,22 @@ public class IntakeNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_IntakeSubsystem.IntakeNote();
+    s_IntakeSubsystem.intakeMotor.set(Constants.Intake.intakeSpeed);
+
+    //s_IntakeSubsystem.IntakeNote();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    s_IntakeSubsystem.intakeMotor.set(0);
+
+    //s_IntakeSubsystem.IntakeStop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

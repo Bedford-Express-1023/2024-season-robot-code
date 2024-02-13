@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,15 +12,14 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN); //FIXME
-  private final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN); //FIXME
+  public final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN); 
+  private final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN); 
 
   private double intakePivotMotorAngle;
   public boolean intakeReadyToIndex;
 
   /** Creates a new IntakeSubsystem. */
-  public IntakeSubsystem() {
-  }
+  public IntakeSubsystem() {}
 
   public void IntakeUp() {
     intakePivotMotor.setPosition(Constants.Intake.intakeUpPosition);
@@ -30,7 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void IntakeNote() {
-    intakeMotor.set(Constants.Intake.intakeSpeed);
+    //intakeMotor.set(Constants.Intake.intakeSpeed);
   }
 
   public void IntakeStop() {
