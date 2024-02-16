@@ -1,3 +1,4 @@
+/* 
 package frc.robot.Subsystems;
 
 import java.util.function.Supplier;
@@ -26,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * so it can be used in command-based projects easily.
  */
 //WALKER
+/* 
 public class Swerve extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
@@ -109,12 +111,14 @@ if (alliance.isPresent()) { return alliance.get() == DriverStation.Alliance.Red;
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 
         /* Run simulation at a faster rate so PID gains behave more reasonably */
+        /* 
         m_simNotifier = new Notifier(() -> {
             final double currentTime = Utils.getCurrentTimeSeconds();
             double deltaTime = currentTime - m_lastSimTime;
             m_lastSimTime = currentTime;
 
             /* use the measured time delta, get battery voltage from WPILib */
+            /*
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
@@ -122,3 +126,4 @@ if (alliance.isPresent()) { return alliance.get() == DriverStation.Alliance.Red;
 
     
 }
+*/

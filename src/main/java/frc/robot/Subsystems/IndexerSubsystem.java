@@ -4,45 +4,55 @@
 
 package frc.robot.Subsystems;
 
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
 
-    private final CANSparkMax indexerMotor = new CANSparkMax(Constants.Indexer.INDEXER_CAN, MotorType.kBrushed); //FIXME
-    private final DigitalInput indexerBeamBreak = new DigitalInput(Constants.Indexer.INDEXER_BEAM_BREAK_DIO); 
+    private final TalonSRX indexerMotor = new TalonSRX(Constants.Indexer.INDEXER_CAN); //FIXME
+   //private final DigitalInput indexerBeamBreak = new DigitalInput(Constants.Indexer.INDEXER_BEAM_BREAK_DIO); 
     
-    private boolean indexerBeamBreakValue;
+   // private boolean indexerBeamBreakValue;
 
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsystem() {
 
   }
 
-  public void FeedShooter () {
-    indexerMotor.set(0.1);
+  public Command FeedShooter () {
+    return runOnce(
+      () -> {
+      indexerMotor.set(ControlMode.PercentOutput, 1);
+      });
+    
   }
 
-  public void IndexNote() {
-    if (indexerBeamBreakValue = true) {
-      indexerMotor.set(0.1);
-    }
-    else {
-      indexerMotor.set(0);
-    }
+  public Command IndexNote() {
+    return runOnce(
+      () -> {
+      indexerMotor.set(ControlMode.PercentOutput, 0.1);
+      });
   }
 
-  public void StopIndex() { 
-    indexerMotor.set(0);
+  public Command StopIndex() { 
+    return runOnce(
+      () -> {
+         indexerMotor.set(ControlMode.PercentOutput,0);
+      });
+   
   }
 
   @Override
   public void periodic() {
-    indexerBeamBreakValue = indexerBeamBreak.get();
+  //  indexerBeamBreakValue = indexerBeamBreak.get();
     // This method will be called once per scheduler run
   }
 }

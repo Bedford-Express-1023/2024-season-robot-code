@@ -4,11 +4,13 @@
 
 package frc.robot.Commands.Shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class ShootAtAmplifier extends Command {
   ShooterSubsystem s_ShooterSubsystem;
+  double number;
   /** Creates a new ShootAtAmplifier. */
   public ShootAtAmplifier() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -16,12 +18,16 @@ public class ShootAtAmplifier extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    number=0;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     s_ShooterSubsystem.ShootAtAmplifier();
+    number = 1;
+    SmartDashboard.putNumber("number", number );
   }
 
   // Called once the command ends or is interrupted.
