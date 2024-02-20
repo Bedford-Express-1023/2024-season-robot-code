@@ -5,6 +5,7 @@
 package frc.robot.Subsystems;
 
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
@@ -31,6 +32,14 @@ public class IndexerSubsystem extends SubsystemBase {
     return runOnce(
       () -> {
       indexerMotor.set(ControlMode.PercentOutput, 1);
+      });
+    
+  }
+
+  public Command ReverseIndexer () {
+    return runOnce(
+      () -> {
+      indexerMotor.set(ControlMode.PercentOutput, -.5);
       });
     
   }
