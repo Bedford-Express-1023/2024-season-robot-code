@@ -25,7 +25,7 @@ public class ShootAtAmplifier extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_ShooterSubsystem.ShootAtAmplifier();
+    s_ShooterSubsystem.ShootAtSubwoofer();
     number = 1;
     SmartDashboard.putNumber("number", number );
   }
