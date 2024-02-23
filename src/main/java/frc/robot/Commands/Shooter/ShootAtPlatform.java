@@ -10,7 +10,9 @@ import frc.robot.Subsystems.ShooterSubsystem;
 public class ShootAtPlatform extends Command {
   ShooterSubsystem s_ShooterSubsystem;
   /** Creates a new ShootAtPlatform. */
-  public ShootAtPlatform() {
+  public ShootAtPlatform(ShooterSubsystem s_ShooterSubsystem) {
+    this.s_ShooterSubsystem = s_ShooterSubsystem;
+    addRequirements(s_ShooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

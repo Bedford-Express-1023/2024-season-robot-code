@@ -10,7 +10,9 @@ import frc.robot.Subsystems.IndexerSubsystem;
 public class StopIndex extends Command {
   IndexerSubsystem s_IndexerSubsystem;
   /** Creates a new StopIndex. */
-  public StopIndex() {
+  public StopIndex(IndexerSubsystem s_IndexerSubsystem) {
+    this.s_IndexerSubsystem = s_IndexerSubsystem;
+    addRequirements(s_IndexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

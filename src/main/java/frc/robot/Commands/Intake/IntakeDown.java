@@ -10,7 +10,9 @@ import frc.robot.Subsystems.IntakeSubsystem;
 public class IntakeDown extends Command {
   IntakeSubsystem s_IntakeSubsystem;
   /** Creates a new IntakeDown. */
-  public IntakeDown() {
+  public IntakeDown(IntakeSubsystem s_IntakeSubsystem) {
+    this.s_IntakeSubsystem = s_IntakeSubsystem;
+    addRequirements(s_IntakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

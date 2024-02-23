@@ -25,13 +25,14 @@ import frc.robot.RotationalFeedForward;
 public class IntakeSubsystem extends SubsystemBase {
 
   private final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN);
-  private final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN);
- private final CANcoder PivotCANCoder = new CANcoder(Constants.Intake.INTAKE_ENCODER_CAN);
+  public final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN);
+  public final CANcoder PivotCANCoder = new CANcoder(Constants.Intake.INTAKE_ENCODER_CAN);
   private final PositionVoltage intakePivotPosition = new PositionVoltage(0,0,true,0,1,false,false,false);
  double  motorPivotPower;
   public boolean intakeReadyToIndex;
   public double intakeUpSpeed;
   public double intakeDownSpeed;
+  public boolean intakeBeamBreakValue;
 
   // fix pid values later
  private PIDController IntakePivotPID = new PIDController(.5, 0.0, 0);
@@ -39,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public static CANcoder rightFrontCANcoder = new CANcoder(1);
   public static CANcoder leftBackCANcoder = new CANcoder(3);
   public static CANcoder rightBackCANcoder = new CANcoder(2);
-  DigitalInput intakeBeamBreak = new DigitalInput(0);
+  DigitalInput intakeBeamBreak = new DigitalInput(1);
 
  NeutralModeValue brake = NeutralModeValue.Brake;
 
@@ -47,7 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
  
 
    //private final DigitalInput intakeBeamBreak = new DigitalInput(Constants.Indexer.INDEXER_BEAM_BREAK_DIO); 
-   double intakeAngle;
+   public double intakeAngle;
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
     TalonFXConfiguration configs = new TalonFXConfiguration();
@@ -66,80 +67,50 @@ public class IntakeSubsystem extends SubsystemBase {
  
     }
 
-  public Command IntakeRun() {  
-    return run(
-      () -> {
-    if(intakeBeamBreak.get() == true)
-    {
-          intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
-        if(intakeAngle < (Constants.Intake.intakeDownPosition + .03) && intakeAngle > (Constants.Intake.intakeDownPosition -.03)){
-       intakeMotor.set(-0.5);
-       }
-    }
-    else if (intakeBeamBreak.get() == false){
-        intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle ));
-        intakeMotor.set(0);
-       }
+  public void IntakeRun() {  
+    //  intakeMotor.set(-.5)
       
-      });
-
-
+    if (intakeBeamBreak.get() == true) {
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
+       intakeMotor.set(-0.5);
+    }
+    else 
+    {
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
+      intakeMotor.set(0);
+    }
+    
   }
 
-  public Command IntakeDown() {
-     return run(
-      () -> {
-        intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
-          SmartDashboard.putNumber("down", IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
-      });
+  public void IntakeDown() {
+    if (intakeBeamBreakValue = true) {
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
+      SmartDashboard.putNumber("down", IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
+    }
+    else {
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
+      intakeMotor.set(0);
+    }
   //  intakePivotMotor.setPosition(Constants.Intake.intakeDownPosition)
   }
-  public Command IntakePivotStop() {
-    return run(
-    () -> {
+  public void IntakePivotStop() {
     intakePivotMotor.set(0);
-     });  
-
-   
   }
 
-  public Command IntakeNote() {
-    return run(
-     
-      () -> {
-         intakeMotor.set(-0.5);
-    //     if(intakeBeamBreak.get()==true)
-    //     {
-    // intakeMotor.set(-.5);
-    //     }
-    //     else if (intakeBeamBreak.get()==false)
-    //     {
-    //       intakeMotor.set(0);
-    //     }
-      });
-    
+  public void IntakeNote() {
+    intakeMotor.set(-0.5);
   }
 
-  public Command IntakeStop() {
-    return runOnce(
-    () -> {
+  public void IntakeStop() {
      intakeMotor.set(0);
-     });
-
-   
   }
 
-  public Command IntakePrepareToIndex() {
+  public void IntakePrepareToIndex() {
     //intakePivotMotor.setPosition(Constants.Intake.targetIntakePivotIndexAngle);
-    
-    return run(
-
-    () -> {
    intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
       // intakePivotMotor.set(-Math.abs(feedForward.calculate(motorPivotPower)));
      SmartDashboard.putNumber("up", motorPivotPower);
      intakeMotor.set(0);
-     });
   }
 
   @Override
@@ -149,13 +120,13 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("upAngle", IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
     intakeAngle = PivotCANCoder.getAbsolutePosition().getValueAsDouble();
 
-    if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.05) && (intakeAngle < Constants.Intake.targetIntakePivotIndexAngle + 0.05)) {
+    if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.06) && (intakeAngle < Constants.Intake.targetIntakePivotIndexAngle + 0.06)) {
       intakeReadyToIndex = true;
     }
     else {
       intakeReadyToIndex = false;
     }
-
+    intakeBeamBreakValue = intakeBeamBreak.get();
    SmartDashboard.putBoolean("beam break", intakeBeamBreak.get());
     SmartDashboard.putNumber("Intake Angle", intakeAngle);
    // SmartDashboard.putNumber("up", IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeUpPosition));

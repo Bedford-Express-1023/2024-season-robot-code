@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 //import frc.robot.LinearInterpolator;
 import frc.robot.LinearInterpolator;
+import frc.robot.RotationalFeedForward;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -32,8 +33,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   //public static final LinearInterpolator shooterInterpolator = new LinearInterpolator(Constants.Shooter.shooterTable);
   public static final LinearInterpolator shooterPivotInterpolator = new LinearInterpolator(Constants.Shooter.pivotTable);
+  double kp;
+double ki;
+double kd;
 private double shooterMotorAngle;
-  private double shooterCurrentAngle; //in degrees
+  public double shooterCurrentAngle; //in degrees
   private double shooterTargetAngle; //in degrees
   public double shooterCurrentRPM;
   private double shooterTargetRPM;
@@ -42,11 +46,11 @@ private double shooterMotorAngle;
   public Slot0Configs slot0Configs = new Slot0Configs();
   public Slot1Configs slot1Configs = new Slot1Configs();
   public VelocityVoltage shooterVelocity = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant, 0, false, 0, 0, false, false, false);
- private PIDController shooterPivotPID = new PIDController(2, 0, 0);
+ public PIDController shooterPivotPID = new PIDController(.85,0.075,0.0001);
+  public final RotationalFeedForward feedForward = new RotationalFeedForward(0,1,0, -0.3);
+
  NeutralModeValue brake = NeutralModeValue.Brake;
-double kp;
-double ki;
-double kd;
+
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
    // slot0Configs.kV = 1; //shooter config velocity feedforward gain
@@ -85,79 +89,48 @@ double kd;
 
 // the max is 4350 rpm dont forget
 
-  public Command ShootAtSubwoofer() {
-    return run(
-      () -> {
+  public void ShootAtSubwoofer() {
 //Constants.Shooter.shooterVelocitySubwooferConstant)); //Subwoofer RPM is 4000
-      shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, 0.106));
-      SmartDashboard.putNumber("intake up power",shooterPivotPID.calculate(shooterMotorAngle, 0.106));
+      shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant));
+      SmartDashboard.putNumber("intake up power",shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant));
      // shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, -0.06));
-    
-      }); 
-    
   }
 
-  public Command ShootAtPlatform() {
-    return runOnce(
-      () -> {
+  public void ShootAtPlatform() {
       shooterMotor.setControl(shooterVelocity.withVelocity(Constants.Shooter.shooterVelocityPlatformConstant)); 
-      }); 
   }
 
-  public Command ShootWithLimelight() {
-    return runOnce(
-      () -> {
-
+  public void ShootWithLimelight() {
             shooterMotor.setControl(shooterVelocity.withVelocity(-4000/60));
             shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, shooterTargetAngle));
-            //shooterPivotMotorMaster.setControl(new PositionVoltage(shooterTargetAngle, 0, false, 0, 1, false, false, false));
-
-      }); 
-    //shooterMotor.setControl(new VelocityVoltage((shooterTargetRPM / 60), 0, false, 0, 0, false, false, false));
   }
- public Command ShooterShoot() {
-    return run(
-      () -> {
+
+ public void ShooterShoot() {
         shooterMotor.setControl(shooterVelocity.withVelocity(-4000/60));
          SmartDashboard.putNumber("shooter velocity RPS", shooterMotor.getVelocity().getValueAsDouble());
-      });
-    
   }
 
-  public Command StopShooter() {
-    return run(
-      () -> {
+  public void StopShooter() {
        shooterMotor.set(0);
-      });
-    
   }
 
-  public Command ShooterPrepareToIndex() {
-    return run(
-      () -> {
+  public void ShooterPrepareToIndex() {
       shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.targetShooterPivotIndexAngle));
       SmartDashboard.putNumber("shooter to index power", shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.targetShooterPivotIndexAngle));
-      });
   }
 
-  public Command PointTowardsSpeaker() {
-    return run(
-      () -> {
+  public void PointTowardsSpeaker() {
     shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.targetShooterPivotIndexAngle));
      SmartDashboard.putNumber("shooter angle pid", shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.targetShooterPivotIndexAngle));
-      });
-
   }
 
-public Command ShootInAmp() {
-    return run(
-      () -> {
+public void ShootInAmp() {
      shooterMotor.setControl(shooterVelocity.withVelocity(-Constants.Shooter.ampRPM/60));
-      });
     }
 
   @Override
   public void periodic() {
+    shooterPivotPID.setPID(kp,ki,kd);
 
       kp = SmartDashboard.getNumber("shooter kp",0);
       ki = SmartDashboard.getNumber("shooter ki",0);
@@ -167,15 +140,15 @@ public Command ShootInAmp() {
     shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);
     
 
-    // if ((shooterCurrentAngle > Constants.Shooter.targetShooterPivotIndexAngle - 0.05) && (shooterCurrentAngle < Constants.Shooter.targetShooterPivotIndexAngle + 0.05)) {
-    //   shooterReadyToIndex = true;
-    // }
-    // else {
-    //   shooterReadyToIndex = false;
-    // }
+     if ((shooterMotorAngle > Constants.Shooter.targetShooterPivotIndexAngle - 0.01) && (shooterMotorAngle < Constants.Shooter.targetShooterPivotIndexAngle + 0.01)) {
+       shooterReadyToIndex = true;
+     }
+     else {
+       shooterReadyToIndex = false;
+    }
 
     limelightTY = LimelightHelpers.getTY("");
-    shooterTargetAngle = shooterPivotInterpolator.getInterpolatedValue(limelightTY); //FIXME insert current limelight y axis data
+    shooterTargetAngle = shooterPivotInterpolator.getInterpolatedValue(LimelightHelpers.getTY("")); //FIXME insert current limelight y axis data
 
     //shooterTargetRPM = shooterInterpolator.getInterpolatedValue(0); //FIXME insert current limelight y axis data
     //shooterTargetAngle = shooterPivotInterpolator.getInterpolatedValue(0); //FIXME insert current limelight y axis data
@@ -192,6 +165,7 @@ public Command ShootInAmp() {
    // SmartDashboard.putNumber("pivot current velocity", shooterPivotPID.calculate(shooterMotorAngle, -0.055));
 
     SmartDashboard.putNumber("interpolated value", shooterTargetAngle);
+    SmartDashboard.putNumber("Limelight TY value", LimelightHelpers.getTY(""));
     // This method will be called once per scheduler run
   }
 }

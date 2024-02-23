@@ -12,7 +12,10 @@ public class ShootWithLimelight extends Command {
   ShooterSubsystem s_ShooterSubsystem;
   Limelight s_Limelight;
   /** Creates a new ShootWithLimelight. */
-  public ShootWithLimelight() {
+  public ShootWithLimelight(ShooterSubsystem s_ShooterSubsystem, Limelight s_Limelight) {
+    this.s_ShooterSubsystem = s_ShooterSubsystem;
+    this.s_Limelight = s_Limelight;
+    addRequirements(s_ShooterSubsystem, s_Limelight);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
