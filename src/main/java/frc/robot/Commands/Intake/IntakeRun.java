@@ -2,17 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands;
+package frc.robot.Commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.ClimberSubsystem;
+import frc.robot.Subsystems.IntakeSubsystem;
 
-public class ClimberMaintainDown extends Command {
-  ClimberSubsystem s_ClimberSubsystem;
-  /** Creates a new ClimberMaintainDown. */
-  public ClimberMaintainDown(ClimberSubsystem s_ClimberSubsystem) {
-    this.s_ClimberSubsystem = s_ClimberSubsystem;
-    addRequirements(s_ClimberSubsystem);
+public class IntakeRun extends Command {
+  IntakeSubsystem s_IntakeSubsystem;
+
+  /** Creates a new IntakeRun. */
+  public IntakeRun(IntakeSubsystem s_IntakeSubsystem) {
+    this.s_IntakeSubsystem = s_IntakeSubsystem;
+    addRequirements(s_IntakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,7 +24,7 @@ public class ClimberMaintainDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_ClimberSubsystem.ClimberMaintainDown();
+    s_IntakeSubsystem.IntakeRun();
   }
 
   // Called once the command ends or is interrupted.

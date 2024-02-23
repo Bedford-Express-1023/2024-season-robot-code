@@ -10,13 +10,17 @@ import frc.robot.Subsystems.ShooterSubsystem;
 public class ShooterPrepareToIndex extends Command {
   ShooterSubsystem s_ShooterSubsystem;
   /** Creates a new ShooterPrepareToIndex. */
-  public ShooterPrepareToIndex() {
+  public ShooterPrepareToIndex(ShooterSubsystem s_ShooterSubsystem) {
+    this.s_ShooterSubsystem = s_ShooterSubsystem;
+    addRequirements(s_ShooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    s_ShooterSubsystem.shooterPivotPID.reset();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

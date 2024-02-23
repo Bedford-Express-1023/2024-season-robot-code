@@ -10,7 +10,9 @@ import frc.robot.Subsystems.ShooterSubsystem;
 public class PointTowardsSpeaker extends Command {
   ShooterSubsystem s_ShooterSubsystem;
   /** Creates a new PointTowardsSpeaker. */
-  public PointTowardsSpeaker() {
+  public PointTowardsSpeaker(ShooterSubsystem s_ShooterSubsystem) {
+    this.s_ShooterSubsystem = s_ShooterSubsystem;
+    addRequirements(s_ShooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

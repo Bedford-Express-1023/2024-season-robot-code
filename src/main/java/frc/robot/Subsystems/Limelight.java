@@ -28,19 +28,13 @@ private final FieldCentric drive = new FieldCentric();
    PIDController pidRotation = new PIDController(0.0125 , 0.00, 0);
    double kp = 0.0;
    public double botPositioning;
-public Command RotateWithLimelight(){
-  return run(
-    () -> {
+public void RotateWithLimelight(){
        pidRotation.setPID(.0125,0.005,0);   
      //  drive.withVelocityX(0).withVelocityY(0).withRotationalRate(rotationtmp);
-    });
 }
-public Command StopRotatingWithLimelight(){
-  return runOnce(
-    () -> {
+public void StopRotatingWithLimelight(){
       pidRotation.reset();
    pidRotation.setPID(.0,0.0,0);  
-    });
 }
     @Override
     public void periodic() {

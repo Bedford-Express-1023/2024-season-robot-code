@@ -60,7 +60,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
                         return alliance.get() == DriverStation.Alliance.Red;
-                    }
+                    } 
                     return false;
                 },
                 this // Reference to this subsystem to set requirements

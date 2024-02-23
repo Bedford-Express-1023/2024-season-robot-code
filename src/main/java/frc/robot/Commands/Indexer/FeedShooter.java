@@ -10,7 +10,9 @@ import frc.robot.Subsystems.IndexerSubsystem;
 public class FeedShooter extends Command {
   IndexerSubsystem s_IndexerSubsystem;
   /** Creates a new FeedShooter. */
-  public FeedShooter() {
+  public FeedShooter(IndexerSubsystem s_IndexerSubsystem) {
+    this.s_IndexerSubsystem = s_IndexerSubsystem;
+    addRequirements(s_IndexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

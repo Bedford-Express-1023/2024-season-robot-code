@@ -18,13 +18,31 @@ import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.ClimberMaintainDown;
+import frc.robot.Commands.NotePassOff;
+import frc.robot.Commands.Climber.ClimberDown;
+import frc.robot.Commands.Climber.ClimberUp;
+import frc.robot.Commands.Indexer.FeedShooter;
 import frc.robot.Commands.Indexer.IndexNote;
-import frc.robot.Commands.Shooter.ShootAtAmplifier;
+import frc.robot.Commands.Indexer.ReverseIndexer;
+import frc.robot.Commands.Indexer.StopIndex;
+import frc.robot.Commands.Intake.IntakeDown;
+import frc.robot.Commands.Intake.IntakeNote;
+import frc.robot.Commands.Intake.IntakePrepareToIndex;
+import frc.robot.Commands.Intake.IntakeRun;
+import frc.robot.Commands.Intake.IntakeStop;
+import frc.robot.Commands.Shooter.ShootAtSubwoofer;
+import frc.robot.Commands.Shooter.ShootInAmp;
+import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
+import frc.robot.Commands.Shooter.ShooterShoot;
+import frc.robot.Commands.Shooter.StopShooter;
 import frc.robot.Constants.Intake;
+import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.Limelight;
@@ -42,138 +60,188 @@ public class RobotContainer extends SubsystemBase {
 
   public static boolean indexerBeamBreakValue;
 
-CANcoder leftFrontCANcoder = new CANcoder(4, "1023");
-CANcoder rightFrontCANcoder = new CANcoder(5, "1023");
-CANcoder leftBackCANcoder = new CANcoder(3 ,"1023");
-CANcoder rightBackCANcoder = new CANcoder(2, "1023");
-  
+  CANcoder leftFrontCANcoder = new CANcoder(4, "1023");
+  CANcoder rightFrontCANcoder = new CANcoder(5, "1023");
+  CANcoder leftBackCANcoder = new CANcoder(3, "1023");
+  CANcoder rightBackCANcoder = new CANcoder(2, "1023");
+
   private double MaxSpeed = 3; // 6 meters per second desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController DriverController = new CommandXboxController(0);
   XboxController Conttroller = new XboxController(0);
-  // private final XboxController ManipulatorController = new XboxController(0); 
-      private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; //  drivetrain
+  // private final XboxController ManipulatorController = new XboxController(0);
+  private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
   Limelight limelightSubsystem = new Limelight();
   IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
-   ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
+  ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
   IndexerSubsystem IndexerSubsystem = new IndexerSubsystem();
+  ClimberSubsystem ClimberSubsystem = new ClimberSubsystem();
   private final FieldCentric drive = new FieldCentric()
       .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 15% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric, driving in open loop
-  ShootAtAmplifier shooterAtAmplifier = new ShootAtAmplifier();
+  ShootAtSubwoofer shooterAtAmplifier = new ShootAtSubwoofer(ShooterSubsystem);
+  IntakeNote intakeNote = new IntakeNote(IntakeSubsystem);
+  IntakeStop intakeStop = new IntakeStop(IntakeSubsystem);
+  ShooterPrepareToIndex shooterPrepareToIndex = new ShooterPrepareToIndex(ShooterSubsystem);
+  IntakePrepareToIndex intakePrepareToIndex = new IntakePrepareToIndex(IntakeSubsystem);
+  ShooterShoot shooterShoot = new ShooterShoot(ShooterSubsystem);
+  StopShooter stopShooter = new StopShooter(ShooterSubsystem);
+  FeedShooter feedShooter = new FeedShooter(IndexerSubsystem);
+  StopIndex stopIndex = new StopIndex(IndexerSubsystem);
+  ReverseIndexer reverseIndexer = new ReverseIndexer(IndexerSubsystem);
+  IntakeDown intakeDown = new IntakeDown(IntakeSubsystem);
+  IntakeRun intakeRun = new IntakeRun(IntakeSubsystem);
+  ShootAtSubwoofer shootAtSubwoofer = new ShootAtSubwoofer(ShooterSubsystem);
+  ShootInAmp shootInAmp = new ShootInAmp(ShooterSubsystem);
+  ClimberUp climberUp = new ClimberUp(ClimberSubsystem);
+  ClimberDown climberDown = new ClimberDown(ClimberSubsystem);
+  NotePassOff notePassOff = new NotePassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
+  ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem);
+
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-double check = 5;
-  //private final DigitalInput indexerBeamBreak = new DigitalInput(0); 
+  double check = 5;
+  // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
-    public RobotContainer() { 
-ShooterSubsystem.setDefaultCommand(ShooterSubsystem.ShooterPrepareToIndex());
-IntakeSubsystem.setDefaultCommand(IntakeSubsystem.IntakePrepareToIndex());
- 
-    DriverController.x().whileTrue(limelightSubsystem.RotateWithLimelight()); 
-   ManipulatorController.a().whileTrue(IntakeSubsystem.IntakeNote()).whileFalse(IntakeSubsystem.IntakeStop());
-   ManipulatorController.b().whileTrue(ShooterSubsystem.ShooterShoot()).whileFalse(ShooterSubsystem.StopShooter());
-   ManipulatorController.leftBumper().whileTrue(IndexerSubsystem.FeedShooter()).whileFalse(IndexerSubsystem.StopIndex());
-   ManipulatorController.rightBumper().whileTrue(IndexerSubsystem.ReverseIndexer()).whileFalse(IndexerSubsystem.StopIndex());
-   ManipulatorController.pov(180).whileTrue(IntakeSubsystem.IntakeDown()).whileFalse(IntakeSubsystem.IntakePrepareToIndex());
-      ManipulatorController.pov(0).whileTrue(IntakeSubsystem.IntakeRun()).whileFalse(IntakeSubsystem.IntakePrepareToIndex());
-   ManipulatorController.pov(90).whileTrue(ShooterSubsystem.ShootAtSubwoofer()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
-   ManipulatorController.y().whileTrue(ShooterSubsystem.ShootInAmp()).whileFalse(ShooterSubsystem.StopShooter());
-   //ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
-     configureBindings();  
+  public RobotContainer() {
+    //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
+   //IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
+    //IndexerSubsystem.setDefaultCommand(notePassOff);
+    //ShooterSubsystem.setDefaultCommand(notePassOff);
+    //IntakeSubsystem.setDefaultCommand(notePassOff);
+    ClimberSubsystem.setDefaultCommand(climberMaintainDown);
+   ManipulatorController.a()
+       .whileTrue(intakeNote)
+       .whileFalse(intakeStop);
+    ManipulatorController.b()
+        .whileTrue(shooterShoot)
+        .whileFalse(stopShooter);
+    ManipulatorController.leftBumper()
+        .whileTrue(feedShooter)
+        .whileFalse(stopIndex);
+    ManipulatorController.rightBumper()
+        .whileTrue(reverseIndexer)
+        .whileFalse(stopIndex);
+    ManipulatorController.pov(180)
+        .whileTrue(intakeDown)
+        .whileFalse(intakePrepareToIndex);
+    ManipulatorController.pov(0 )
+        .whileTrue(intakeRun)
+        .whileFalse(intakePrepareToIndex);
+    ManipulatorController.pov(90)
+        .whileTrue(shootAtSubwoofer)
+        .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.pov(270)
+        .whileTrue(notePassOff)
+        .whileFalse(intakeStop);
+    ManipulatorController.y()
+        .whileTrue(climberUp)
+        .whileFalse(climberMaintainDown);
+    ManipulatorController.x()
+        .whileTrue(climberDown)
+        .whileFalse(climberMaintainDown);
+    // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
+    configureBindings();
+
   }
 
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-    drivetrain.applyRequest(() -> drive.withVelocityX(-LeftYAxis * MaxSpeed) // Drive forward with negative Y (forward)
-        .withVelocityY(-LeftXAxis * MaxSpeed) // Drive left with negative X (left)
-        .withRotationalRate(-RightXAxis*MaxAngularRate)//RightXAxis * MaxAngularRate) // Drive counterclockwise with negative X (left)
-    ));
-DriverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-DriverController.b().whileTrue(drivetrain
-    .applyRequest(() -> point.withModuleDirection(new Rotation2d(-DriverController.getLeftY(), -DriverController.getLeftX()))));
+        drivetrain.applyRequest(() -> drive.withVelocityX(-LeftYAxis * MaxSpeed) // Drive forward with negative Y
+                                                                                 // (forward)
+            .withVelocityY(-LeftXAxis * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-RightXAxis * MaxAngularRate)// RightXAxis * MaxAngularRate) // Drive counterclockwise
+                                                             // with negative X (left)
+        ));
+    DriverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    DriverController.b().whileTrue(drivetrain
+        .applyRequest(() -> point
+            .withModuleDirection(new Rotation2d(-DriverController.getLeftY(), -DriverController.getLeftX()))));
 
-// reset the field-centric heading on left bumper press
-DriverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    // reset the field-centric heading on left bumper press
+    DriverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-if (Utils.isSimulation()) {
-  drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
-}
-drivetrain.registerTelemetry(logger::telemeterize);
-}
-
-   
+    if (Utils.isSimulation()) {
+      drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+    }
+    drivetrain.registerTelemetry(logger::telemeterize);
+  }
 
   @Override
   public void periodic() {
-  //   if (ManipulatorController.getBButton() == true && ManipulatorController.getAButton() == false && ManipulatorController.getYButton() == false) {
-      
-  //       IntakeSubsystem.IntakeNote();
-  //      check = 1;
-  //     }
-  // else if (ManipulatorController.getYButton() == true  && ManipulatorController.getAButton() == false && ManipulatorController.getBButton() == false) {
-  //   if (IntakeSubsystem.intakeReadyToIndex && ShooterSubsystem.shooterReadyToIndex) {
-  //     IntakeSubsystem.IntakeNote();
-  //     IndexerSubsystem.IndexNote();
-  //   }
-  //     if (indexerBeamBreakValue == false) {
-  //       IndexerSubsystem.StopIndex();
-  //       IntakeSubsystem.IntakeStop();
-  //     }
-  //     check = 2;
-  // }
-  // else if (ManipulatorController.getAButton() == true  && ManipulatorController.getBButton() == false && ManipulatorController.getYButton() == false) {
-  //     ShooterSubsystem.ShootAtAmplifier();
-  //     check = 3;
-  //     if(shooterCurrentRPMValue > Constants.Shooter.shooterVelocityAmplifierConstant - 100 && shooterCurrentRPMValue < Constants.Shooter.shooterVelocityAmplifierConstant + 100) {
-  //       IndexerSubsystem.IndexNote();
-  //     }
-  //     else {
-  //       IndexerSubsystem.StopIndex();
-  //     }
-  //   }
-  // else{
-  // IndexerSubsystem.StopIndex();
-  // ShooterSubsystem.StopShooter();
-  // ShooterSubsystem.ShooterPrepareToIndex();
-  // IntakeSubsystem.IntakePrepareToIndex();
-  // IntakeSubsystem.IntakeStop();
-  // check = 0;
-  // }
+    // if (ManipulatorController.getBButton() == true &&
+    // ManipulatorController.getAButton() == false &&
+    // ManipulatorController.getYButton() == false) {
 
-  if ((DriverController.getRightX()>.15 ) || (DriverController.getRightX() <-.15)){
-    RightXAxis = DriverController.getRightX();
+    // IntakeSubsystem.IntakeNote();
+    // check = 1;
+    // }
+    // else if (ManipulatorController.getYButton() == true &&
+    // ManipulatorController.getAButton() == false &&
+    // ManipulatorController.getBButton() == false) {
+    // if (IntakeSubsystem.intakeReadyToIndex &&
+    // ShooterSubsystem.shooterReadyToIndex) {
+    // IntakeSubsystem.IntakeNote();
+    // IndexerSubsystem.IndexNote();
+    // }
+    // if (indexerBeamBreakValue == false) {
+    // IndexerSubsystem.StopIndex();
+    // IntakeSubsystem.IntakeStop();
+    // }
+    // check = 2;
+    // }
+    // else if (ManipulatorController.getAButton() == true &&
+    // ManipulatorController.getBButton() == false &&
+    // ManipulatorController.getYButton() == false) {
+    // ShooterSubsystem.ShootAtAmplifier();
+    // check = 3;
+    // if(shooterCurrentRPMValue >
+    // Constants.Shooter.shooterVelocityAmplifierConstant - 100 &&
+    // shooterCurrentRPMValue < Constants.Shooter.shooterVelocityAmplifierConstant +
+    // 100) {
+    // IndexerSubsystem.IndexNote();
+    // }
+    // else {
+    // IndexerSubsystem.StopIndex();
+    // }
+    // }
+    // else{
+    // IndexerSubsystem.StopIndex();
+    // ShooterSubsystem.StopShooter();
+    // ShooterSubsystem.ShooterPrepareToIndex();
+    // IntakeSubsystem.IntakePrepareToIndex();
+    // IntakeSubsystem.IntakeStop();
+    // check = 0;
+    // }
+
+    if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
+      RightXAxis = DriverController.getRightX();
+    } else if (Conttroller.getYButton()) {
+      RightXAxis = -limelightSubsystem.rotationtmp;
+    } else {
+      RightXAxis = 0;
     }
-    else if (Conttroller.getYButton())
-        {
-         RightXAxis = -limelightSubsystem.rotationtmp;
-        }
-    else{
-      RightXAxis=0;
-    } 
-    if ((DriverController.getLeftY()>.15 ) || (DriverController.getLeftY() <-.15)){
+    if ((DriverController.getLeftY() > .15) || (DriverController.getLeftY() < -.15)) {
       LeftYAxis = DriverController.getLeftY();
-      }
-        else{
+    } else {
       LeftYAxis = 0;
-        }
-      if ((DriverController.getLeftX()>.15 ) || (DriverController.getLeftX() <-.15)){
-        LeftXAxis = DriverController.getLeftX();
-        }
-          else{
-      LeftXAxis=0;
     }
-  
+    if ((DriverController.getLeftX() > .15) || (DriverController.getLeftX() < -.15)) {
+      LeftXAxis = DriverController.getLeftX();
+    } else {
+      LeftXAxis = 0;
+    }
+
     // LeftXAxis = DriverController.getLeftX();
     // LeftYAxis = DriverController.getLeftY();
     // RightXAxis = DriverController.getRightX();
     // RightYAxis = DriverController.getRightY();
-    
-      SmartDashboard.putNumber("check",check);
+
+    SmartDashboard.putNumber("check", check);
     SmartDashboard.putNumber("LeftxAxis", LeftXAxis);
     SmartDashboard.putNumber("LeftYAxis", LeftYAxis);
     SmartDashboard.putNumber("RightxAxis", RightXAxis);
@@ -183,9 +251,9 @@ drivetrain.registerTelemetry(logger::telemeterize);
     // AButton = ManipulatorController.a().getAsBoolean();
     // YButton = ManipulatorController.y().getAsBoolean();
 
-    //indexerBeamBreakValue = indexerBeamBreak.get();
+    // indexerBeamBreakValue = indexerBeamBreak.get();
     shooterCurrentRPMValue = ShooterSubsystem.shooterCurrentRPM;
-   // SmartDashboard.putBoolean("beam break", indexerBeamBreakValue);
+    // SmartDashboard.putBoolean("beam break", indexerBeamBreakValue);
     SmartDashboard.putNumber("left front CANcoder", leftFrontCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right front CANcoder", rightFrontCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("left back CANcoder", leftBackCANcoder.getAbsolutePosition().getValueAsDouble());

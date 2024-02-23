@@ -14,8 +14,8 @@ import frc.robot.Constants;
 
 public class ClimberSubsystem extends SubsystemBase {
 
-  private final TalonFXConfiguration climberMotorConfig = new TalonFXConfiguration();
-  private final CurrentLimitsConfigs climberCurLimConfig = climberMotorConfig.CurrentLimits;
+  //private final TalonFXConfiguration climberMotorConfig = new TalonFXConfiguration();
+  //private final CurrentLimitsConfigs climberCurLimConfig = climberMotorConfig.CurrentLimits;
 
   private final TalonFX rightClimberMotor = new TalonFX(Constants.Climber.CLIMBER_RIGHT_CAN); //FIXME
   private final TalonFX leftClimberMotor = new TalonFX(Constants.Climber.CLIMBER_LEFT_CAN); //FIXME
@@ -25,21 +25,23 @@ public class ClimberSubsystem extends SubsystemBase {
   
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
+    /* 
     climberCurLimConfig.StatorCurrentLimit = Constants.Climber.climberStatorCurrentLimit;
     climberCurLimConfig.StatorCurrentLimitEnable = false;
     climberMotorConfig.withCurrentLimits(climberCurLimConfig);
     rightClimberMotor.getConfigurator().apply(climberCurLimConfig); 
     leftClimberMotor.getConfigurator().apply(climberCurLimConfig); 
+    */
   }
 
   public void ClimberUp() {
-    rightClimberMotor.setPosition(Constants.Climber.climberUpPosition);
-    leftClimberMotor.setPosition(Constants.Climber.climberUpPosition);
+    rightClimberMotor.set(0.4);
+    leftClimberMotor.set(-0.4);
   }
 
   public void ClimberDown() {
-    rightClimberMotor.setPosition(Constants.Climber.climberDownPosition);
-    leftClimberMotor.setPosition(Constants.Climber.climberDownPosition);
+    rightClimberMotor.set(-0.4);
+    rightClimberMotor.set(0.4 );
   }
 
   public void ClimberMaintainDown() {

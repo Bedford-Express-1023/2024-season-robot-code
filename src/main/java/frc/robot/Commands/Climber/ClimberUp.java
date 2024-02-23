@@ -10,7 +10,9 @@ import frc.robot.Subsystems.ClimberSubsystem;
 public class ClimberUp extends Command {
   ClimberSubsystem s_ClimberSubsystem;
   /** Creates a new ClimberUp. */
-  public ClimberUp() {
+  public ClimberUp(ClimberSubsystem s_ClimberSubsystem) {
+    this.s_ClimberSubsystem = s_ClimberSubsystem;
+    addRequirements(s_ClimberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
