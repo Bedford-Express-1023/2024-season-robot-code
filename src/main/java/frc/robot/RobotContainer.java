@@ -28,6 +28,7 @@ import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
+import frc.robot.Commands.Indexer.FeedShooterFast;
 import frc.robot.Commands.Indexer.IndexNote;
 import frc.robot.Commands.Indexer.ReverseIndexer;
 import frc.robot.Commands.Indexer.StopIndex;
@@ -36,8 +37,11 @@ import frc.robot.Commands.Intake.IntakeNote;
 import frc.robot.Commands.Intake.IntakePrepareToIndex;
 import frc.robot.Commands.Intake.IntakeRun;
 import frc.robot.Commands.Intake.IntakeStop;
+import frc.robot.Commands.Shooter.ShootAtFarshot;
+import frc.robot.Commands.Shooter.ShootAtPlatform;
 import frc.robot.Commands.Shooter.ShootAtSubwoofer;
 import frc.robot.Commands.Shooter.ShootInAmp;
+import frc.robot.Commands.Shooter.ShootWithLimelight;
 import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
 import frc.robot.Commands.Shooter.ShooterShoot;
 import frc.robot.Commands.Shooter.StopShooter;
@@ -46,6 +50,7 @@ import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.Limelight;
+import frc.robot.Subsystems.LimelightWithBotPose;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class RobotContainer extends SubsystemBase {
@@ -70,17 +75,18 @@ public class RobotContainer extends SubsystemBase {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController DriverController = new CommandXboxController(0);
-  XboxController Conttroller = new XboxController(0);
+  XboxController Conttroller = new XboxController(1);
   // private final XboxController ManipulatorController = new XboxController(0);
   private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
   Limelight limelightSubsystem = new Limelight();
+  LimelightWithBotPose limelightWithBotPose = new LimelightWithBotPose();
   IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
   IndexerSubsystem IndexerSubsystem = new IndexerSubsystem();
   ClimberSubsystem ClimberSubsystem = new ClimberSubsystem();
   private final FieldCentric drive = new FieldCentric()
-      .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 15% deadband
+      .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * .03) // Add a 15% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric, driving in open loop
   ShootAtSubwoofer shooterAtAmplifier = new ShootAtSubwoofer(ShooterSubsystem);
   IntakeNote intakeNote = new IntakeNote(IntakeSubsystem);
@@ -95,55 +101,56 @@ public class RobotContainer extends SubsystemBase {
   IntakeDown intakeDown = new IntakeDown(IntakeSubsystem);
   IntakeRun intakeRun = new IntakeRun(IntakeSubsystem);
   ShootAtSubwoofer shootAtSubwoofer = new ShootAtSubwoofer(ShooterSubsystem);
+  ShootAtPlatform shootAtPlatform = new ShootAtPlatform(ShooterSubsystem);
   ShootInAmp shootInAmp = new ShootInAmp(ShooterSubsystem);
   ClimberUp climberUp = new ClimberUp(ClimberSubsystem);
   ClimberDown climberDown = new ClimberDown(ClimberSubsystem);
   NotePassOff notePassOff = new NotePassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem);
+  ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
+  FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
+  ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem);
 
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  double check = 5;
+  
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
-    //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
-   //IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
-    //IndexerSubsystem.setDefaultCommand(notePassOff);
-    //ShooterSubsystem.setDefaultCommand(notePassOff);
-    //IntakeSubsystem.setDefaultCommand(notePassOff);
-    ClimberSubsystem.setDefaultCommand(climberMaintainDown);
-   ManipulatorController.a()
-       .whileTrue(intakeNote)
-       .whileFalse(intakeStop);
+    // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
+    // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
+    // IndexerSubsystem.setDefaultCommand(notePassOff);
+    // ShooterSubsystem.setDefaultCommand(notePassOff);
+    // IntakeSubsystem.setDefaultCommand(notePassOff);
+    // ClimberSubsystem.setDefaultCommand(climberMaintainDown);
+ 
+    ManipulatorController.a()
+        .whileTrue(intakeNote).whileFalse(intakeStop);
     ManipulatorController.b()
-        .whileTrue(shooterShoot)
-        .whileFalse(stopShooter);
+        .whileTrue(shootAtFarshot)
+        .whileFalse(shooterPrepareToIndex);
     ManipulatorController.leftBumper()
-        .whileTrue(feedShooter)
-        .whileFalse(stopIndex);
+         .whileTrue(FeedShooterFast).whileFalse(stopIndex);
     ManipulatorController.rightBumper()
-        .whileTrue(reverseIndexer)
-        .whileFalse(stopIndex);
+    .whileTrue(reverseIndexer).whileFalse(stopIndex);
+ 
     ManipulatorController.pov(180)
         .whileTrue(intakeDown)
         .whileFalse(intakePrepareToIndex);
-    ManipulatorController.pov(0 )
+    ManipulatorController.pov(0)
         .whileTrue(intakeRun)
         .whileFalse(intakePrepareToIndex);
     ManipulatorController.pov(90)
         .whileTrue(shootAtSubwoofer)
         .whileFalse(shooterPrepareToIndex);
     ManipulatorController.pov(270)
-        .whileTrue(notePassOff)
-        .whileFalse(intakeStop);
+        .whileTrue(notePassOff);
     ManipulatorController.y()
-        .whileTrue(climberUp)
-        .whileFalse(climberMaintainDown);
+        .whileTrue(shootInAmp)
+        .whileFalse(shooterPrepareToIndex);
     ManipulatorController.x()
-        .whileTrue(climberDown)
-        .whileFalse(climberMaintainDown);
+       .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     configureBindings();
 
@@ -220,7 +227,7 @@ public class RobotContainer extends SubsystemBase {
 
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
-    } else if (Conttroller.getYButton()) {
+    } else if (Conttroller.getXButton()) {
       RightXAxis = -limelightSubsystem.rotationtmp;
     } else {
       RightXAxis = 0;
@@ -241,7 +248,6 @@ public class RobotContainer extends SubsystemBase {
     // RightXAxis = DriverController.getRightX();
     // RightYAxis = DriverController.getRightY();
 
-    SmartDashboard.putNumber("check", check);
     SmartDashboard.putNumber("LeftxAxis", LeftXAxis);
     SmartDashboard.putNumber("LeftYAxis", LeftYAxis);
     SmartDashboard.putNumber("RightxAxis", RightXAxis);
