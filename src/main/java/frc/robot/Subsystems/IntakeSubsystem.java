@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean intakeBeamBreakValue;
 
   // fix pid values later
- private PIDController IntakePivotPID = new PIDController(.5, 0.0, 0);
+ public PIDController IntakePivotPID = new PIDController(.6, 0.01, 0);
   public static CANcoder leftFrontCANcoder = new CANcoder(4);
   public static CANcoder rightFrontCANcoder = new CANcoder(1);
   public static CANcoder leftBackCANcoder = new CANcoder(3);
@@ -120,7 +120,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("upAngle", IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
     intakeAngle = PivotCANCoder.getAbsolutePosition().getValueAsDouble();
 
-    if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.06) && (intakeAngle < Constants.Intake.targetIntakePivotIndexAngle + 0.06)) {
+    if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.08) && (intakeAngle < Constants.Intake.targetIntakePivotIndexAngle + 0.08)) {
       intakeReadyToIndex = true;
     }
     else {

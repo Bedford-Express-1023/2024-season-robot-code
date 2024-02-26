@@ -18,7 +18,10 @@ public class ShootInAmp extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    s_ShooterSubsystem.shooterPivotPID.reset();
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

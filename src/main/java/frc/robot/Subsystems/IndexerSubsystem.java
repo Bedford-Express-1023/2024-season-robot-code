@@ -7,7 +7,11 @@ package frc.robot.Subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -25,19 +29,23 @@ public class IndexerSubsystem extends SubsystemBase {
 
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsystem() {
-
+    //TalonSRXConfiguration configs = new TalonSRXConfiguration();
+    indexerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void FeedShooter () {
-      indexerMotor.set(ControlMode.PercentOutput, 1);
+      indexerMotor.set(ControlMode.PercentOutput, 0.7);
   }
 
+  public void FeedFastShooter () {
+      indexerMotor.set(ControlMode.PercentOutput, 1);
+  }
   public void ReverseIndexer () {
-      indexerMotor.set(ControlMode.PercentOutput, -.5);
+      indexerMotor.set(ControlMode.PercentOutput, -.3);
   }
 
   public void IndexNote() {
-      indexerMotor.set(ControlMode.PercentOutput, 0.8);
+      indexerMotor.set(ControlMode.PercentOutput, 0.4);
   }
 
   public void StopIndex() { 

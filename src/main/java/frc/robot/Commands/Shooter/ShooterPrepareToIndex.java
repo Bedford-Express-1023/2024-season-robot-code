@@ -20,6 +20,7 @@ public class ShooterPrepareToIndex extends Command {
   @Override
   public void initialize() {
     s_ShooterSubsystem.shooterPivotPID.reset();
+    s_ShooterSubsystem.StopShooter();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

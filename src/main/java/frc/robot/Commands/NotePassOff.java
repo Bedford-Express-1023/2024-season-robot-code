@@ -29,6 +29,8 @@ public class NotePassOff extends Command {
   @Override
   public void initialize() {
     s_ShooterSubsystem.shooterPivotPID.reset();
+    s_IntakeSubsystem.IntakePivotPID.reset();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,8 +60,9 @@ public class NotePassOff extends Command {
         //s_IntakeSubsystem.IntakeStop();
 
         if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
-          SmartDashboard.putBoolean("NotePassOff ", true);
+          SmartDashboard.putBoolean("NotePassedOff ", true);
           s_IndexerSubsystem.StopIndex();
+          s_IntakeSubsystem.IntakeStop();
         }
       }
     }
