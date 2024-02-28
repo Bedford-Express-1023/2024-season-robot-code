@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.ClimberMaintainDown;
 import frc.robot.Commands.NotePassOff;
-
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
@@ -135,7 +134,7 @@ public class RobotContainer extends SubsystemBase {
     ManipulatorController.leftBumper()
          .whileTrue(FeedShooterFast).whileFalse(stopIndex);
     ManipulatorController.rightBumper()
-    .whileTrue(reverseIndexer).whileFalse(stopIndex);
+         .whileTrue(reverseIndexer).whileFalse(stopIndex);
     ManipulatorController.pov(180)
         .whileTrue(intakeDown)
         .whileFalse(intakePrepareToIndex);
@@ -154,7 +153,6 @@ public class RobotContainer extends SubsystemBase {
        .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     configureBindings();
-
   }
 
   private void configureBindings() {
@@ -199,20 +197,16 @@ public class RobotContainer extends SubsystemBase {
       LeftXAxis = 0;
     }
 
-  
-
     SmartDashboard.putNumber("LeftxAxis", LeftXAxis);
     SmartDashboard.putNumber("LeftYAxis", LeftYAxis);
     SmartDashboard.putNumber("RightxAxis", RightXAxis);
     SmartDashboard.putNumber("RightYaxis", RightYAxis);
 
     shooterCurrentRPMValue = ShooterSubsystem.shooterCurrentRPM;
- 
+    
     SmartDashboard.putNumber("left front CANcoder", leftFrontCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right front CANcoder", rightFrontCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("left back CANcoder", leftBackCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right back CANcoder", rightBackCANcoder.getAbsolutePosition().getValueAsDouble());
-
   }
-     
 }
