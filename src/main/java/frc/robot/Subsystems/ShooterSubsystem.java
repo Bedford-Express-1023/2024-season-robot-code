@@ -50,8 +50,11 @@ private double shooterMotorAngle;
   private double targetShooterPivotAngle;
   public Slot0Configs slot0Configs = new Slot0Configs();
   public Slot1Configs slot1Configs = new Slot1Configs();
-  public VelocityVoltage shooterVelocity = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant, 0, false, 0, 0, false, false, false);
- public PIDController shooterPivotPID = new PIDController(1,0,0);//(.85,0.075,0.0001);
+  
+  public VelocityVoltage shooterVelocityFast = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant, 0, false, 0, 0, false, false, false);
+  public VelocityVoltage shooterVelocitySLow = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant, 0, false, 0, 1, false, false, false);
+  public PIDController shooterPivotPID = new PIDController(1.7,0.28,0);//(.85,0.075,0.0001);
+
   ArmFeedforward pivotFeedForward = new ArmFeedforward(0, 0.027576445, 0.001, 0);
  double LineOfBestFitCalculation;
  NeutralModeValue brake = NeutralModeValue.Brake;
@@ -74,6 +77,9 @@ private double shooterMotorAngle;
    configs.Slot0.kP = .7;
    configs.Slot0.kI = 2;
    configs.Slot0.kD = 0;
+   configs.Slot1.kP = .35;
+   configs.Slot1.kI = 1;
+   configs.Slot1.kD = 0;
 
     configs.Voltage.PeakForwardVoltage = 10; 
     configs.Voltage.PeakReverseVoltage = -10;
@@ -113,7 +119,7 @@ private double shooterMotorAngle;
 //Constants.Shooter.shooterVelocitySubwooferConstant)); //Subwoofer RPM is 4000
       shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant) 
                                 + pivotFeedForward.calculate(Constants.Shooter.shooterAngleSubwooferConstant *  6.2832, 2));
-      shooterMotor.setControl(shooterVelocity.withVelocity(-4000/60));
+      shooterMotor.setControl(shooterVelocityFast.withVelocity(-4000/60));
       SmartDashboard.putNumber("intake up power",shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant));
      // shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, -0.06));
   }
@@ -128,19 +134,19 @@ private double shooterMotorAngle;
 //Constants.Shooter.shooterVelocitySubwooferConstant)); //Subwoofer RPM is 4000
       shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleFarshotConstant) 
                                 +pivotFeedForward.calculate(Constants.Shooter.shooterAngleFarshotConstant *  6.2832, 2));
-      shooterMotor.setControl(shooterVelocity.withVelocity(-4000/60));
+      shooterMotor.setControl(shooterVelocityFast.withVelocity(-4000/60));
   }
 
   public void ShootWithLimelight() {
     LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29))/45.5))-0.019)/-0.0566);
-    shooterMotor.setControl(shooterVelocity.withVelocity(-4000/60));
+    shooterMotor.setControl(shooterVelocityFast.withVelocity(-4000/60));
     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, LineOfBestFitCalculation)
                               + pivotFeedForward.calculate(LineOfBestFitCalculation *  6.2832, 2));
 
   }
 
  public void ShooterShoot() {
-        shooterMotor.setControl(shooterVelocity.withVelocity(-4000/60));
+        shooterMotor.setControl(shooterVelocityFast.withVelocity(-4000/60));
          SmartDashboard.putNumber("shooter velocity RPS", shooterMotor.getVelocity().getValueAsDouble());
   }
 
@@ -166,9 +172,9 @@ private double shooterMotorAngle;
   }
 
 public void ShootInAmp() {
-       shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant) 
+     shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant) 
                                 - pivotFeedForward.calculate(Constants.Shooter.shooterAngleSubwooferConstant *  6.2832, 2));
-     shooterMotor.set(-.38);
+     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-2000/60));
     }
 /* 
   private double getShooterPivotAngle() {
@@ -187,16 +193,10 @@ public void ShootInAmp() {
    
  LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29))/45.5))-0.019)/-0.0566);
  SmartDashboard.putNumber("Line of best fit calculation" ,LineOfBestFitCalculation) ;
-    shooterPivotPID.setPID(kp,ki,kd);
-
-      kp = SmartDashboard.getNumber("shooter kp",0);
-      ki = SmartDashboard.getNumber("shooter ki",0);
-      kd = SmartDashboard.getNumber("shooter kd",0);
-
-   shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
-    shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);
     
-
+   shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
+   shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);
+    
      if ((shooterMotorAngle > Constants.Shooter.targetShooterPivotIndexAngle - 0.01) && (shooterMotorAngle < Constants.Shooter.targetShooterPivotIndexAngle + 0.01)) {
        shooterReadyToIndex = true;
      }
