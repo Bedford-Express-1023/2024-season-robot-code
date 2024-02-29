@@ -24,7 +24,7 @@ import frc.robot.RotationalFeedForward;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN);
+  public final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN);
   public final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN);
   public final CANcoder PivotCANCoder = new CANcoder(Constants.Intake.INTAKE_ENCODER_CAN);
   private final PositionVoltage intakePivotPosition = new PositionVoltage(0,0,true,0,1,false,false,false);
@@ -83,15 +83,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void IntakeDown() {
-    if (intakeBeamBreakValue = true) {
-      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
-      SmartDashboard.putNumber("down", IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
-    }
-    else {
-      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
-      intakeMotor.set(0);
-    }
-  //  intakePivotMotor.setPosition(Constants.Intake.intakeDownPosition)
+    intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
   }
   public void IntakePivotStop() {
     intakePivotMotor.set(0);

@@ -10,6 +10,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.PointWheelsAt;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.SwerveDriveBrake;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,6 +20,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -25,6 +29,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.ClimberMaintainDown;
 import frc.robot.Commands.NotePassOff;
+import frc.robot.Commands.Autos.FeedShooterFastAuto;
+import frc.robot.Commands.Autos.IntakeDownAuto;
+import frc.robot.Commands.Autos.IntakePrepareToIndexAuto;
+import frc.robot.Commands.Autos.IntakeRunAuto;
+import frc.robot.Commands.Autos.NotePassOffAuto;
+import frc.robot.Commands.Autos.ShootWithLimelightAuto;
+import frc.robot.Commands.Autos.StopIndexAuto;
+import frc.robot.Commands.Autos.StopShooterAuto;
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
@@ -54,6 +66,8 @@ import frc.robot.Subsystems.LimelightWithBotPose;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class RobotContainer extends SubsystemBase {
+  private final SendableChooser<Command> autoChooser;
+
   public static double LeftXAxis;
   public static double LeftYAxis;
   public static double RightXAxis;
@@ -96,6 +110,14 @@ public class RobotContainer extends SubsystemBase {
   ShooterShoot shooterShoot = new ShooterShoot(ShooterSubsystem);
   StopShooter stopShooter = new StopShooter(ShooterSubsystem);
   FeedShooter feedShooter = new FeedShooter(IndexerSubsystem);
+  ShootWithLimelightAuto shootWithLimelightAuto = new ShootWithLimelightAuto(ShooterSubsystem, limelightSubsystem,IndexerSubsystem);
+  StopShooterAuto stopShooterAuto = new StopShooterAuto(ShooterSubsystem);
+  FeedShooterFastAuto feedShooterFastAuto = new FeedShooterFastAuto(IndexerSubsystem);
+  StopIndexAuto stopIndexAuto = new StopIndexAuto(IndexerSubsystem);
+  IntakeRunAuto intakeRunAuto = new IntakeRunAuto(IntakeSubsystem);
+  IntakePrepareToIndexAuto intakePrepareToIndexAuto = new IntakePrepareToIndexAuto(IntakeSubsystem);
+  NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
+  IntakeDownAuto intakeDownAuto = new IntakeDownAuto(IntakeSubsystem);
   StopIndex stopIndex = new StopIndex(IndexerSubsystem);
   ReverseIndexer reverseIndexer = new ReverseIndexer(IndexerSubsystem);
   IntakeDown intakeDown = new IntakeDown(IntakeSubsystem);
@@ -118,6 +140,24 @@ public class RobotContainer extends SubsystemBase {
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
+
+    NamedCommands.registerCommand("ShootWithLimelight", shootWithLimelightAuto);
+    NamedCommands.registerCommand("StopShooter", stopShooterAuto);
+    NamedCommands.registerCommand("FeedShooterFast", feedShooterFastAuto);
+    NamedCommands.registerCommand("StopIndex", stopIndexAuto);
+    NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
+    NamedCommands.registerCommand("NotePassOff", notePassOffAuto);
+    NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
+    NamedCommands.registerCommand("PrepareIndex", intakePrepareToIndexAuto);
+
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    configureBindings();
+    SmartDashboard.putData("AutoChooser", autoChooser );
+    
+    
+
+
     // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
     // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
     // IndexerSubsystem.setDefaultCommand(notePassOff);
@@ -176,6 +216,8 @@ public class RobotContainer extends SubsystemBase {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
     drivetrain.registerTelemetry(logger::telemeterize);
+
+
   }
 
   @Override
@@ -265,6 +307,10 @@ public class RobotContainer extends SubsystemBase {
     SmartDashboard.putNumber("left back CANcoder", leftBackCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right back CANcoder", rightBackCANcoder.getAbsolutePosition().getValueAsDouble());
 
+  }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 
 }
