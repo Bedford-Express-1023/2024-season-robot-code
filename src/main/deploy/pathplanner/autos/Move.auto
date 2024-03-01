@@ -110,6 +110,50 @@
           "data": {
             "name": "ShootWithLimelight"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeDown"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 5"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "NotePassOff"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootWithLimelight"
+          }
         }
       ]
     }
