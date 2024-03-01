@@ -52,11 +52,7 @@ public class NotePassOffAuto extends Command {
       s_ShooterSubsystem.ShooterPrepareToIndex();
       //SmartDashboard.putBoolean("NotePassOff is going to indexing angles", true);
 
-      if (s_IntakeSubsystem.intakeBeamBreakValue == false) {
-            System.out.println("intakestop Passoff");
-
-        s_IntakeSubsystem.IntakeStop();
-        SmartDashboard.putBoolean("Intake Bream Break false- Intake Stop", true);
+      
 
         if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true)) {
               System.out.println("transitioning Passoff");
@@ -70,21 +66,15 @@ public class NotePassOffAuto extends Command {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-      } else if (s_IntakeSubsystem.intakeBeamBreakValue == true) {
-        //s_IntakeSubsystem.IntakeStop();
-            System.out.println("intake bream break cleared Passoff");
-
-
-        if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
+      }  if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
               System.out.println("indexer beam break Passoff");
 
           SmartDashboard.putBoolean("NotePassedOff ", true);
           s_IndexerSubsystem.StopIndex();
           s_IntakeSubsystem.IntakeStop();
         }
-      }
     }
-  }
+  
 
   // Called once the command ends or is interrupted.
   @Override
@@ -103,6 +93,6 @@ public class NotePassOffAuto extends Command {
   public boolean isFinished() {
                   System.out.println("indexer beam break Passoff is " + s_IndexerSubsystem.indexerBeamBreakValue);
 
-    return s_IndexerSubsystem.indexerBeamBreakValue;
+    return !s_IndexerSubsystem.indexerBeamBreakValue;
   }
 }
