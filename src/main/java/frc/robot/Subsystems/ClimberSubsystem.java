@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -35,41 +36,46 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void ClimberUp() {
-    rightClimberMotor.set(0.4);
-    leftClimberMotor.set(-0.4);
+    rightClimberMotor.set(-0.1);
+    leftClimberMotor.set(0.1);
   }
 
   public void ClimberDown() {
-    rightClimberMotor.set(-0.4);
-    rightClimberMotor.set(0.4 );
+    rightClimberMotor.set(0.2);
+    leftClimberMotor.set(-0.2);
   }
 
   public void ClimberMaintainDown() {
-    if (rightClimberMotorStatorCurrent.getValueAsDouble() > 5.5) {
-      rightClimberMotor.set(-0.05);
-    } 
-    else if (rightClimberMotorStatorCurrent.getValueAsDouble() < 4.5) {
-      rightClimberMotor.set(-0.2);
-    }
-    else {
-      rightClimberMotor.set(-0.125);
-    }
+    leftClimberMotor.set(0);
+    rightClimberMotor.set(0);
+    // if (rightClimberMotorStatorCurrent.getValueAsDouble() > 5.5) {
+    //   rightClimberMotor.set(-0.05);
+    // } 
+    // else if (rightClimberMotorStatorCurrent.getValueAsDouble() < 4.5) {
+    //   rightClimberMotor.set(-0.2);
+    // }
+    // else {
+    //   rightClimberMotor.set(-0.125);
+    // }
     
-    if (leftClimberMotorStatorCurrent.getValueAsDouble() > 5.5) {
-      leftClimberMotor.set(-0.05);
-    } 
-    else if (leftClimberMotorStatorCurrent.getValueAsDouble() < 4.5) {
-      leftClimberMotor.set(-0.2);
-    }
-    else {
-      leftClimberMotor.set(-0.125);
-    }
+    // if (leftClimberMotorStatorCurrent.getValueAsDouble() > 5.5) {
+    //   leftClimberMotor.set(0.02);
+    // } 
+    // else if (leftClimberMotorStatorCurrent.getValueAsDouble() < 4.5) {
+    //   leftClimberMotor.set(0.3);
+    // }
+    // else {
+    //   leftClimberMotor.set(0.125);
+    // }
   }
 
   @Override
   public void periodic() {
     rightClimberMotorStatorCurrent = rightClimberMotor.getStatorCurrent();
     leftClimberMotorStatorCurrent = leftClimberMotor.getStatorCurrent();
+    SmartDashboard.putNumber("right climber stator current", rightClimberMotorStatorCurrent.getValueAsDouble());
+    SmartDashboard.putNumber("left climber stator current", leftClimberMotorStatorCurrent.getValueAsDouble());
+
 
     // This method will be called once per scheduler run
   }
