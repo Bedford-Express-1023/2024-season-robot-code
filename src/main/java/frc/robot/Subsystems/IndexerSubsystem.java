@@ -23,7 +23,7 @@ import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
 
-    private final TalonSRX indexerMotor = new TalonSRX(Constants.Indexer.INDEXER_CAN); //FIXME
+    public final TalonSRX indexerMotor = new TalonSRX(Constants.Indexer.INDEXER_CAN); //FIXME
     private final DigitalInput indexerBeamBreak = new DigitalInput(Constants.Indexer.INDEXER_BEAM_BREAK_DIO); 
     public boolean indexerBeamBreakValue;
 
@@ -45,7 +45,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public void IndexNote() {
-      indexerMotor.set(ControlMode.PercentOutput, 0.4);
+      indexerMotor.set(ControlMode.PercentOutput, 0.5);
   }
 
   public void StopIndex() { 
