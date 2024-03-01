@@ -43,15 +43,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "NotePassOff"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Red 2"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "NotePassOff"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 2"
+                }
+              }
+            ]
           }
         },
         {
@@ -80,15 +87,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "NotePassOff"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Red 4"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "NotePassOff"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Red 4"
+                }
+              }
+            ]
           }
         },
         {
