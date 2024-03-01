@@ -15,7 +15,7 @@ public final class Constants {
 
         public static final double minPivotAngle = 0; //FIXME
         public static final double maxPivotAngle = 0; //FIXME
-        public static final double targetShooterPivotIndexAngle = 0.258; 
+        public static final double targetShooterPivotIndexAngle = 0.262; 
         public static final double minShooterPivotIndexAngle = 0; //FIXME
         public static final double maxShooterPivotIndexAngle = 0; //FIXME
         public static final double shooterVelocitySubwooferConstant = 4000; //tested and works

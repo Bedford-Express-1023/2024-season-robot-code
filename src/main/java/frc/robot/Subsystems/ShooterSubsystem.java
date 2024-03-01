@@ -77,7 +77,8 @@ private double shooterMotorAngle;
    configs.Slot0.kP = .7;
    configs.Slot0.kI = 2;
    configs.Slot0.kD = 0;
-   configs.Slot1.kP = .35;
+
+      configs.Slot1.kP = .35;
    configs.Slot1.kI = 1;
    configs.Slot1.kD = 0;
 
@@ -172,9 +173,9 @@ private double shooterMotorAngle;
   }
 
 public void ShootInAmp() {
-     shooterPivotMotorMaster.set(shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant) 
-                                - pivotFeedForward.calculate(Constants.Shooter.shooterAngleSubwooferConstant *  6.2832, 2));
-     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-2000/60));
+       shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .005) 
+                                + pivotFeedForward.calculate(.005 *  6.2832, 2));
+     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-2100/60));
     }
 /* 
   private double getShooterPivotAngle() {

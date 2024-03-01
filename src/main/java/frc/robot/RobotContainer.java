@@ -72,12 +72,12 @@ public class RobotContainer extends SubsystemBase {
   CANcoder leftBackCANcoder = new CANcoder(3, "1023");
   CANcoder rightBackCANcoder = new CANcoder(2, "1023");
 
-  private double MaxSpeed = 3; // 6 meters per second desired top speed
+  private double MaxSpeed = 4; // 6 meters per second desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController DriverController = new CommandXboxController(0);
-  XboxController Conttroller = new XboxController(1);
+  XboxController Conttroller = new XboxController(0);
   // private final XboxController ManipulatorController = new XboxController(0);
   private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
@@ -128,9 +128,13 @@ public class RobotContainer extends SubsystemBase {
  
     ManipulatorController.a()
         .whileTrue(intakeNote).whileFalse(intakeStop);
-    ManipulatorController.b()
-        .whileTrue(shootAtFarshot)
-        .whileFalse(shooterPrepareToIndex);
+        ManipulatorController.start()
+        .whileTrue(climberUp)
+        .whileFalse(climberMaintainDown);
+    ManipulatorController.back()
+    .whileTrue(climberDown)
+    .whileFalse(climberMaintainDown);
+        
     ManipulatorController.leftBumper()
          .whileTrue(FeedShooterFast).whileFalse(stopIndex);
     ManipulatorController.rightBumper()
@@ -179,9 +183,17 @@ public class RobotContainer extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if(Conttroller.getRightBumper()){
+      MaxSpeed = 1;
+      MaxAngularRate = .5 * Math.PI;
+    }
+    else{
+      MaxSpeed = 4;
+      MaxAngularRate = 1.5 * Math.PI;
+    }
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
-    } else if (Conttroller.getXButton()) {
+    } else if (Conttroller.getYButton()) {
       RightXAxis = -limelightSubsystem.rotationtmp;
     } else {
       RightXAxis = 0;
