@@ -13,6 +13,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.SwerveDriveBrake;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -84,12 +85,12 @@ public class RobotContainer extends SubsystemBase {
   CANcoder leftBackCANcoder = new CANcoder(3, "1023");
   CANcoder rightBackCANcoder = new CANcoder(2, "1023");
 
-  private double MaxSpeed = 3; // 6 meters per second desired top speed
+  private double MaxSpeed = 4; // 6 meters per second desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController DriverController = new CommandXboxController(0);
-  XboxController Conttroller = new XboxController(1);
+  XboxController Conttroller = new XboxController(0);
   // private final XboxController ManipulatorController = new XboxController(0);
   private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
@@ -132,7 +133,6 @@ public class RobotContainer extends SubsystemBase {
   ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
   FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
   ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem);
-
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -150,13 +150,9 @@ public class RobotContainer extends SubsystemBase {
     NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
     NamedCommands.registerCommand("PrepareIndex", intakePrepareToIndexAuto);
 
-
     autoChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
     SmartDashboard.putData("AutoChooser", autoChooser );
-    
-    
-
 
     // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
     // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
@@ -167,14 +163,17 @@ public class RobotContainer extends SubsystemBase {
  
     ManipulatorController.a()
         .whileTrue(intakeNote).whileFalse(intakeStop);
-    ManipulatorController.b()
-        .whileTrue(shootAtFarshot)
-        .whileFalse(shooterPrepareToIndex);
+        ManipulatorController.start()
+        .whileTrue(climberUp)
+        .whileFalse(climberMaintainDown);
+    ManipulatorController.back()
+    .whileTrue(climberDown)
+    .whileFalse(climberMaintainDown);
+        
     ManipulatorController.leftBumper()
          .whileTrue(FeedShooterFast).whileFalse(stopIndex);
     ManipulatorController.rightBumper()
-    .whileTrue(reverseIndexer).whileFalse(stopIndex);
- 
+         .whileTrue(reverseIndexer).whileFalse(stopIndex);
     ManipulatorController.pov(180)
         .whileTrue(intakeDown)
         .whileFalse(intakePrepareToIndex);
@@ -193,7 +192,6 @@ public class RobotContainer extends SubsystemBase {
        .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     configureBindings();
-
   }
 
   private void configureBindings() {
@@ -217,59 +215,21 @@ public class RobotContainer extends SubsystemBase {
     }
     drivetrain.registerTelemetry(logger::telemeterize);
 
-
   }
 
   @Override
   public void periodic() {
-    // if (ManipulatorController.getBButton() == true &&
-    // ManipulatorController.getAButton() == false &&
-    // ManipulatorController.getYButton() == false) {
-
-    // IntakeSubsystem.IntakeNote();
-    // check = 1;
-    // }
-    // else if (ManipulatorController.getYButton() == true &&
-    // ManipulatorController.getAButton() == false &&
-    // ManipulatorController.getBButton() == false) {
-    // if (IntakeSubsystem.intakeReadyToIndex &&
-    // ShooterSubsystem.shooterReadyToIndex) {
-    // IntakeSubsystem.IntakeNote();
-    // IndexerSubsystem.IndexNote();
-    // }
-    // if (indexerBeamBreakValue == false) {
-    // IndexerSubsystem.StopIndex();
-    // IntakeSubsystem.IntakeStop();
-    // }
-    // check = 2;
-    // }
-    // else if (ManipulatorController.getAButton() == true &&
-    // ManipulatorController.getBButton() == false &&
-    // ManipulatorController.getYButton() == false) {
-    // ShooterSubsystem.ShootAtAmplifier();
-    // check = 3;
-    // if(shooterCurrentRPMValue >
-    // Constants.Shooter.shooterVelocityAmplifierConstant - 100 &&
-    // shooterCurrentRPMValue < Constants.Shooter.shooterVelocityAmplifierConstant +
-    // 100) {
-    // IndexerSubsystem.IndexNote();
-    // }
-    // else {
-    // IndexerSubsystem.StopIndex();
-    // }
-    // }
-    // else{
-    // IndexerSubsystem.StopIndex();
-    // ShooterSubsystem.StopShooter();
-    // ShooterSubsystem.ShooterPrepareToIndex();
-    // IntakeSubsystem.IntakePrepareToIndex();
-    // IntakeSubsystem.IntakeStop();
-    // check = 0;
-    // }
-
+    if(Conttroller.getRightBumper()){
+      MaxSpeed = 1;
+      MaxAngularRate = .5 * Math.PI;
+    }
+    else{
+      MaxSpeed = 4;
+      MaxAngularRate = 1.5 * Math.PI;
+    }
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
-    } else if (Conttroller.getXButton()) {
+    } else if (Conttroller.getYButton()) {
       RightXAxis = -limelightSubsystem.rotationtmp;
     } else {
       RightXAxis = 0;
@@ -285,32 +245,20 @@ public class RobotContainer extends SubsystemBase {
       LeftXAxis = 0;
     }
 
-    // LeftXAxis = DriverController.getLeftX();
-    // LeftYAxis = DriverController.getLeftY();
-    // RightXAxis = DriverController.getRightX();
-    // RightYAxis = DriverController.getRightY();
-
     SmartDashboard.putNumber("LeftxAxis", LeftXAxis);
     SmartDashboard.putNumber("LeftYAxis", LeftYAxis);
     SmartDashboard.putNumber("RightxAxis", RightXAxis);
     SmartDashboard.putNumber("RightYaxis", RightYAxis);
 
-    // BButton = ManipulatorController.b().getAsBoolean();
-    // AButton = ManipulatorController.a().getAsBoolean();
-    // YButton = ManipulatorController.y().getAsBoolean();
-
-    // indexerBeamBreakValue = indexerBeamBreak.get();
     shooterCurrentRPMValue = ShooterSubsystem.shooterCurrentRPM;
-    // SmartDashboard.putBoolean("beam break", indexerBeamBreakValue);
+    
     SmartDashboard.putNumber("left front CANcoder", leftFrontCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right front CANcoder", rightFrontCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("left back CANcoder", leftBackCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right back CANcoder", rightBackCANcoder.getAbsolutePosition().getValueAsDouble());
-
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
-
 }
