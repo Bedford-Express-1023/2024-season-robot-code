@@ -50,9 +50,11 @@ private double shooterMotorAngle;
   private double targetShooterPivotAngle;
   public Slot0Configs slot0Configs = new Slot0Configs();
   public Slot1Configs slot1Configs = new Slot1Configs();
+  
   public VelocityVoltage shooterVelocityFast = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant, 0, false, 0, 0, false, false, false);
   public VelocityVoltage shooterVelocitySLow = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant, 0, false, 0, 1, false, false, false);
- public PIDController shooterPivotPID = new PIDController(1.7,0.28,0);//(.85,0.075,0.0001);
+  public PIDController shooterPivotPID = new PIDController(1.7,0.28,0);//(.85,0.075,0.0001);
+
   ArmFeedforward pivotFeedForward = new ArmFeedforward(0, 0.027576445, 0.001, 0);
  double LineOfBestFitCalculation;
  NeutralModeValue brake = NeutralModeValue.Brake;
@@ -192,14 +194,10 @@ public void ShootInAmp() {
    
  LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29))/45.5))-0.019)/-0.0566);
  SmartDashboard.putNumber("Line of best fit calculation" ,LineOfBestFitCalculation) ;
-   
-
-  
-
-   shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
-    shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);
     
-
+   shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
+   shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);
+    
      if ((shooterMotorAngle > Constants.Shooter.targetShooterPivotIndexAngle - 0.01) && (shooterMotorAngle < Constants.Shooter.targetShooterPivotIndexAngle + 0.01)) {
        shooterReadyToIndex = true;
      }
