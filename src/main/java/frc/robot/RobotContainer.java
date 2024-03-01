@@ -223,9 +223,9 @@ public class RobotContainer extends SubsystemBase {
       MaxSpeed = 1;
       MaxAngularRate = .5 * Math.PI;
     }
-    else{
-      MaxSpeed = 4;
-      MaxAngularRate = 1.5 * Math.PI;
+    else{ 
+      MaxSpeed = 6;
+      MaxAngularRate = 2 * Math.PI;
     }
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();

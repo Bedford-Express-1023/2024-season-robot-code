@@ -36,36 +36,42 @@ public class NotePassOff extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
+    System.out.println("Running Passoff");
+
     //SmartDashboard.putBoolean("NotePassOff is running", true);
     if((s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.intakeDownPosition - 0.03) || 
       (s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() < Constants.Intake.intakeDownPosition + 0.03)) 
     {
+          System.out.println("prepare to index Passoff");
+
       s_IntakeSubsystem.IntakePrepareToIndex();
       s_ShooterSubsystem.ShooterPrepareToIndex();
       //SmartDashboard.putBoolean("NotePassOff is going to indexing angles", true);
 
-      if (s_IntakeSubsystem.intakeBeamBreakValue == false) {
-        SmartDashboard.putBoolean("Intake Bream Break false- Intake Stop", true);
+      
 
         if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true)) {
+              System.out.println("transitioning Passoff");
+
           s_IntakeSubsystem.IntakeNote();
-          s_IndexerSubsystem.FeedFastShooter();
+          s_IndexerSubsystem.IndexNote();
           SmartDashboard.putBoolean("NotePassOff is at indexing angles", true);
         } else {
+              System.out.println("waiting for transition Passoff");
+
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-      } else if (s_IntakeSubsystem.intakeBeamBreakValue == false) {
-        //s_IntakeSubsystem.IntakeStop();
+      }  if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
+              System.out.println("indexer beam break Passoff");
 
-        if (s_IndexerSubsystem.indexerBeamBreakValue == true) {
           SmartDashboard.putBoolean("NotePassedOff ", true);
           s_IndexerSubsystem.StopIndex();
           s_IntakeSubsystem.IntakeStop();
         }
-      }
-    }
-  }
+}
+
 
   // Called once the command ends or is interrupted.
   @Override
