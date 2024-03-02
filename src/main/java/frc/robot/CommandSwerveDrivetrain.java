@@ -104,7 +104,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public void resetPose(Pose2d newPose){
-        this.m_odometry.resetPosition(new Rotation2d(0), this.m_modulePositions.clone(), newPose);
+        this.m_odometry.resetPosition(getPigeon2().getRotation2d(), this.m_modulePositions.clone(), newPose);
     }
 
     public ChassisSpeeds getRobotRelativeSpeeds(){

@@ -6,11 +6,14 @@ package frc.robot.Commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ClimberSubsystem;
+import frc.robot.Subsystems.ShooterSubsystem;
 
 public class ClimberMaintainDown extends Command {
   ClimberSubsystem s_ClimberSubsystem;
-  /** Creates a new ClimberMaintainDown. */
-  public ClimberMaintainDown(ClimberSubsystem s_ClimberSubsystem) {
+  ShooterSubsystem s_ShooterSubsystem;
+  /** Creates a new ClimberDown. */
+  public ClimberMaintainDown(ClimberSubsystem s_ClimberSubsystem, ShooterSubsystem s_ShooterSubsystem) {
+    this.s_ShooterSubsystem = s_ShooterSubsystem;
     this.s_ClimberSubsystem = s_ClimberSubsystem;
     addRequirements(s_ClimberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,6 +27,8 @@ public class ClimberMaintainDown extends Command {
   @Override
   public void execute() {
     s_ClimberSubsystem.ClimberMaintainDown();
+    s_ShooterSubsystem.ShooterDown();
+    
   }
 
   // Called once the command ends or is interrupted.

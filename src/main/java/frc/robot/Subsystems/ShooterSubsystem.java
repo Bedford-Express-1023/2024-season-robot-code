@@ -58,7 +58,7 @@ private double shooterMotorAngle;
   ArmFeedforward pivotFeedForward = new ArmFeedforward(0, 0.027576445, 0.001, 0);
  double LineOfBestFitCalculation;
  NeutralModeValue brake = NeutralModeValue.Brake;
-
+double AmpShooterRPM;
  
   private NavigableMap<Double, Double> shooterPivotAngles = new TreeMap<Double, Double>();
 
@@ -175,7 +175,11 @@ private double shooterMotorAngle;
 public void ShootInAmp() {
        shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .005) 
                                 + pivotFeedForward.calculate(.005 *  6.2832, 2));
-     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-2100/60));
+     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-AmpShooterRPM/60));
+    }
+    public void ShooterDown(){
+            shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .05) 
+                                + pivotFeedForward.calculate(.05 *  6.2832, 2));
     }
 /* 
   private double getShooterPivotAngle() {
@@ -191,7 +195,7 @@ public void ShootInAmp() {
   @Override
   public void periodic() {
     //targetShooterPivotAngle = getShooterPivotAngle();
-   
+   AmpShooterRPM = SmartDashboard.getNumber("AmpShooterRpm", 1700);
  LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29))/45.5))-0.019)/-0.0566);
  SmartDashboard.putNumber("Line of best fit calculation" ,LineOfBestFitCalculation) ;
     

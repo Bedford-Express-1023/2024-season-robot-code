@@ -19,15 +19,17 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.ClimberMaintainDown;
+
 import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.Climber.ClimberDown;
+import frc.robot.Commands.Climber.ClimberMaintainDown;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
 import frc.robot.Commands.Indexer.FeedShooterFast;
@@ -56,6 +58,8 @@ import frc.robot.Subsystems.LimelightWithBotPose;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class RobotContainer extends SubsystemBase {
+  private final SendableChooser<Command> autChooser;
+
   public static double LeftXAxis;
   public static double LeftYAxis;
   public static double RightXAxis;
@@ -106,9 +110,9 @@ public class RobotContainer extends SubsystemBase {
   ShootAtPlatform shootAtPlatform = new ShootAtPlatform(ShooterSubsystem);
   ShootInAmp shootInAmp = new ShootInAmp(ShooterSubsystem);
   ClimberUp climberUp = new ClimberUp(ClimberSubsystem);
-  ClimberDown climberDown = new ClimberDown(ClimberSubsystem);
+  ClimberDown climberDown = new ClimberDown(ClimberSubsystem,ShooterSubsystem);
   NotePassOff notePassOff = new NotePassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
-  ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem);
+  ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem, ShooterSubsystem);
   ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
   FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
   ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem);
@@ -119,6 +123,11 @@ public class RobotContainer extends SubsystemBase {
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
+
+    autChooser = AutoBuilder.buildAutoChooser();
+    configureBindings();
+    SmartDashboard.putData("AutoChooser", autChooser);
+
     // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
     // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
     // IndexerSubsystem.setDefaultCommand(notePassOff);
@@ -221,4 +230,10 @@ public class RobotContainer extends SubsystemBase {
     SmartDashboard.putNumber("left back CANcoder", leftBackCANcoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("right back CANcoder", rightBackCANcoder.getAbsolutePosition().getValueAsDouble());
   }
+
+  public Command getAutonoCommand() {
+    
+    return autChooser.getSelected();
+  }
+
 }

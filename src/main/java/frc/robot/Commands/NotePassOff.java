@@ -44,18 +44,15 @@ public class NotePassOff extends Command {
       s_ShooterSubsystem.ShooterPrepareToIndex();
       //SmartDashboard.putBoolean("NotePassOff is going to indexing angles", true);
 
-      if (s_IntakeSubsystem.intakeBeamBreakValue == false) {
-        SmartDashboard.putBoolean("Intake Bream Break false- Intake Stop", true);
-
+    
         if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true)) {
           s_IntakeSubsystem.IntakeNote();
-          s_IndexerSubsystem.FeedFastShooter();
+          s_IndexerSubsystem.FeedShooter();
           SmartDashboard.putBoolean("NotePassOff is at indexing angles", true);
         } else {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-      } else if (s_IntakeSubsystem.intakeBeamBreakValue == false) {
         //s_IntakeSubsystem.IntakeStop();
 
         if (s_IndexerSubsystem.indexerBeamBreakValue == true) {
@@ -63,7 +60,7 @@ public class NotePassOff extends Command {
           s_IndexerSubsystem.StopIndex();
           s_IntakeSubsystem.IntakeStop();
         }
-      }
+      
     }
   }
 

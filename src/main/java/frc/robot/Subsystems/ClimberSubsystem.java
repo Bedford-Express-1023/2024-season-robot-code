@@ -8,6 +8,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,9 +24,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private StatusSignal<Double> rightClimberMotorStatorCurrent;
   private StatusSignal<Double> leftClimberMotorStatorCurrent;
-  
+ //  NeutralModeValue brake = NeutralModeValue.Brake;
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
+    // TalonFXConfiguration configs = new TalonFXConfiguration();
+    // configs.MotorOutput.NeutralMode = brake;
+
+    // leftClimberMotor.getConfigurator().apply(configs);
+    //     rightClimberMotor.getConfigurator().apply(configs);
     /* 
     climberCurLimConfig.StatorCurrentLimit = Constants.Climber.climberStatorCurrentLimit;
     climberCurLimConfig.StatorCurrentLimitEnable = false;
@@ -36,13 +42,13 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void ClimberUp() {
-    rightClimberMotor.set(-0.1);
-    leftClimberMotor.set(0.1);
+    rightClimberMotor.set(0.15);
+    leftClimberMotor.set(-0.15);
   }
 
   public void ClimberDown() {
-    rightClimberMotor.set(0.2);
-    leftClimberMotor.set(-0.2);
+    rightClimberMotor.set(-0.3);
+    leftClimberMotor.set(0.3);
   }
 
   public void ClimberMaintainDown() {
