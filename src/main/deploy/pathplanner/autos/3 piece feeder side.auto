@@ -47,15 +47,59 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "NotePassOff"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Feeder side 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLight"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder side 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeRun"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder side 4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
                 }
               }
             ]

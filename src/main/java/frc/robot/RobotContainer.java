@@ -11,6 +11,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.PointWheelsAt;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.SwerveDriveBrake;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,6 +29,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Commands.NotePassOff;
+import frc.robot.Commands.Autos.IntakeDownAuto;
+import frc.robot.Commands.Autos.IntakeRunAuto;
+import frc.robot.Commands.Autos.NotePassOffAuto;
+import frc.robot.Commands.Autos.ShootWithLimelightAuto;
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberMaintainDown;
 import frc.robot.Commands.Climber.ClimberUp;
@@ -41,6 +46,7 @@ import frc.robot.Commands.Intake.IntakeNote;
 import frc.robot.Commands.Intake.IntakePrepareToIndex;
 import frc.robot.Commands.Intake.IntakeRun;
 import frc.robot.Commands.Intake.IntakeStop;
+import frc.robot.Commands.Intake.OutTake;
 import frc.robot.Commands.Shooter.ShootAtFarshot;
 import frc.robot.Commands.Shooter.ShootAtPlatform;
 import frc.robot.Commands.Shooter.ShootAtSubwoofer;
@@ -116,13 +122,26 @@ public class RobotContainer extends SubsystemBase {
   ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
   FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
   ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem);
+  OutTake OutTake = new OutTake(IntakeSubsystem);
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
+
+  ShootWithLimelightAuto shootWithLimelightAuto = new ShootWithLimelightAuto(ShooterSubsystem, limelightSubsystem, IndexerSubsystem);
+  IntakeDownAuto intakeDownAuto = new IntakeDownAuto(IntakeSubsystem);
+  IntakeRunAuto intakeRunAuto = new IntakeRunAuto(IntakeSubsystem);
+  NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
+  
   
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
+
+    NamedCommands.registerCommand("LimeLight", shootWithLimelightAuto);
+    NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
+    NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
+    NamedCommands.registerCommand("PassOff", notePassOffAuto);
+    
 
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
@@ -140,6 +159,7 @@ public class RobotContainer extends SubsystemBase {
         ManipulatorController.start()
         .whileTrue(climberUp)
         .whileFalse(climberMaintainDown);
+        ManipulatorController.b().whileTrue(OutTake).whileFalse(intakeStop);
     ManipulatorController.back()
     .whileTrue(climberDown)
     .whileFalse(climberMaintainDown);

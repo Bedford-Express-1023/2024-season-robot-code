@@ -56,7 +56,7 @@ public void StopRotatingWithLimelight(){
 
 if (controller1.getYButton()== true)
    {
-   pidRotation.setPID(.01,0.00,0);   
+   pidRotation.setPID(.01,0.002,0);   
    
 }else{ 
    pidRotation.setPID(.0,0.0,0);   
