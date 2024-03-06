@@ -12,22 +12,15 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.PointWheelsAt;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.SwerveDriveBrake;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
 import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
@@ -38,7 +31,6 @@ import frc.robot.Commands.Climber.ClimberMaintainDown;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
 import frc.robot.Commands.Indexer.FeedShooterFast;
-import frc.robot.Commands.Indexer.IndexNote;
 import frc.robot.Commands.Indexer.ReverseIndexer;
 import frc.robot.Commands.Indexer.StopIndex;
 import frc.robot.Commands.Intake.IntakeDown;
@@ -48,19 +40,16 @@ import frc.robot.Commands.Intake.IntakeRun;
 import frc.robot.Commands.Intake.IntakeStop;
 import frc.robot.Commands.Intake.OutTake;
 import frc.robot.Commands.Shooter.ShootAtFarshot;
-import frc.robot.Commands.Shooter.ShootAtPlatform;
 import frc.robot.Commands.Shooter.ShootAtSubwoofer;
 import frc.robot.Commands.Shooter.ShootInAmp;
 import frc.robot.Commands.Shooter.ShootWithLimelight;
 import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
 import frc.robot.Commands.Shooter.ShooterShoot;
 import frc.robot.Commands.Shooter.StopShooter;
-import frc.robot.Constants.Intake;
 import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.Limelight;
-import frc.robot.Subsystems.LimelightWithBotPose;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class RobotContainer extends SubsystemBase {
@@ -92,7 +81,6 @@ public class RobotContainer extends SubsystemBase {
   private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
   Limelight limelightSubsystem = new Limelight();
-  LimelightWithBotPose limelightWithBotPose = new LimelightWithBotPose();
   IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
   IndexerSubsystem IndexerSubsystem = new IndexerSubsystem();
@@ -113,26 +101,26 @@ public class RobotContainer extends SubsystemBase {
   IntakeDown intakeDown = new IntakeDown(IntakeSubsystem);
   IntakeRun intakeRun = new IntakeRun(IntakeSubsystem);
   ShootAtSubwoofer shootAtSubwoofer = new ShootAtSubwoofer(ShooterSubsystem);
-  ShootAtPlatform shootAtPlatform = new ShootAtPlatform(ShooterSubsystem);
   ShootInAmp shootInAmp = new ShootInAmp(ShooterSubsystem);
   ClimberUp climberUp = new ClimberUp(ClimberSubsystem);
-  ClimberDown climberDown = new ClimberDown(ClimberSubsystem,ShooterSubsystem);
+  ClimberDown climberDown = new ClimberDown(ClimberSubsystem, ShooterSubsystem);
   NotePassOff notePassOff = new NotePassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem, ShooterSubsystem);
   ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
   FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
-  ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem);
+  ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem,
+      IndexerSubsystem);
   OutTake OutTake = new OutTake(IntakeSubsystem);
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  ShootWithLimelightAuto shootWithLimelightAuto = new ShootWithLimelightAuto(ShooterSubsystem, limelightSubsystem, IndexerSubsystem);
+  ShootWithLimelightAuto shootWithLimelightAuto = new ShootWithLimelightAuto(ShooterSubsystem, limelightSubsystem,
+      IndexerSubsystem);
   IntakeDownAuto intakeDownAuto = new IntakeDownAuto(IntakeSubsystem);
   IntakeRunAuto intakeRunAuto = new IntakeRunAuto(IntakeSubsystem);
   NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
-  
-  
+
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
@@ -141,7 +129,6 @@ public class RobotContainer extends SubsystemBase {
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
     NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
     NamedCommands.registerCommand("PassOff", notePassOffAuto);
-    
 
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
@@ -153,21 +140,21 @@ public class RobotContainer extends SubsystemBase {
     // ShooterSubsystem.setDefaultCommand(notePassOff);
     // IntakeSubsystem.setDefaultCommand(notePassOff);
     // ClimberSubsystem.setDefaultCommand(climberMaintainDown);
- 
+
     ManipulatorController.a()
         .whileTrue(intakeNote).whileFalse(intakeStop);
-        ManipulatorController.start()
+    ManipulatorController.start()
         .whileTrue(climberUp)
         .whileFalse(climberMaintainDown);
-        ManipulatorController.b().whileTrue(OutTake).whileFalse(intakeStop);
+    ManipulatorController.b().whileTrue(OutTake).whileFalse(intakeStop);
     ManipulatorController.back()
-    .whileTrue(climberDown)
-    .whileFalse(climberMaintainDown);
-        
+        .whileTrue(climberDown)
+        .whileFalse(climberMaintainDown);
+
     ManipulatorController.leftBumper()
-         .whileTrue(FeedShooterFast).whileFalse(stopIndex);
+        .whileTrue(FeedShooterFast).whileFalse(stopIndex);
     ManipulatorController.rightBumper()
-         .whileTrue(reverseIndexer).whileFalse(stopIndex);
+        .whileTrue(reverseIndexer).whileFalse(stopIndex);
     ManipulatorController.pov(180)
         .whileTrue(intakeDown)
         .whileFalse(intakePrepareToIndex);
@@ -183,7 +170,7 @@ public class RobotContainer extends SubsystemBase {
         .whileTrue(shootInAmp)
         .whileFalse(shooterPrepareToIndex);
     ManipulatorController.x()
-       .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
+        .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     configureBindings();
   }
@@ -212,11 +199,10 @@ public class RobotContainer extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(Conttroller.getRightBumper()){
+    if (Conttroller.getRightBumper()) {
       MaxSpeed = 1;
       MaxAngularRate = .5 * Math.PI;
-    }
-    else{
+    } else {
       MaxSpeed = 4;
       MaxAngularRate = 1.5 * Math.PI;
     }
@@ -237,22 +223,10 @@ public class RobotContainer extends SubsystemBase {
     } else {
       LeftXAxis = 0;
     }
-
-    SmartDashboard.putNumber("LeftxAxis", LeftXAxis);
-    SmartDashboard.putNumber("LeftYAxis", LeftYAxis);
-    SmartDashboard.putNumber("RightxAxis", RightXAxis);
-    SmartDashboard.putNumber("RightYaxis", RightYAxis);
-
-    shooterCurrentRPMValue = ShooterSubsystem.shooterCurrentRPM;
-    
-    SmartDashboard.putNumber("left front CANcoder", leftFrontCANcoder.getAbsolutePosition().getValueAsDouble());
-    SmartDashboard.putNumber("right front CANcoder", rightFrontCANcoder.getAbsolutePosition().getValueAsDouble());
-    SmartDashboard.putNumber("left back CANcoder", leftBackCANcoder.getAbsolutePosition().getValueAsDouble());
-    SmartDashboard.putNumber("right back CANcoder", rightBackCANcoder.getAbsolutePosition().getValueAsDouble());
   }
 
   public Command getAutonoCommand() {
-    
+
     return autChooser.getSelected();
   }
 
