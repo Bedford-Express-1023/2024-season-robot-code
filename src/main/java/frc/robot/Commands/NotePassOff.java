@@ -36,27 +36,22 @@ public class NotePassOff extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putBoolean("NotePassOff is running", true);
     if((s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.intakeDownPosition - 0.03) || 
       (s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() < Constants.Intake.intakeDownPosition + 0.03)) 
     {
       s_IntakeSubsystem.IntakePrepareToIndex();
       s_ShooterSubsystem.ShooterPrepareToIndex();
-      //SmartDashboard.putBoolean("NotePassOff is going to indexing angles", true);
 
     
         if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true)) {
           s_IntakeSubsystem.IntakeNote();
-          s_IndexerSubsystem.FeedShooter();
-          SmartDashboard.putBoolean("NotePassOff is at indexing angles", true);
+          s_IndexerSubsystem.IndexNote();
         } else {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-        //s_IntakeSubsystem.IntakeStop();
 
         if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
-          SmartDashboard.putBoolean("NotePassedOff ", true);
           s_IndexerSubsystem.StopIndex();
           s_IntakeSubsystem.IntakeStop();
         }

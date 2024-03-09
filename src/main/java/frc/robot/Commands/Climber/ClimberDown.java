@@ -27,7 +27,7 @@ public class ClimberDown extends Command {
   @Override
   public void execute() {
     s_ClimberSubsystem.ClimberDown();
-    s_ShooterSubsystem.ShooterDown();
+   // s_ShooterSubsystem.ShooterDown();
   }
 
   // Called once the command ends or is interrupted.
