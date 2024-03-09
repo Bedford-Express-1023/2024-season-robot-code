@@ -30,7 +30,7 @@ public class FeedShooterFast extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_IndexerSubsystem.FeedFastShooter();
+    s_IndexerSubsystem.FeedShooterFast();
   }
 
   // Called once the command ends or is interrupted.

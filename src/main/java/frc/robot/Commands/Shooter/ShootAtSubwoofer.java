@@ -29,8 +29,6 @@ public class ShootAtSubwoofer extends Command {
   @Override
   public void execute() {
     s_ShooterSubsystem.ShootAtSubwoofer();
-    number = 1;
-    SmartDashboard.putNumber("number", number );
   }
 
   // Called once the command ends or is interrupted.

@@ -19,8 +19,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final TalonFX rightClimberMotor = new TalonFX(Constants.Climber.CLIMBER_RIGHT_CAN); // FIXME
   private final TalonFX leftClimberMotor = new TalonFX(Constants.Climber.CLIMBER_LEFT_CAN); // FIXME
 
-  private StatusSignal<Double> rightClimberMotorStatorCurrent;
-  private StatusSignal<Double> leftClimberMotorStatorCurrent;
+  //private StatusSignal<Double> rightClimberMotorStatorCurrent;
+  //private StatusSignal<Double> leftClimberMotorStatorCurrent;
 
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
@@ -70,8 +70,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    rightClimberMotorStatorCurrent = rightClimberMotor.getStatorCurrent();
-    leftClimberMotorStatorCurrent = leftClimberMotor.getStatorCurrent();
+//    rightClimberMotorStatorCurrent = rightClimberMotor.getStatorCurrent();
+//    leftClimberMotorStatorCurrent = leftClimberMotor.getStatorCurrent();
 
     // This method will be called once per scheduler run
   }

@@ -41,7 +41,5 @@ public class Limelight extends SubsystemBase {
       // getting april tags 4 and 7 tx values
       double Speakertx = LimelightHelpers.getTX("");
       rotationtmp = pidRotation.calculate(Speakertx, 0.0);
-      SmartDashboard.putNumber("angle offset;", Speakertx);
-      SmartDashboard.putNumber("angle ofset power", rotationtmp);
    }
 }
