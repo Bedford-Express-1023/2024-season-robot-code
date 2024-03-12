@@ -25,7 +25,9 @@ import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
 import frc.robot.Commands.Autos.NotePassOffAuto;
+import frc.robot.Commands.Autos.ShootBackAuto;
 import frc.robot.Commands.Autos.ShootWithLimelightAuto;
+import frc.robot.Commands.Autos.StartShooterAuto;
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberMaintainDown;
 import frc.robot.Commands.Climber.ClimberUp;
@@ -51,6 +53,7 @@ import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.ShooterSubsystem;
+
 
 public class RobotContainer extends SubsystemBase {
   private final SendableChooser<Command> autChooser;
@@ -120,6 +123,8 @@ public class RobotContainer extends SubsystemBase {
   IntakeDownAuto intakeDownAuto = new IntakeDownAuto(IntakeSubsystem);
   IntakeRunAuto intakeRunAuto = new IntakeRunAuto(IntakeSubsystem);
   NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
+  ShootBackAuto shootBack = new ShootBackAuto(ShooterSubsystem, IndexerSubsystem);
+  StartShooterAuto startShooterAuto = new StartShooterAuto(ShooterSubsystem);
 
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
@@ -129,6 +134,8 @@ public class RobotContainer extends SubsystemBase {
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
     NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
     NamedCommands.registerCommand("PassOff", notePassOffAuto);
+    NamedCommands.registerCommand("ShootBack", shootBack);
+    NamedCommands.registerCommand("StartShooter", startShooterAuto);
 
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();

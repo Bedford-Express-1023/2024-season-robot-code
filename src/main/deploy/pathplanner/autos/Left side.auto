@@ -5,7 +5,7 @@
       "x": 0.6727105761903848,
       "y": 4.40065649362068
     },
-    "rotation": -58.392497753751094
+    "rotation": -55.491477012331586
   },
   "command": {
     "type": "sequential",
@@ -43,7 +43,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -68,19 +68,13 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Feeder side 2.5"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 3"
+                  "pathName": "Left side 1"
                 }
               },
               {
@@ -99,7 +93,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 4"
+                  "pathName": "Left side 2"
                 }
               },
               {
@@ -124,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 5"
+                  "pathName": "Left side 3"
                 }
               },
               {
@@ -134,31 +128,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PassOff"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Feeder side 6"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LimeLight"
           }
         }
       ]
