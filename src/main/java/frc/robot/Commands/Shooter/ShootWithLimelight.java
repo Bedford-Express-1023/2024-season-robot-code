@@ -37,7 +37,6 @@ public class ShootWithLimelight extends Command {
     {
     s_IndexerSubsystem.FeedShooterFast();
     }
-   
   }
 
   // Called once the command ends or is interrupted.

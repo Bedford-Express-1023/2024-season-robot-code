@@ -10,13 +10,12 @@ import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.ShooterSubsystem;
 
-public class NotePassOff extends Command {
+public class IntakeToPassOff extends Command {
   IntakeSubsystem s_IntakeSubsystem;
   ShooterSubsystem s_ShooterSubsystem;
   IndexerSubsystem s_IndexerSubsystem;
-  boolean betweenBeamBreaksBoolean;
-
-  public NotePassOff(IntakeSubsystem s_IntakeSubsystem, ShooterSubsystem s_ShooterSubsystem, IndexerSubsystem s_IndexerSubsystem) {
+  /** Creates a new IntakeToPassOff. */
+  public IntakeToPassOff(IntakeSubsystem s_IntakeSubsystem, ShooterSubsystem s_ShooterSubsystem, IndexerSubsystem s_IndexerSubsystem) {
     this.s_IntakeSubsystem = s_IntakeSubsystem;
     this.s_ShooterSubsystem = s_ShooterSubsystem;
     this.s_IndexerSubsystem = s_IndexerSubsystem;
@@ -29,41 +28,39 @@ public class NotePassOff extends Command {
   public void initialize() {
     s_ShooterSubsystem.shooterPivotPID.reset();
     s_IntakeSubsystem.IntakePivotPID.reset();
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //MathUtil.isNear(Constants.Intake.intakeDownPosition, s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble(), 0.03)
-    if((s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.intakeDownPosition - 0.03) || 
-      (s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() < Constants.Intake.intakeDownPosition + 0.03)) 
-    {
+    if (s_IntakeSubsystem.intakeBeamBreakValue == true) {
+      s_IntakeSubsystem.IntakeNote();
+      s_IntakeSubsystem.IntakeDown();
+    } else {
       s_IntakeSubsystem.IntakePrepareToIndex();
       s_ShooterSubsystem.ShooterPrepareToIndex();
-      
-        if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true)) {
+        if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true) && (s_IndexerSubsystem.indexerBeamBreakValue == true)) {
           s_IntakeSubsystem.IntakeNote();
-          s_IndexerSubsystem.IndexNote();
+          s_IndexerSubsystem.FeedShooter();
         } else {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-
+        /* 
         if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
           s_IndexerSubsystem.StopIndex();
           s_IntakeSubsystem.IntakeStop();
         }
-        
+        */
     }
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     s_IntakeSubsystem.IntakeStop();
-    s_IndexerSubsystem.StopIndex();
-  }
+    s_IndexerSubsystem.StopIndex();}
 
   // Returns true when the command should end.
   @Override

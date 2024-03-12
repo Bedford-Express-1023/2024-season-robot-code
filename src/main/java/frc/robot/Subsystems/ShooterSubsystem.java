@@ -110,8 +110,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void ShooterPrepareToIndex() {
     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle,
-        Constants.Shooter.targetShooterPivotIndexAngle)
-        + pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle * 6.2832, 2));
+        Constants.Shooter.targetShooterPivotIndexAngle));
+        //+ pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle * 6.2832, 2));
   }
 
   public void ShootInAmp() {
@@ -138,9 +138,7 @@ public class ShooterSubsystem extends SubsystemBase {
             + pivotFeedForward.calculate(Constants.Shooter.shootTrapdoorAngleConstant * 6.2832,2));
     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3200 / 60)); //3300/60 works for close shot without limelight
   }
-
    
-
   @Override
   public void periodic() {
     SmartDashboard.getNumber("kP RPM", 0);

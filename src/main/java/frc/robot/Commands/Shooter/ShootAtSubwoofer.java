@@ -21,7 +21,7 @@ public class ShootAtSubwoofer extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
- {
+  {
     s_ShooterSubsystem.shooterPivotPID.reset();
   }
 

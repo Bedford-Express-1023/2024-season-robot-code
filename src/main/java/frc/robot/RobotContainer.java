@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.IntakeToPassOff;
 import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
@@ -33,7 +34,6 @@ import frc.robot.Commands.Indexer.FeedShooter;
 import frc.robot.Commands.Indexer.FeedShooterFast;
 import frc.robot.Commands.Indexer.ReverseIndexer;
 import frc.robot.Commands.Indexer.StopIndex;
-import frc.robot.Commands.Intake.IntakeDown;
 import frc.robot.Commands.Intake.IntakeNote;
 import frc.robot.Commands.Intake.IntakePrepareToIndex;
 import frc.robot.Commands.Intake.IntakeRun;
@@ -100,7 +100,6 @@ public class RobotContainer extends SubsystemBase {
   FeedShooter feedShooter = new FeedShooter(IndexerSubsystem);
   StopIndex stopIndex = new StopIndex(IndexerSubsystem);
   ReverseIndexer reverseIndexer = new ReverseIndexer(IndexerSubsystem);
-  IntakeDown intakeDown = new IntakeDown(IntakeSubsystem);
   IntakeRun intakeRun = new IntakeRun(IntakeSubsystem);
   ShootAtSubwoofer shootAtSubwoofer = new ShootAtSubwoofer(ShooterSubsystem);
   ShootInAmp shootInAmp = new ShootInAmp(ShooterSubsystem);
@@ -122,6 +121,7 @@ public class RobotContainer extends SubsystemBase {
   NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
   ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
+  IntakeToPassOff intakeToPassOff = new IntakeToPassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
 
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
@@ -137,7 +137,7 @@ public class RobotContainer extends SubsystemBase {
     SmartDashboard.putData("AutoChooser", autChooser);
 
     // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
-    // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
+    //IntakeSubsystem.setDefaultCommand(intakeRun);
      //IndexerSubsystem.setDefaultCommand(notePassOff);
      //ShooterSubsystem.setDefaultCommand(notePassOff);
      //IntakeSubsystem.setDefaultCommand(notePassOff);
@@ -162,7 +162,7 @@ public class RobotContainer extends SubsystemBase {
         .whileTrue(reverseIndexer)
         .whileFalse(stopIndex);
     ManipulatorController.pov(180)
-        .whileTrue(intakeDown)
+        .whileTrue(intakeToPassOff)
         .whileFalse(intakePrepareToIndex);
     ManipulatorController.pov(0)
         .whileTrue(intakeRun)
@@ -172,15 +172,15 @@ public class RobotContainer extends SubsystemBase {
         .whileFalse(shooterPrepareToIndex);
     ManipulatorController.pov(270)
         .whileTrue(notePassOff);
-    ManipulatorController.y()
-        .whileTrue(shootInAmp)
-        .whileFalse(shooterPrepareToIndex);
+    //ManipulatorController.y()
+        //.whileTrue(shootInAmp)
+        //.whileFalse(shooterPrepareToIndex);
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
-    ManipulatorController.rightTrigger()
-        .whileTrue(shootTrapdoor)
-        .whileFalse(shooterPrepareToIndex);
+    //ManipulatorController.rightTrigger()
+        //.whileTrue(shootTrapdoor)
+        //.whileFalse(shooterPrepareToIndex);
     ManipulatorController.leftTrigger()
         .whileTrue(shootOverStage)
         .whileFalse(shooterPrepareToIndex);
@@ -219,6 +219,7 @@ public class RobotContainer extends SubsystemBase {
       MaxSpeed = 4;
       MaxAngularRate = 1.5 * Math.PI;
     }
+    
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
     } else if (Conttroller.getYButton()) {
