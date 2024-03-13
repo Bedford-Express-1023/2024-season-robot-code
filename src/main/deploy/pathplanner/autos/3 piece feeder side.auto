@@ -36,7 +36,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeRun"
+                  "name": "FullIntake"
                 }
               }
             ]
@@ -55,16 +55,10 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PassOff"
+                  "name": "LimeLight"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LimeLight"
           }
         },
         {
@@ -86,7 +80,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeRun"
+                  "name": "FullIntake"
                 }
               }
             ]
@@ -105,16 +99,10 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PassOff"
+                  "name": "LimeLight"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LimeLight"
           }
         },
         {
@@ -130,7 +118,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeRun"
+                  "name": "FullIntake"
                 }
               }
             ]
@@ -143,7 +131,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PassOff"
+                  "name": "LimeLight"
                 }
               },
               {
@@ -153,12 +141,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LimeLight"
           }
         }
       ]

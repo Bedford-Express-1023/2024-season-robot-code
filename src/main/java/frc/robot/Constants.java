@@ -22,6 +22,8 @@ public final class Constants {
         public static final double shooterAngleSubwooferConstant = 0.029; //tested and works
         public static final double shooterVelocityPlatformConstant = 0.203;
         public static final double shooterAngleFarshotConstant = 0.251;
+        public static final double shootOverStageAngleConstant = 0.12;
+        public static final double shootTrapdoorAngleConstant = 0.0; //0.0134 this angle works from pretty close, but cannot see limelight from there
         public static final double[][] pivotTable = {{0.029, 0.017},
                                                     {.033,.0164},// x is the shooter angle  y in the distance
                                                     {.066, .0144},    //SUBTRACT 0.028 FROM ALL

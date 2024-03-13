@@ -51,24 +51,18 @@ public class IntakeSubsystem extends SubsystemBase {
       intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
       intakeMotor.set(0);
     }
-
   }
 
   public void IntakeDown() {
-    if (intakeBeamBreakValue = true) {
       intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
-    } else {
-      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
-      intakeMotor.set(0);
-    }
   }
 
   public void IntakeNote() {
-    intakeMotor.set(-0.5);
+    intakeMotor.set(-.5);
   }
 
   public void OutTake() {
-    intakeMotor.set(0.5);
+    intakeMotor.set(.5);
   }
 
   public void IntakeStop() {

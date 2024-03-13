@@ -28,7 +28,7 @@ public class IndexAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_IndexerSubsystem.FeedFastShooter();
+    s_IndexerSubsystem.FeedShooter();
     if (shooterStartTime == -1) {
 
       shooterStartTime = System.currentTimeMillis();

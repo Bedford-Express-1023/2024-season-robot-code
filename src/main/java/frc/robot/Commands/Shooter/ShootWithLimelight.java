@@ -35,13 +35,15 @@ public class ShootWithLimelight extends Command {
     s_ShooterSubsystem.ShootWithLimelight();
     if (s_ShooterSubsystem.ReadyToShoot())
     {
-    s_IndexerSubsystem.FeedFastShooter();
+    s_IndexerSubsystem.FeedShooterFast();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    s_IndexerSubsystem.StopIndex();
+  }
 
   // Returns true when the command should end.
   @Override
