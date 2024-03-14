@@ -34,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
     TalonFXConfiguration configs = new TalonFXConfiguration();
     configs.Voltage.PeakForwardVoltage = 8;
     configs.Voltage.PeakReverseVoltage = -8;
-
+    
     configs.MotorOutput.NeutralMode = brake;
 
     configs.TorqueCurrent.PeakForwardTorqueCurrent = 40;

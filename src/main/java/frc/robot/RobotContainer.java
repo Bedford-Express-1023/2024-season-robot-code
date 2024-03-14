@@ -47,7 +47,9 @@ import frc.robot.Commands.Shooter.ShootTrapdoor;
 import frc.robot.Commands.Shooter.ShootWithLimelight;
 import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
 import frc.robot.Commands.Shooter.ShooterShoot;
+import frc.robot.Commands.Shooter.ShooterZero;
 import frc.robot.Commands.Shooter.StopShooter;
+import frc.robot.Constants.Shooter;
 import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
@@ -122,7 +124,7 @@ public class RobotContainer extends SubsystemBase {
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
   ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
   IntakeToPassOff intakeToPassOff = new IntakeToPassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
-
+  ShooterZero shooterZero = new ShooterZero(ShooterSubsystem);
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
@@ -136,8 +138,8 @@ public class RobotContainer extends SubsystemBase {
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
 
-    // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
-    //IntakeSubsystem.setDefaultCommand(intakeRun);
+    ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
+    IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
      //IndexerSubsystem.setDefaultCommand(notePassOff);
      //ShooterSubsystem.setDefaultCommand(notePassOff);
      //IntakeSubsystem.setDefaultCommand(notePassOff);
