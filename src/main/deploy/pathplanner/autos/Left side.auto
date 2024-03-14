@@ -5,7 +5,7 @@
       "x": 0.6727105761903848,
       "y": 4.40065649362068
     },
-    "rotation": -58.392497753751094
+    "rotation": -55.491477012331586
   },
   "command": {
     "type": "sequential",
@@ -36,14 +36,14 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "FullIntake"
+                  "name": "IntakeRun"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -55,16 +55,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "LimeLight"
+                  "name": "PassOff"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Feeder side 2.5"
+            "name": "LimeLight"
           }
         },
         {
@@ -74,32 +74,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 3"
+                  "pathName": "Left side 1"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "FullIntake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Feeder side 4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "LimeLight"
+                  "name": "IntakeRun"
                 }
               }
             ]
@@ -112,16 +93,22 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 5"
+                  "pathName": "Left side 2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "FullIntake"
+                  "name": "PassOff"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLight"
           }
         },
         {
@@ -129,15 +116,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "LimeLight"
+                  "pathName": "Left side 3"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Feeder side 6"
+                  "name": "IntakeRun"
                 }
               }
             ]

@@ -23,10 +23,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.IntakeToPassOff;
 import frc.robot.Commands.NotePassOff;
+import frc.robot.Commands.SwerveXPattern;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
 import frc.robot.Commands.Autos.NotePassOffAuto;
+import frc.robot.Commands.Autos.ShootBackAuto;
 import frc.robot.Commands.Autos.ShootWithLimelightAuto;
+import frc.robot.Commands.Autos.StartShooterAuto;
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberMaintainDown;
 import frc.robot.Commands.Climber.ClimberUp;
@@ -55,6 +58,7 @@ import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.ShooterSubsystem;
+
 
 public class RobotContainer extends SubsystemBase {
   private final SendableChooser<Command> autChooser;
@@ -121,10 +125,14 @@ public class RobotContainer extends SubsystemBase {
   IntakeDownAuto intakeDownAuto = new IntakeDownAuto(IntakeSubsystem);
   IntakeRunAuto intakeRunAuto = new IntakeRunAuto(IntakeSubsystem);
   NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
-  ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
-  ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
+  ShootBackAuto shootBack = new ShootBackAuto(ShooterSubsystem, IndexerSubsystem);
+  StartShooterAuto startShooterAuto = new StartShooterAuto(ShooterSubsystem);
   IntakeToPassOff intakeToPassOff = new IntakeToPassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ShooterZero shooterZero = new ShooterZero(ShooterSubsystem);
+  SwerveXPattern swerveXPattern = new SwerveXPattern(drivetrain);
+  ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
+  ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
+
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
@@ -133,6 +141,8 @@ public class RobotContainer extends SubsystemBase {
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
     NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
     NamedCommands.registerCommand("PassOff", notePassOffAuto);
+    NamedCommands.registerCommand("ShootBack", shootBack);
+    NamedCommands.registerCommand("StartShooter", startShooterAuto);
 
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
@@ -186,7 +196,11 @@ public class RobotContainer extends SubsystemBase {
     ManipulatorController.leftTrigger()
         .whileTrue(shootOverStage)
         .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.x()
+        .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
+    DriverController.x()
+        .whileTrue(swerveXPattern);
     configureBindings();
   }
 
@@ -195,7 +209,7 @@ public class RobotContainer extends SubsystemBase {
         drivetrain.applyRequest(() -> drive.withVelocityX(-LeftYAxis * MaxSpeed) // Drive forward with negative Y
                                                                                  // (forward)
             .withVelocityY(-LeftXAxis * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-RightXAxis * MaxAngularRate)// RightXAxis * MaxAngularRate) // Drive counterclockwise
+            .withRotationalRate(-RightXAxis * MaxAngularRate * 1.1)// RightXAxis * MaxAngularRate) // Drive counterclockwise
                                                              // with negative X (left)
         ));
     DriverController.a().whileTrue(drivetrain.applyRequest(() -> brake));

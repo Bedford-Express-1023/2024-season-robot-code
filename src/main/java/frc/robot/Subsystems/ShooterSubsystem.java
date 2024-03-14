@@ -99,9 +99,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void ShooterShoot() {
-    shooterMotor.setControl(shooterVelocityFast.withVelocity(-4000 / 60));
+    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3400 / 60));
   }
-
+public boolean ShooterShootIsReady(){
+  return MathUtil.isNear(-3400 / 60, shooterMotor.getVelocity().getValueAsDouble(), 3);
+}
   public void StopShooter() {
     shooterMotor.set(0);
   }
@@ -113,9 +115,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void ShooterPrepareToIndex() {
     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle,
-        Constants.Shooter.targetShooterPivotIndexAngle));
-    // + pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle *
-    // 6.2832, 2));
+        Constants.Shooter.targetShooterPivotIndexAngle)
+      + pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle * 6.2832, 2));
   }
 
   public void ShootInAmp() {
@@ -147,6 +148,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+shooterPivotPID.reset();
+
     SmartDashboard.getNumber("kP RPM", 0);
     SmartDashboard.getNumber("kI RPM", 0);
     SmartDashboard.getNumber("kD RPM", 0);
