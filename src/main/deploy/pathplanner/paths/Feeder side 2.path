@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 2.54,
-        "y": 4.11
+        "y": 4.4
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.54,
-        "y": 4.0982891634542185
+        "y": 4.3882891634542185
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.356284084893418,
-        "y": 4.251033666118688
+        "x": 1.852718113424813,
+        "y": 5.550936522700434
       },
       "prevControl": {
-        "x": 2.2600044097221037,
-        "y": 4.224011006203236
+        "x": 1.7564384382534985,
+        "y": 5.523913862784982
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,20 +33,20 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -30.141385552075473,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Feeder side 4 piece",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": -42.26999999999998,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

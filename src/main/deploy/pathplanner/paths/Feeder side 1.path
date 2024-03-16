@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.5868974814872723,
-        "y": 4.242785408647741
+        "x": 2.6841875081753006,
+        "y": 4.133925300660873
       },
       "prevControl": {
-        "x": 2.4890119904238492,
-        "y": 4.21531204699631
+        "x": 2.7664340285313953,
+        "y": 4.128458456060994
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,20 +33,20 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": -3.970592197210387,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Feeder side 4 piece",
   "previewStartingState": {
     "rotation": -61.6992442339936,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

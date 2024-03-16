@@ -8,6 +8,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,15 +21,18 @@ public class IntakeSubsystem extends SubsystemBase {
   public final TalonFX intakeMotor = new TalonFX(Constants.Intake.INTAKE_CAN);
   public final TalonFX intakePivotMotor = new TalonFX(Constants.Intake.INTAKE_PIVOT_CAN);
   public final CANcoder PivotCANCoder = new CANcoder(Constants.Intake.INTAKE_ENCODER_CAN);
+  ArmFeedforward intakeFeedForward = new ArmFeedforward(0, 0.036132, 0, 0); 
+
   double motorPivotPower;
   public boolean intakeReadyToIndex;
   public boolean intakeBeamBreakValue;
 
   // fix pid values later
-  public PIDController IntakePivotPID = new PIDController(.6, 0.01, 0);
+  public PIDController IntakePivotPID = new PIDController(.8, 0.01, 0);
   DigitalInput intakeBeamBreak = new DigitalInput(1);
   NeutralModeValue brake = NeutralModeValue.Brake;
   public double intakeAngle;
+
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -58,7 +63,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void IntakeNote() {
-    intakeMotor.set(-.5);
+    intakeMotor.set(-.6);
   }
 
   public void OutTake() {
@@ -70,7 +75,13 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void IntakePrepareToIndex() {
-    intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
+    intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle)
+                    + intakeFeedForward.calculate(Constants.Intake.targetIntakePivotIndexAngle * 6.2832, 1));
+    intakeMotor.set(0);
+  }
+
+  public void IntakeZero() {
+    intakePivotMotor.set(intakeFeedForward.calculate(0 * 6.2832, 1));
     intakeMotor.set(0);
   }
 

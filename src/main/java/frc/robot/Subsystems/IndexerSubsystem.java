@@ -24,7 +24,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public void FeedShooter() {
-    indexerMotor.set(ControlMode.PercentOutput, 0.4);
+    indexerMotor.set(ControlMode.PercentOutput, 0.38);
   }
 
   public void FeedShooterFast() {
@@ -32,11 +32,11 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public void ReverseIndexer() {
-    indexerMotor.set(ControlMode.PercentOutput, -.56);
+    indexerMotor.set(ControlMode.PercentOutput, -.6);
   }
 
   public void IndexNote() {
-    indexerMotor.set(ControlMode.PercentOutput, 0.6);
+    indexerMotor.set(ControlMode.PercentOutput, 0.35);
   }
 
   public void StopIndex() {

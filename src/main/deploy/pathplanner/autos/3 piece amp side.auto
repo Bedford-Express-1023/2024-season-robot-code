@@ -2,44 +2,38 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6582127857550991,
-      "y": 6.698598504187022
+      "x": 1.3959954881393342,
+      "y": 7.705730447124233
     },
-    "rotation": 62.97
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "IntakeDown"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp side 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeDown"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
             "name": "LimeLight"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeRun"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 1"
-                }
-              }
-            ]
           }
         },
         {
@@ -55,7 +49,33 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PassOff"
+                  "name": "IntakeRun"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp side 3"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -72,22 +92,15 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "path",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Amp side 3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "IntakeRun"
-                      }
-                    }
-                  ]
+                  "pathName": "Amp side 4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeRun"
                 }
               }
             ]
@@ -100,13 +113,20 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 4"
+                  "pathName": "Amp side 5"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "PassOff"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    }
+                  ]
                 }
               }
             ]

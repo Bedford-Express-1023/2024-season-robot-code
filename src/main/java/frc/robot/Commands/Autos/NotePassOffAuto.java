@@ -40,6 +40,7 @@ public class NotePassOffAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    s_ShooterSubsystem.ShooterShoot();
     System.out.println("Running Passoff");
 
     //SmartDashboard.putBoolean("NotePassOff is running", true);

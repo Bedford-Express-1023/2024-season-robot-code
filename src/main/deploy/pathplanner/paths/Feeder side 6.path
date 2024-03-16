@@ -33,20 +33,20 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 32.905242922987874,
+    "rotation": 27.824096384253224,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Feeder side 4 piece",
   "previewStartingState": {
     "rotation": 73.78,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

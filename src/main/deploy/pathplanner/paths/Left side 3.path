@@ -59,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Feeder side out to middle",
   "previewStartingState": {
     "rotation": -38.18000000000001,
     "velocity": 0

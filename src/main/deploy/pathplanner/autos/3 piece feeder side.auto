@@ -36,7 +36,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "FullIntake"
+                  "name": "IntakeRun"
                 }
               }
             ]
@@ -53,18 +53,38 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "LimeLight"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "IntakeDown"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "LimeLight"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Feeder side 2.5"
           }
         },
         {
@@ -80,7 +100,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "FullIntake"
+                  "name": "IntakeRun"
                 }
               }
             ]
@@ -97,9 +117,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "LimeLight"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "LimeLight"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -118,7 +151,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "FullIntake"
+                  "name": "IntakeRun"
                 }
               }
             ]
@@ -129,18 +162,31 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "LimeLight"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Feeder side 6"
                 }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    }
+                  ]
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLight"
           }
         }
       ]

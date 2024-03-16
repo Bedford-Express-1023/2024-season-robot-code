@@ -3,50 +3,56 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6816344588466624,
-        "y": 6.710309340732804
+        "x": 1.4,
+        "y": 7.71
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.7451476300955429,
-        "y": 6.748522104747491
+        "x": 1.4635131712488805,
+        "y": 7.748212764014687
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.461681613805452,
-        "y": 7.014791090923124
+        "x": 4.93,
+        "y": 7.4
       },
       "prevControl": {
-        "x": 2.434061142016718,
-        "y": 7.034161075454819
+        "x": 4.9023795282112665,
+        "y": 7.419369984531696
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0,
+    "velocity": 0.0,
+    "rotation": 18.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Amp side 3 piece",
   "previewStartingState": {
-    "rotation": 60.57254359681024,
+    "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

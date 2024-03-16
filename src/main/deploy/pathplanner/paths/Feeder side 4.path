@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.77,
-        "y": 5.4
+        "x": 2.87,
+        "y": 5.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.77,
-        "y": 5.3882891634542185
+        "x": 2.87,
+        "y": 5.558289163454218
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3914165945307624,
-        "y": 5.515804013063089
+        "x": 2.6841875081753006,
+        "y": 5.57
       },
       "prevControl": {
-        "x": 2.4403593400624737,
-        "y": 5.529540693888805
+        "x": 2.733130253707012,
+        "y": 5.583736680825716
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,10 +43,10 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Feeder side 4 piece",
   "previewStartingState": {
-    "rotation": 77.8,
+    "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -3,7 +3,10 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
+    "Amp side 3 piece",
+    "Feeder side 4 piece",
+    "Feeder side out to middle",
+    "Get middle 5"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

@@ -41,6 +41,7 @@ import frc.robot.Commands.Intake.IntakeNote;
 import frc.robot.Commands.Intake.IntakePrepareToIndex;
 import frc.robot.Commands.Intake.IntakeRun;
 import frc.robot.Commands.Intake.IntakeStop;
+import frc.robot.Commands.Intake.IntakeZero;
 import frc.robot.Commands.Intake.OutTake;
 import frc.robot.Commands.Shooter.ShootAtFarshot;
 import frc.robot.Commands.Shooter.ShootAtSubwoofer;
@@ -132,6 +133,8 @@ public class RobotContainer extends SubsystemBase {
   SwerveXPattern swerveXPattern = new SwerveXPattern(drivetrain);
   ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
+  IntakeZero intakeZero = new IntakeZero(IntakeSubsystem);
+  
 
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
@@ -156,8 +159,10 @@ public class RobotContainer extends SubsystemBase {
     // ClimberSubsystem.setDefaultCommand(climberMaintainDown);
 
     ManipulatorController.a()
+      .whileTrue(intakeZero);
+    /* 
         .whileTrue(intakeNote)
-        .whileFalse(intakeStop);
+        .whileFalse(intakeStop);*/
     ManipulatorController.start()
         .whileTrue(climberUp)
         .whileFalse(climberMaintainDown);
@@ -184,9 +189,9 @@ public class RobotContainer extends SubsystemBase {
         .whileFalse(shooterPrepareToIndex);
     ManipulatorController.pov(270)
         .whileTrue(notePassOff);
-    //ManipulatorController.y()
-        //.whileTrue(shootInAmp)
-        //.whileFalse(shooterPrepareToIndex);
+    ManipulatorController.y()
+        .whileTrue(shootInAmp)
+        .whileFalse(shooterPrepareToIndex);
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);

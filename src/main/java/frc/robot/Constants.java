@@ -49,7 +49,7 @@ public final class Constants {
         public static double intakeSpeed = 0.8;
         public static double intakeUpPosition = -0.025;
         public static double intakeDownPosition = 0.0;
-        public static double targetIntakePivotIndexAngle = 0.29;
+        public static double targetIntakePivotIndexAngle = 0.24;
         public static double minIntakePivotIndexAngle = 0; //FIXME
         public static double maxIntakePivotIndexAngle = 0; //FIXME
     }
