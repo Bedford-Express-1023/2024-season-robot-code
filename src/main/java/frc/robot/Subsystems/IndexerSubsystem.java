@@ -36,7 +36,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public void IndexNote() {
-    indexerMotor.set(ControlMode.PercentOutput, 0.35);
+    indexerMotor.set(ControlMode.PercentOutput, 0.45);
   }
 
   public void StopIndex() {

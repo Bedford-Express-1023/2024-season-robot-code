@@ -30,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private double shooterMotorAngle;
   public double shooterCurrentAngle; // in degrees
   public double shooterCurrentRPM;
-  public double limelightTY;
+  public double limelightTX;
   public boolean shooterReadyToIndex;
   public Slot0Configs slot0Configs = new Slot0Configs();
   public Slot1Configs slot1Configs = new Slot1Configs();
@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
       0, false, 0, 0, false, false, false);
   public VelocityVoltage shooterVelocitySLow = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant,
       0, false, 0, 1, false, false, false);
-  public PIDController shooterPivotPID = new PIDController(4.2, 0, 0);// (.85,0.075,0.0001);
+  public PIDController shooterPivotPID = new PIDController(4.2, 0.75, 0);// (.85,0.075,0.0001);
   ArmFeedforward pivotFeedForward = new ArmFeedforward(0, -0.02636717, 0, 0); //0.027576445
  
   // RotationalFeedForward pivotFeedForward = new RotationalFeedForward(0, 1,
@@ -116,15 +116,35 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3750 / 60));
   }
 public boolean ShooterShootIsReady(){
-  return MathUtil.isNear(-3400 / 60, shooterMotor.getVelocity().getValueAsDouble(), 3);
+  return MathUtil.isNear(-3400 / 60, shooterMotor.getVelocity().getValueAsDouble(), 3) 
+  && (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)) ;
+
 }
   public void StopShooter() {
     shooterMotor.set(0);
   }
 
   public boolean ReadyToShoot() {
-    return (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)
-        && MathUtil.isNear(-3750 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1));
+    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)
+        && MathUtil.isNear(-3750 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1)
+        && MathUtil.isNear(0, limelightTX, 4)){
+        return true;
+        }
+        else{
+          return false;
+        }
+
+  }
+    public boolean ReadyToShootAuto() {
+    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)
+        && MathUtil.isNear(-3750 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1))
+        {
+        return true;
+        }
+        else{
+          return false;
+        }
+
   }
 
   public void ShooterPrepareToIndex() {
@@ -162,7 +182,7 @@ public boolean ShooterShootIsReady(){
 
   @Override
   public void periodic() {
-shooterPivotPID.reset();
+limelightTX = LimelightHelpers.getTX("");
 
     SmartDashboard.getNumber("kP RPM", 0);
     SmartDashboard.getNumber("kI RPM", 0);
@@ -186,6 +206,7 @@ shooterPivotPID.reset();
     SmartDashboard.putNumber("current shooter RPM", shooterMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putNumber("distance with limelight",
         Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5));
+      SmartDashboard.putNumber("LimlightTX",limelightTX);
     // This method will be called once per scheduler run
   }
 }

@@ -28,7 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean intakeBeamBreakValue;
 
   // fix pid values later
-  public PIDController IntakePivotPID = new PIDController(.8, 0.01, 0);
+  public PIDController IntakePivotPID = new PIDController(1, 0.01, 0);
   DigitalInput intakeBeamBreak = new DigitalInput(1);
   NeutralModeValue brake = NeutralModeValue.Brake;
   public double intakeAngle;
@@ -50,16 +50,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void IntakeRun() {
     if (intakeBeamBreak.get() == true) {
-      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition) 
+        + intakeFeedForward.calculate(Constants.Intake.intakeDownPosition * 6.2832, 1));
       intakeMotor.set(-0.5);
     } else {
-      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle));
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle) 
+        + intakeFeedForward.calculate(Constants.Intake.targetIntakePivotIndexAngle * 6.2832, 1));
       intakeMotor.set(0);
     }
   }
 
   public void IntakeDown() {
-      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition));
+      intakePivotMotor.set(IntakePivotPID.calculate(intakeAngle, Constants.Intake.intakeDownPosition)
+         + intakeFeedForward.calculate(Constants.Intake.intakeDownPosition * 6.2832, 1));
   }
 
   public void IntakeNote() {
@@ -87,7 +90,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    motorPivotPower = IntakePivotPID.calculate(intakeAngle, Constants.Intake.targetIntakePivotIndexAngle);
     intakeAngle = PivotCANCoder.getAbsolutePosition().getValueAsDouble();
 
     if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.08)

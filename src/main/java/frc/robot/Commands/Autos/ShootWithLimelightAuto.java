@@ -42,7 +42,7 @@ public class ShootWithLimelightAuto extends Command {
   public void execute() {
     System.out.println("Shooting1");
     s_ShooterSubsystem.ShootWithLimelight();
-    if (s_ShooterSubsystem.ReadyToShoot()) {
+    if (s_ShooterSubsystem.ReadyToShootAuto()) {
       System.out.println("Shooting2");
       s_IndexerSubsystem.FeedShooterFast();
       if (shooterStartTime == -1) {

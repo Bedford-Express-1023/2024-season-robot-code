@@ -14,6 +14,7 @@ public class IntakeToPassOff extends Command {
   IntakeSubsystem s_IntakeSubsystem;
   ShooterSubsystem s_ShooterSubsystem;
   IndexerSubsystem s_IndexerSubsystem;
+  int counter;
   /** Creates a new IntakeToPassOff. */
   public IntakeToPassOff(IntakeSubsystem s_IntakeSubsystem, ShooterSubsystem s_ShooterSubsystem, IndexerSubsystem s_IndexerSubsystem) {
     this.s_IntakeSubsystem = s_IntakeSubsystem;
@@ -28,30 +29,30 @@ public class IntakeToPassOff extends Command {
   public void initialize() {
     s_ShooterSubsystem.shooterPivotPID.reset();
     s_IntakeSubsystem.IntakePivotPID.reset();
+    counter = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (s_IntakeSubsystem.intakeBeamBreakValue == true) {
+    if (s_IntakeSubsystem.intakeBeamBreakValue == true && counter == 0) {
       s_IntakeSubsystem.IntakeNote();
       s_IntakeSubsystem.IntakeDown();
     } else {
+      counter = 1;
       s_IntakeSubsystem.IntakePrepareToIndex();
       s_ShooterSubsystem.ShooterPrepareToIndex();
-        if ((s_ShooterSubsystem.shooterReadyToIndex == true) && (s_IntakeSubsystem.intakeReadyToIndex == true) && (s_IndexerSubsystem.indexerBeamBreakValue == true)) {
+        if ((s_ShooterSubsystem.shooterReadyToIndex == true)
+         && (s_IntakeSubsystem.intakeReadyToIndex == true)
+          && (s_IndexerSubsystem.indexerBeamBreakValue == true)
+          && (counter == 1)
+          ) {
           s_IntakeSubsystem.IntakeNote();
-          s_IndexerSubsystem.FeedShooter();
+          s_IndexerSubsystem.IndexNote();
         } else {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-        /* 
-        if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
-          s_IndexerSubsystem.StopIndex();
-          s_IntakeSubsystem.IntakeStop();
-        }
-        */
     }
   }
 

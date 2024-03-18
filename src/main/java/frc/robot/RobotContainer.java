@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.IntakeToPassOff;
 import frc.robot.Commands.NotePassOff;
+import frc.robot.Commands.PointAtSpeaker;
 import frc.robot.Commands.SwerveXPattern;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
@@ -60,7 +61,6 @@ import frc.robot.Subsystems.IntakeSubsystem;
 import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.ShooterSubsystem;
 
-
 public class RobotContainer extends SubsystemBase {
   private final SendableChooser<Command> autChooser;
 
@@ -95,7 +95,7 @@ public class RobotContainer extends SubsystemBase {
   IndexerSubsystem IndexerSubsystem = new IndexerSubsystem();
   ClimberSubsystem ClimberSubsystem = new ClimberSubsystem();
   private final FieldCentric drive = new FieldCentric()
-      .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * .03) // Add a 15% deadband
+      .withDeadband(MaxSpeed * 0.2) // Add a 15% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric, driving in open loop
   ShootAtSubwoofer shooterAtAmplifier = new ShootAtSubwoofer(ShooterSubsystem);
   IntakeNote intakeNote = new IntakeNote(IntakeSubsystem);
@@ -116,7 +116,8 @@ public class RobotContainer extends SubsystemBase {
   ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem, ShooterSubsystem);
   ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
   FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
-  ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem, IndexerSubsystem);
+  ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem,
+      IndexerSubsystem);
   OutTake OutTake = new OutTake(IntakeSubsystem);
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
@@ -134,7 +135,7 @@ public class RobotContainer extends SubsystemBase {
   ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
   IntakeZero intakeZero = new IntakeZero(IntakeSubsystem);
-  
+  PointAtSpeaker PointAtSpeaker = new PointAtSpeaker(drivetrain, limelightSubsystem);
 
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
@@ -153,16 +154,17 @@ public class RobotContainer extends SubsystemBase {
 
     ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
     IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
-     //IndexerSubsystem.setDefaultCommand(notePassOff);
-     //ShooterSubsystem.setDefaultCommand(notePassOff);
-     //IntakeSubsystem.setDefaultCommand(notePassOff);
+    // IndexerSubsystem.setDefaultCommand(notePassOff);
+    // ShooterSubsystem.setDefaultCommand(notePassOff);
+    // IntakeSubsystem.setDefaultCommand(notePassOff);
     // ClimberSubsystem.setDefaultCommand(climberMaintainDown);
 
     ManipulatorController.a()
-      .whileTrue(intakeZero);
-    /* 
-        .whileTrue(intakeNote)
-        .whileFalse(intakeStop);*/
+        .whileTrue(intakeZero);
+    /*
+     * .whileTrue(intakeNote)
+     * .whileFalse(intakeStop);
+     */
     ManipulatorController.start()
         .whileTrue(climberUp)
         .whileFalse(climberMaintainDown);
@@ -195,18 +197,22 @@ public class RobotContainer extends SubsystemBase {
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
-    //ManipulatorController.rightTrigger()
-        //.whileTrue(shootTrapdoor)
-        //.whileFalse(shooterPrepareToIndex);
+    ManipulatorController.rightTrigger()
+    .whileTrue(shootTrapdoor)
+    .whileFalse(shooterPrepareToIndex);
     ManipulatorController.leftTrigger()
         .whileTrue(shootOverStage)
         .whileFalse(shooterPrepareToIndex);
     ManipulatorController.x()
-        .whileTrue(shootWithLimelight).whileFalse(shooterPrepareToIndex);
+        .whileTrue(shootWithLimelight)
+        .whileFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     DriverController.x()
         .whileTrue(swerveXPattern);
-    configureBindings();
+    //       DriverController.y()
+    //     .whileTrue(PointAtSpeaker);
+    // configureBindings();
+  
   }
 
   private void configureBindings() {
@@ -214,8 +220,9 @@ public class RobotContainer extends SubsystemBase {
         drivetrain.applyRequest(() -> drive.withVelocityX(-LeftYAxis * MaxSpeed) // Drive forward with negative Y
                                                                                  // (forward)
             .withVelocityY(-LeftXAxis * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-RightXAxis * MaxAngularRate * 1.1)// RightXAxis * MaxAngularRate) // Drive counterclockwise
-                                                             // with negative X (left)
+            .withRotationalRate(-RightXAxis * MaxAngularRate * 1.1)// RightXAxis * MaxAngularRate) // Drive
+                                                                   // counterclockwise
+        // with negative X (left)
         ));
     DriverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     DriverController.b().whileTrue(drivetrain
@@ -240,12 +247,14 @@ public class RobotContainer extends SubsystemBase {
       MaxSpeed = 4;
       MaxAngularRate = 1.5 * Math.PI;
     }
-    
+
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
-    } else if (Conttroller.getYButton()) {
-      RightXAxis = -limelightSubsystem.rotationtmp;
-    } else {
+    }
+    else if (Conttroller.getYButton()) {
+    RightXAxis = -limelightSubsystem.rotationtmp;
+    }
+    else {
       RightXAxis = 0;
     }
     if ((DriverController.getLeftY() > .15) || (DriverController.getLeftY() < -.15)) {
@@ -259,10 +268,9 @@ public class RobotContainer extends SubsystemBase {
       LeftXAxis = 0;
     }
   }
-
   public Command getAutonoCommand() {
 
-     return  autChooser.getSelected();
-   }
+    return autChooser.getSelected();
+  }
 
 }

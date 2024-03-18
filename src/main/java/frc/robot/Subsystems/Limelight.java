@@ -13,9 +13,11 @@ public class Limelight extends SubsystemBase {
    XboxController controller1 = new XboxController(0);
    public double rotationtmp;
    PIDController pidRotation = new PIDController(.0125, 0, 0);//0.5, 0.5, 0.05);//0.0125, 0.00, 0);
+   double Speakertx;
 
    public void RotateWithLimelight() {
       pidRotation.setPID(.01, 0.002, 0);
+      rotationtmp = pidRotation.calculate(Speakertx, 0.0);
    }
 
    public void StopRotatingWithLimelight() {
@@ -26,7 +28,7 @@ public class Limelight extends SubsystemBase {
    @Override
    public void periodic() {
       if (controller1.getYButton() == true) {
-         pidRotation.setPID(0.01, 0.002, 0);
+         pidRotation.setPID(0.004, 0.002, 0);
 
       } else {
          pidRotation.setPID(.0, 0.0, 0);
@@ -36,9 +38,22 @@ public class Limelight extends SubsystemBase {
 
       // giving us a tolerance + or - .25 degrease.
       pidRotation.setTolerance(0.25);
-
+    
       // getting april tags 4 and 7 tx values
-      double Speakertx = LimelightHelpers.getTX("");
-      rotationtmp = pidRotation.calculate(Speakertx, 0.0);
+      Speakertx = LimelightHelpers.getTX("");
+     
+       if (Speakertx < -8){
+      rotationtmp = .09;
+      pidRotation.reset();
+     }
+     else if (Speakertx > 8){
+      rotationtmp = -.09;
+      pidRotation.reset();
+     }
+     else{
+ rotationtmp = pidRotation.calculate(Speakertx, 0.0);
+     }
+      SmartDashboard.putNumber("limelight rotation power",rotationtmp);
+      SmartDashboard.putNumber("Speaker tx", Speakertx);
    }
 }
