@@ -7,10 +7,10 @@ package frc.robot.Commands.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ClimberSubsystem;
 
-public class ClimberDown extends Command {
+public class ClimberStop extends Command {
   ClimberSubsystem s_ClimberSubsystem;
   /** Creates a new ClimberDown. */
-  public ClimberDown(ClimberSubsystem s_ClimberSubsystem) {
+  public ClimberStop(ClimberSubsystem s_ClimberSubsystem) {
     this.s_ClimberSubsystem = s_ClimberSubsystem;
     addRequirements(s_ClimberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,7 +23,7 @@ public class ClimberDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_ClimberSubsystem.ClimberDown();
+    s_ClimberSubsystem.ClimberStop();
  
   }
 

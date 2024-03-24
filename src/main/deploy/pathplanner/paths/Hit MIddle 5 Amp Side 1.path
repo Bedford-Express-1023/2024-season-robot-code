@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.118015665417921,
-        "y": 0.63
+        "x": 1.41,
+        "y": 7.717441283670014
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.118015665417921,
-        "y": 0.6182891634542179
+        "x": 4.8061425982766375,
+        "y": 7.76428462985314
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.8904036723907955,
-        "y": 2.6
+        "x": 7.97,
+        "y": 7.401248696933913
       },
       "prevControl": {
-        "x": 3.9393452789526577,
-        "y": 2.584456002861613
+        "x": 7.044843912883262,
+        "y": 7.37782702384235
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4,
+      "rotationDegrees": -0.6641393588863453,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -39,14 +45,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -38.18079674753967,
+    "rotation": -133.03,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Feeder side out to middle",
+  "folder": "Hit Middle 5 Amp Side",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

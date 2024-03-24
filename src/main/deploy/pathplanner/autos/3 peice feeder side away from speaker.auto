@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6727105761903848,
-      "y": 4.40065649362068
+      "x": 0.74,
+      "y": 4.41
     },
-    "rotation": -55.491477012331586
+    "rotation": -59.724619944279276
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LimeLight"
+            "name": "ShootFastWithLimelight"
           }
         },
         {
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 1"
+                  "pathName": " feeder side away from speaker 1"
                 }
               },
               {
@@ -43,13 +43,13 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder side 2"
+                  "pathName": " feeder side away from speaker 2"
                 }
               },
               {
@@ -64,7 +64,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LimeLight"
+            "name": "ShootSlowWithLimelight"
           }
         },
         {
@@ -74,7 +74,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left side 1"
+                  "pathName": "feeder side away from speaker 3"
                 }
               },
               {
@@ -93,7 +93,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left side 2"
+                  "pathName": " feeder side away from speaker 4"
                 }
               },
               {
@@ -108,26 +108,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LimeLight"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left side 3"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeRun"
-                }
-              }
-            ]
+            "name": "ShootSlowWithLimelight"
           }
         }
       ]

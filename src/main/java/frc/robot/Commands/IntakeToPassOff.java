@@ -35,13 +35,14 @@ public class IntakeToPassOff extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    s_ShooterSubsystem.ShooterPrepareToIndex();
     if (s_IntakeSubsystem.intakeBeamBreakValue == true && counter == 0) {
       s_IntakeSubsystem.IntakeNote();
       s_IntakeSubsystem.IntakeDown();
     } else {
-      counter = 1;
+      counter = 1; 
       s_IntakeSubsystem.IntakePrepareToIndex();
-      s_ShooterSubsystem.ShooterPrepareToIndex();
+      //s_ShooterSubsystem.ShooterPrepareToIndex();
         if ((s_ShooterSubsystem.shooterReadyToIndex == true)
          && (s_IntakeSubsystem.intakeReadyToIndex == true)
           && (s_IndexerSubsystem.indexerBeamBreakValue == true)

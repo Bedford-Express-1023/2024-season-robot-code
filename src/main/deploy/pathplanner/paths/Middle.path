@@ -3,49 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6727105761903848,
-        "y": 4.40065649362068
+        "x": 2.84,
+        "y": 4.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6727105761903848,
-        "y": 4.388945657074898
+        "x": 2.469954455782935,
+        "y": 6.566747781174691
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 4.133925300660873
+        "x": 8.05,
+        "y": 4.16
       },
       "prevControl": {
-        "x": 2.7664340285313953,
-        "y": 4.128458456060994
+        "x": 5.649278508114791,
+        "y": 3.574458172710924
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": 66.8,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 6.0,
     "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.970592197210387,
-    "rotateFast": false
+    "rotation": 0.0,
+    "rotateFast": true
   },
   "reversed": false,
-  "folder": "Stage Feeder side 4 piece",
+  "folder": "Middle 4 piece",
   "previewStartingState": {
-    "rotation": -61.6992442339936,
+    "rotation": -30.75999999999999,
     "velocity": 0
   },
   "useDefaultConstraints": false

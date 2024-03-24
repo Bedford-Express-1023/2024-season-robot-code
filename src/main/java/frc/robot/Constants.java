@@ -15,7 +15,7 @@ public final class Constants {
 
         public static final double minPivotAngle = 0; //FIXME
         public static final double maxPivotAngle = 0; //FIXME
-        public static final double targetShooterPivotIndexAngle = -0.06; 
+        public static final double targetShooterPivotIndexAngle = -0.055; 
         public static final double minShooterPivotIndexAngle = 0; //FIXME
         public static final double maxShooterPivotIndexAngle = 0; //FIXME
         public static final double shooterVelocitySubwooferConstant = 4000; //tested and works
@@ -23,7 +23,7 @@ public final class Constants {
         public static final double shooterVelocityPlatformConstant = 0;
         public static final double shooterAngleFarshotConstant = 0;
         public static final double shootOverStageAngleConstant = -.1;
-        public static final double shootTrapdoorAngleConstant = -.175; //0.0134 this angle works from pretty close, but cannot see limelight from there
+        public static final double shootTrapdoorAngleConstant = -.159; //0.0134 this angle works from pretty close, but cannot see limelight from there
         public static final double[][] pivotTable = {{0.029, 0.017},
                                                     {.033,.0164},// x is the shooter angle  y in the distance
                                                     {.066, .0144},    //SUBTRACT 0.028 FROM ALL

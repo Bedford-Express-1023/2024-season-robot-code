@@ -66,7 +66,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void IntakeNote() {
-    intakeMotor.set(-.6);
+    intakeMotor.set(-.7);
   }
 
   public void OutTake() {

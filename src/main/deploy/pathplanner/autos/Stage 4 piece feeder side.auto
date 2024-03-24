@@ -2,38 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3959954881393342,
-      "y": 7.705730447124233
+      "x": 0.6727105761903848,
+      "y": 4.40065649362068
     },
-    "rotation": 0.0
+    "rotation": -58.392497753751094
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeDown"
-                }
-              }
-            ]
+            "name": "IntakeDown"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSlowWithLimelight"
+            "name": "ShootFastWithLimelight"
           }
         },
         {
@@ -43,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 2"
+                  "pathName": "Feeder side 1"
                 }
               },
               {
@@ -62,7 +49,122 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 3"
+                  "pathName": "Feeder side 2"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "IntakeDown"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "ShootFastWithLimelight"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder side 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeRun"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder side 4"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PassOff"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ShootFastWithLimelight"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder side 5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeRun"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder side 6"
                 }
               },
               {
@@ -84,58 +186,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootSlowWithLimelight"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeRun"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 5"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PassOff"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
+            "name": "ShootFastWithLimelight"
           }
         }
       ]

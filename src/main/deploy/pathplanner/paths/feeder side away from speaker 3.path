@@ -3,49 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6727105761903848,
-        "y": 4.40065649362068
+        "x": 3.79,
+        "y": 2.63
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6727105761903848,
-        "y": 4.388945657074898
+        "x": 3.7967169800245437,
+        "y": 2.634938222800839
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 4.133925300660873
+        "x": 8.5,
+        "y": 1.7
       },
       "prevControl": {
-        "x": 2.7664340285313953,
-        "y": 4.128458456060994
+        "x": 5.634788279162864,
+        "y": -0.5484806167900493
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 31.09,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 3.5,
     "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.970592197210387,
+    "rotation": 43.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Stage Feeder side 4 piece",
+  "folder": "feeder side 3 piece away from speaker",
   "previewStartingState": {
-    "rotation": -61.6992442339936,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false

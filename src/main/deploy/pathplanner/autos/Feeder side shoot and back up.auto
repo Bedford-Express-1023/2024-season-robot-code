@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7050561319382253,
-      "y": 6.640044321458116
+      "x": 0.6933452953924437,
+      "y": 4.414985377759629
     },
-    "rotation": 62.97
+    "rotation": -56.309932474020194
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFastWithLimelight"
+            "name": "LimeLight"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Feeder back up"
           }
         }
       ]

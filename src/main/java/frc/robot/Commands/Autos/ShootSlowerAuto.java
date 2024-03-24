@@ -11,14 +11,14 @@ import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.ShooterSubsystem;
 
-public class ShootWithLimelightAuto extends Command {
+public class ShootSlowerAuto extends Command {
   ShooterSubsystem s_ShooterSubsystem;
   Limelight s_Limelight;
   IndexerSubsystem s_IndexerSubsystem;
   long shooterStartTime;
 
   /** Creates a new ShootWithLimelight. */
-  public ShootWithLimelightAuto(ShooterSubsystem s_ShooterSubsystem, Limelight s_Limelight,
+  public ShootSlowerAuto(ShooterSubsystem s_ShooterSubsystem, Limelight s_Limelight,
       IndexerSubsystem s_IndexerSubsystem) {
     this.s_ShooterSubsystem = s_ShooterSubsystem;
     this.s_Limelight = s_Limelight;
@@ -40,17 +40,16 @@ public class ShootWithLimelightAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Shooting1");
+  //  if(s_ShooterSubsystem.AprilTagSeen())
+  //  {
     s_ShooterSubsystem.ShootWithLimelight();
-    if (s_ShooterSubsystem.ReadyToShootAuto()) {
-      System.out.println("Shooting2");
+    if (s_ShooterSubsystem.ReadyToShootAutoSlower()) {
       s_IndexerSubsystem.FeedShooterFast();
       if (shooterStartTime == -1) {
-        System.out.println("Shooting3");
-
         shooterStartTime = System.currentTimeMillis();
       }
     }
+ //  }
   }
 
   // Called once the command ends or is interrupted.

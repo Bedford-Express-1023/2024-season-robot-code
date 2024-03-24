@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6727105761903848,
-        "y": 4.40065649362068
+        "x": 0.6933452953924437,
+        "y": 4.414985377759629
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6727105761903848,
-        "y": 4.388945657074898
+        "x": 0.7050561319382253,
+        "y": 4.414985377759629
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 4.133925300660873
+        "x": 2.894982565999367,
+        "y": 1.8034688280503517
       },
       "prevControl": {
-        "x": 2.7664340285313953,
-        "y": 4.128458456060994
+        "x": 2.8701234409606857,
+        "y": 1.8034688280503517
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,20 +32,20 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 6.0,
     "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.970592197210387,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Stage Feeder side 4 piece",
+  "folder": "Feeder side shoot and back up",
   "previewStartingState": {
-    "rotation": -61.6992442339936,
+    "rotation": -59.534455080540084,
     "velocity": 0
   },
   "useDefaultConstraints": false

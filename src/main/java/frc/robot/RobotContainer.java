@@ -29,10 +29,11 @@ import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
 import frc.robot.Commands.Autos.NotePassOffAuto;
 import frc.robot.Commands.Autos.ShootBackAuto;
-import frc.robot.Commands.Autos.ShootWithLimelightAuto;
+import frc.robot.Commands.Autos.ShootFasterAuto;
+import frc.robot.Commands.Autos.ShootSlowerAuto;
 import frc.robot.Commands.Autos.StartShooterAuto;
 import frc.robot.Commands.Climber.ClimberDown;
-import frc.robot.Commands.Climber.ClimberMaintainDown;
+import frc.robot.Commands.Climber.ClimberStop;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
 import frc.robot.Commands.Indexer.FeedShooterFast;
@@ -50,6 +51,7 @@ import frc.robot.Commands.Shooter.ShootInAmp;
 import frc.robot.Commands.Shooter.ShootOverStage;
 import frc.robot.Commands.Shooter.ShootTrapdoor;
 import frc.robot.Commands.Shooter.ShootWithLimelight;
+import frc.robot.Commands.Shooter.ShooterDown;
 import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
 import frc.robot.Commands.Shooter.ShooterShoot;
 import frc.robot.Commands.Shooter.ShooterZero;
@@ -106,14 +108,15 @@ public class RobotContainer extends SubsystemBase {
   StopShooter stopShooter = new StopShooter(ShooterSubsystem);
   FeedShooter feedShooter = new FeedShooter(IndexerSubsystem);
   StopIndex stopIndex = new StopIndex(IndexerSubsystem);
+
   ReverseIndexer reverseIndexer = new ReverseIndexer(IndexerSubsystem);
   IntakeRun intakeRun = new IntakeRun(IntakeSubsystem);
   ShootAtSubwoofer shootAtSubwoofer = new ShootAtSubwoofer(ShooterSubsystem);
   ShootInAmp shootInAmp = new ShootInAmp(ShooterSubsystem);
   ClimberUp climberUp = new ClimberUp(ClimberSubsystem);
-  ClimberDown climberDown = new ClimberDown(ClimberSubsystem, ShooterSubsystem);
+  ClimberDown climberDown = new ClimberDown(ClimberSubsystem);
+  ClimberStop ClimberStop = new ClimberStop(ClimberSubsystem);
   NotePassOff notePassOff = new NotePassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
-  ClimberMaintainDown climberMaintainDown = new ClimberMaintainDown(ClimberSubsystem, ShooterSubsystem);
   ShootAtFarshot shootAtFarshot = new ShootAtFarshot(ShooterSubsystem);
   FeedShooterFast FeedShooterFast = new FeedShooterFast(IndexerSubsystem);
   ShootWithLimelight shootWithLimelight = new ShootWithLimelight(ShooterSubsystem, limelightSubsystem,
@@ -122,8 +125,9 @@ public class RobotContainer extends SubsystemBase {
   private final SwerveDriveBrake brake = new SwerveDriveBrake();
   private final PointWheelsAt point = new PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  ShootWithLimelightAuto shootWithLimelightAuto = new ShootWithLimelightAuto(ShooterSubsystem, limelightSubsystem,
+  ShootFasterAuto ShootFasterAuto = new ShootFasterAuto(ShooterSubsystem, limelightSubsystem,
       IndexerSubsystem);
+  ShootSlowerAuto ShootSlowerAuto = new ShootSlowerAuto(ShooterSubsystem, limelightSubsystem, IndexerSubsystem);
   IntakeDownAuto intakeDownAuto = new IntakeDownAuto(IntakeSubsystem);
   IntakeRunAuto intakeRunAuto = new IntakeRunAuto(IntakeSubsystem);
   NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
@@ -136,12 +140,13 @@ public class RobotContainer extends SubsystemBase {
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
   IntakeZero intakeZero = new IntakeZero(IntakeSubsystem);
   PointAtSpeaker PointAtSpeaker = new PointAtSpeaker(drivetrain, limelightSubsystem);
-
+ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
   // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
 
   public RobotContainer() {
 
-    NamedCommands.registerCommand("LimeLight", shootWithLimelightAuto);
+    NamedCommands.registerCommand("ShootSlowWithLimelight", ShootSlowerAuto);
+     NamedCommands.registerCommand("ShootFastWithLimelight", ShootFasterAuto);
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
     NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
     NamedCommands.registerCommand("PassOff", notePassOffAuto);
@@ -152,28 +157,25 @@ public class RobotContainer extends SubsystemBase {
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
 
-    ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
-    IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
+    //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
+   // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
     // IndexerSubsystem.setDefaultCommand(notePassOff);
     // ShooterSubsystem.setDefaultCommand(notePassOff);
     // IntakeSubsystem.setDefaultCommand(notePassOff);
     // ClimberSubsystem.setDefaultCommand(climberMaintainDown);
 
     ManipulatorController.a()
-        .whileTrue(intakeZero);
-    /*
-     * .whileTrue(intakeNote)
-     * .whileFalse(intakeStop);
-     */
+        .whileTrue(intakeNote)
+      .whileFalse(intakeStop);
     ManipulatorController.start()
         .whileTrue(climberUp)
-        .whileFalse(climberMaintainDown);
+        .onFalse(ClimberStop);
     ManipulatorController.b()
         .whileTrue(OutTake)
         .whileFalse(intakeStop);
     ManipulatorController.back()
         .whileTrue(climberDown)
-        .whileFalse(climberMaintainDown);
+        .whileFalse(ClimberStop);
     ManipulatorController.leftBumper()
         .whileTrue(FeedShooterFast)
         .whileFalse(stopIndex);
@@ -197,15 +199,18 @@ public class RobotContainer extends SubsystemBase {
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
-    ManipulatorController.rightTrigger()
-    .whileTrue(shootTrapdoor)
-    .whileFalse(shooterPrepareToIndex);
+    // ManipulatorController.rightTrigger()
+    // .whileTrue(shootTrapdoor)
+    // .whileFalse(shooterPrepareToIndex);
     ManipulatorController.leftTrigger()
-        .whileTrue(shootOverStage)
-        .whileFalse(shooterPrepareToIndex);
+        .whileTrue(ShooterDown)
+        .whileFalse(ShooterDown);
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
+        ManipulatorController.rightTrigger()
+        .whileTrue(shootTrapdoor)
+        .onFalse(shooterPrepareToIndex);
     // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     DriverController.x()
         .whileTrue(swerveXPattern);
@@ -270,7 +275,7 @@ public class RobotContainer extends SubsystemBase {
   }
   public Command getAutonoCommand() {
 
-    return autChooser.getSelected();
+   return  autChooser.getSelected();
   }
 
 }

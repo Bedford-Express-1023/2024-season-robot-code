@@ -4,9 +4,15 @@
   "holonomicMode": true,
   "pathFolders": [
     "Amp side 3 piece",
-    "Feeder side 4 piece",
-    "Feeder side out to middle",
-    "Get middle 5"
+    "Amp side back up",
+    "Feeder side shoot and back up",
+    "Get middle 5",
+    "Hit Middle 5 Amp Side",
+    "Hit Middle 5 Feeder Side",
+    "Middle 4 piece",
+    "New New Folder",
+    "Stage Feeder side 4 piece",
+    "feeder side 3 piece away from speaker"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

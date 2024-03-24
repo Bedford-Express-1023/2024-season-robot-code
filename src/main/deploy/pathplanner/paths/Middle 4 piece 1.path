@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6727105761903848,
-        "y": 4.40065649362068
+        "x": 1.3535296301361848,
+        "y": 5.535354916863679
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6727105761903848,
-        "y": 4.388945657074898
+        "x": 1.3814375588205967,
+        "y": 5.535354916863679
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 4.133925300660873
+        "x": 2.557296653054846,
+        "y": 5.535354916863679
       },
       "prevControl": {
-        "x": 2.7664340285313953,
-        "y": 4.128458456060994
+        "x": 2.5236259599895576,
+        "y": 5.535354916863679
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.970592197210387,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Stage Feeder side 4 piece",
+  "folder": "Middle 4 piece",
   "previewStartingState": {
-    "rotation": -61.6992442339936,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false

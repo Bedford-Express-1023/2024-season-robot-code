@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.15,
-        "y": 7.4
+        "x": 8.05,
+        "y": 7.31
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.21351317124888,
-        "y": 7.438212764014687
+        "x": 8.113513171248881,
+        "y": 7.348212764014686
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.62,
-        "y": 7.05
+        "x": 5.06,
+        "y": 6.23
       },
       "prevControl": {
-        "x": 4.592379528211267,
-        "y": 7.069369984531695
+        "x": 5.032379528211266,
+        "y": 6.249369984531696
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 18.75821793307624,
+    "rotation": 15.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp side 3 piece",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 25.873354884176862,
     "velocity": 0
   },
   "useDefaultConstraints": false

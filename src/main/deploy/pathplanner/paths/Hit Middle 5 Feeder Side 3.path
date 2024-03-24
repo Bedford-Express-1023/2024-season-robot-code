@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6727105761903848,
-        "y": 4.40065649362068
+        "x": 7.97,
+        "y": 7.26
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6727105761903848,
-        "y": 4.388945657074898
+        "x": 8.03,
+        "y": 7.26
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 4.133925300660873
+        "x": 4.967800634602694,
+        "y": 7.553489572029072
       },
       "prevControl": {
-        "x": 2.7664340285313953,
-        "y": 4.128458456060994
+        "x": 4.907800634602695,
+        "y": 7.553489572029072
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,20 +33,20 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 6.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.970592197210387,
+    "rotation": -177.58897025338877,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Stage Feeder side 4 piece",
+  "folder": "Hit Middle 5 Feeder Side",
   "previewStartingState": {
-    "rotation": -61.6992442339936,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

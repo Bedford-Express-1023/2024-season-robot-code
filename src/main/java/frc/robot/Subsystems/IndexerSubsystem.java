@@ -32,11 +32,11 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public void ReverseIndexer() {
-    indexerMotor.set(ControlMode.PercentOutput, -.6);
+    indexerMotor.set(ControlMode.PercentOutput, -1);
   }
 
   public void IndexNote() {
-    indexerMotor.set(ControlMode.PercentOutput, 0.45);
+    indexerMotor.set(ControlMode.PercentOutput, 0.6);
   }
 
   public void StopIndex() {

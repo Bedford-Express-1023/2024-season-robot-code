@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.41,
+      "y": 1.62
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hit Middle 5 Feeder Side 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hit Middle 5 Feeder side 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hit Middle 5 Feeder Side 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDown"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.41,
+      "y": 7.72
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hit MIddle 5 Amp Side 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hit Middle 5 Amp Side 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hit Middle 5 Amp Side 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDown"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
