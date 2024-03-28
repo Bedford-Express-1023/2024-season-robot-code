@@ -41,7 +41,7 @@ public class IntakeToPassOff extends Command {
       s_IntakeSubsystem.IntakeDown();
     } else {
       counter = 1; 
-      s_IntakeSubsystem.IntakePrepareToIndex();
+      s_IntakeSubsystem.IntakePrepareToIndex(); 
       //s_ShooterSubsystem.ShooterPrepareToIndex();
         if ((s_ShooterSubsystem.shooterReadyToIndex == true)
          && (s_IntakeSubsystem.intakeReadyToIndex == true)

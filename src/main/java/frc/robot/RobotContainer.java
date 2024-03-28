@@ -33,6 +33,7 @@ import frc.robot.Commands.Autos.ShootFasterAuto;
 import frc.robot.Commands.Autos.ShootSlowerAuto;
 import frc.robot.Commands.Autos.StartShooterAuto;
 import frc.robot.Commands.Climber.ClimberDown;
+import frc.robot.Commands.Climber.ClimberDownWithSwitch;
 import frc.robot.Commands.Climber.ClimberStop;
 import frc.robot.Commands.Climber.ClimberUp;
 import frc.robot.Commands.Indexer.FeedShooter;
@@ -50,6 +51,7 @@ import frc.robot.Commands.Shooter.ShootAtSubwoofer;
 import frc.robot.Commands.Shooter.ShootInAmp;
 import frc.robot.Commands.Shooter.ShootOverStage;
 import frc.robot.Commands.Shooter.ShootTrapdoor;
+import frc.robot.Commands.Shooter.ShootUnderStage;
 import frc.robot.Commands.Shooter.ShootWithLimelight;
 import frc.robot.Commands.Shooter.ShooterDown;
 import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
@@ -141,10 +143,10 @@ public class RobotContainer extends SubsystemBase {
   IntakeZero intakeZero = new IntakeZero(IntakeSubsystem);
   PointAtSpeaker PointAtSpeaker = new PointAtSpeaker(drivetrain, limelightSubsystem);
 ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
-  // private final DigitalInput indexerBeamBreak = new DigitalInput(0);
-
+ShootUnderStage ShootUnderStage = new ShootUnderStage(ShooterSubsystem);
+ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem);
   public RobotContainer() {
-
+    ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
     NamedCommands.registerCommand("ShootSlowWithLimelight", ShootSlowerAuto);
      NamedCommands.registerCommand("ShootFastWithLimelight", ShootFasterAuto);
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
@@ -157,25 +159,18 @@ ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
 
-    //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
-   // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
-    // IndexerSubsystem.setDefaultCommand(notePassOff);
-    // ShooterSubsystem.setDefaultCommand(notePassOff);
-    // IntakeSubsystem.setDefaultCommand(notePassOff);
-    // ClimberSubsystem.setDefaultCommand(climberMaintainDown);
-
     ManipulatorController.a()
         .whileTrue(intakeNote)
       .whileFalse(intakeStop);
     ManipulatorController.start()
         .whileTrue(climberUp)
-        .onFalse(ClimberStop);
+        .whileFalse(ClimberDownWithSwitch);
     ManipulatorController.b()
         .whileTrue(OutTake)
         .whileFalse(intakeStop);
     ManipulatorController.back()
         .whileTrue(climberDown)
-        .whileFalse(ClimberStop);
+        .whileFalse(ClimberDownWithSwitch);
     ManipulatorController.leftBumper()
         .whileTrue(FeedShooterFast)
         .whileFalse(stopIndex);
@@ -199,24 +194,17 @@ ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
-    // ManipulatorController.rightTrigger()
-    // .whileTrue(shootTrapdoor)
-    // .whileFalse(shooterPrepareToIndex);
     ManipulatorController.leftTrigger()
-        .whileTrue(ShooterDown)
-        .whileFalse(ShooterDown);
+        .whileTrue(ClimberStop)
+        .whileFalse(ClimberDownWithSwitch);
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
         ManipulatorController.rightTrigger()
-        .whileTrue(shootTrapdoor)
+        .whileTrue(ShootUnderStage)
         .onFalse(shooterPrepareToIndex);
-    // ManipulatorController.leftBumper().whileTrue(ShooterSubsystem.PointTowardsSpeaker()).whileFalse(ShooterSubsystem.ShooterPrepareToIndex());
     DriverController.x()
         .whileTrue(swerveXPattern);
-    //       DriverController.y()
-    //     .whileTrue(PointAtSpeaker);
-    // configureBindings();
   
   }
 

@@ -34,51 +34,43 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean shooterReadyToIndex;
   public Slot0Configs slot0Configs = new Slot0Configs();
   public Slot1Configs slot1Configs = new Slot1Configs();
-
   public VelocityVoltage shooterVelocityFast = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant,
       0, false, 0, 0, false, false, false);
   public VelocityVoltage shooterVelocitySLow = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant,
       0, false, 0, 1, false, false, false);
   public PIDController shooterPivotPID = new PIDController(4.2, 0.75, 0);// (.85,0.075,0.0001);
   ArmFeedforward pivotFeedForward = new ArmFeedforward(0, -0.02636717, 0, 0); // 0.027576445
-
-  // RotationalFeedForward pivotFeedForward = new RotationalFeedForward(0, 1,
-  // 0.001, 0.027576445);
   double LineOfBestFitCalculation;
   NeutralModeValue Coast = NeutralModeValue.Coast;
   NeutralModeValue Brake = NeutralModeValue.Brake;
   InvertedValue Invert = InvertedValue.Clockwise_Positive;
-
   double AmpShooterRPM;
 
-  /** Creates a new ShooterSubsystem. */
-
   public ShooterSubsystem() {
-    TalonFXConfiguration configs = new TalonFXConfiguration();
+    TalonFXConfiguration Shooterconfigs = new TalonFXConfiguration();
     TalonFXConfiguration pivotConfigs = new TalonFXConfiguration();
-    configs.Slot0.kP = 0.6;
-    configs.Slot0.kI = 1.25;
-    configs.Slot0.kD = 0;
+    
+    Shooterconfigs.Slot0.kP = 0.6;
+    Shooterconfigs.Slot0.kI = 1.25;
+    Shooterconfigs.Slot0.kD = 0;
 
-    configs.Slot1.kP = .35;
-    configs.Slot1.kI = 1;
-    configs.Slot1.kD = 0;
+    Shooterconfigs.Slot1.kP = .35;
+    Shooterconfigs.Slot1.kI = 1;
+    Shooterconfigs.Slot1.kD = 0;
 
-    configs.Voltage.PeakForwardVoltage = 10;
-    configs.Voltage.PeakReverseVoltage = -10;
+    Shooterconfigs.Voltage.PeakForwardVoltage = 10;
+    Shooterconfigs.Voltage.PeakReverseVoltage = -10;
 
-    configs.TorqueCurrent.PeakForwardTorqueCurrent = 40;
-    configs.TorqueCurrent.PeakReverseTorqueCurrent = -40;
-    configs.MotorOutput.NeutralMode = Coast;
+    Shooterconfigs.TorqueCurrent.PeakForwardTorqueCurrent = 40;
+    Shooterconfigs.TorqueCurrent.PeakReverseTorqueCurrent = -40;
+    Shooterconfigs.MotorOutput.NeutralMode = Coast;
 
     pivotConfigs.MotorOutput.PeakForwardDutyCycle = .3;
     pivotConfigs.MotorOutput.PeakReverseDutyCycle = -.3;
     pivotConfigs.MotorOutput.NeutralMode = Brake;
     pivotConfigs.MotorOutput.Inverted = Invert;
 
-    shooterMotor.getConfigurator().apply(configs);
-    // shooterPivotMotorMaster.setInverted(true);
-
+    shooterMotor.getConfigurator().apply(Shooterconfigs);
     shooterPivotMotorMaster.getConfigurator().apply(pivotConfigs);
     shooterPivotMotorFollower.getConfigurator().apply(pivotConfigs);
 
@@ -179,8 +171,8 @@ public void ShootUnderStage(){
   }
 
   public void ShootInAmp() {
-    shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .319)// .29
-        + pivotFeedForward.calculate(.319 * 6.2832, 1));
+    shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .27)// .319 for trap
+        + pivotFeedForward.calculate(.27 * 6.2832, 1));
   }
 
   public void ShooterDown() {
@@ -199,7 +191,7 @@ public void ShootUnderStage(){
     shooterPivotMotorMaster
         .set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shootTrapdoorAngleConstant)
             + pivotFeedForward.calculate(Constants.Shooter.shootTrapdoorAngleConstant * 6.2832, 2));
-    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3400 / 60)); // 3300/60 works for close shot without
+    shooterMotor.setControl(shooterVelocityFast.withVelocity(-4250/60)); // 3300/60 works for close shot without
                                                                            // limelight
   }
 
