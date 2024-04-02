@@ -27,53 +27,51 @@ NeutralModeValue Brake = NeutralModeValue.Brake;
      TalonFXConfiguration configs = new TalonFXConfiguration();
      configs.MotorOutput.NeutralMode = Brake;
      configs.CurrentLimits.StatorCurrentLimitEnable = true;
-     configs.CurrentLimits.StatorCurrentLimit = 30;// 30 StatorCurrentLimit for the climber in the box
+     configs.CurrentLimits.StatorCurrentLimit = 20;// 30 StatorCurrentLimit for the climber in the box
      configs.CurrentLimits.SupplyCurrentLimitEnable = true;
-     configs.CurrentLimits.SupplyCurrentLimit = 6; //6  for the climber in the box
+     configs.CurrentLimits.SupplyCurrentLimit = 4; //6  for the climber in the box
      rightClimberMotor.getConfigurator().apply(configs);
      leftClimberMotor.getConfigurator().apply(configs);
 
   }
 
   public void ClimberUp() {
-    rightClimberMotor.set(0.850);// 50% for the climber in a box
-    leftClimberMotor.set(-0.850);
+    rightClimberMotor.set(0.10);// 850% for the climber in a box
+    leftClimberMotor.set(-0.10);
   }
 
   public void ClimberDown() {
-    rightClimberMotor.set(-0.20);// 85% for the climber in the box
-    leftClimberMotor.set(0.20);
+    rightClimberMotor.set(-0.10);// 85% for the climber in the box
+    leftClimberMotor.set(0.10);
   }
 
   public void ClimberDownWithSwitch() {
  if(leftLimitSwitch.get() == true){
-leftClimberMotor.set(.85);
+leftClimberMotor.set(.2);
  }
  else if (leftLimitSwitch.get() == false){
   leftClimberMotor.set(0);
  }
  if(rightLimitSwitch.get() == true){
-  rightClimberMotor.set(-.85);
+  rightClimberMotor.set(-.2);
  }
  else if (rightLimitSwitch.get() == false){
 rightClimberMotor.set(0);
  }
-  }
-
+}
     public void ClimberUpWithSwitch() {
- if(leftLimitSwitch.get() == false){
-leftClimberMotor.set(-.1);
- }
- else if (leftLimitSwitch.get() == true){
-  leftClimberMotor.set(0);
- }
- if(rightLimitSwitch.get() == false){
-  rightClimberMotor.set(.1);
- }
- else if (rightLimitSwitch.get() == true){
-rightClimberMotor.set(0);
- }
-
+    if (rightClimberMotor.getPosition().getValueAsDouble() <4){
+      rightClimberMotor.set(.1);
+    }
+    else{
+      rightClimberMotor.set(0);
+    }
+    if (leftClimberMotor.getPosition().getValueAsDouble()<4){
+      leftClimberMotor.set(.1);
+    }
+    else{
+      leftClimberMotor.set(0);
+    }
   }
   public void ClimberStop(){
     leftClimberMotor.set(0);
@@ -82,6 +80,14 @@ rightClimberMotor.set(0);
 
   @Override
   public void periodic() {
+    if (rightLimitSwitch.get() == true){
+      rightClimberMotor.setPosition(0);
+    }
+    if (leftLimitSwitch.get() == true){
+      leftClimberMotor.setPosition(0);
+    }
+    SmartDashboard.putNumber("right CLimber motor rotation", rightClimberMotor.getPosition().getValueAsDouble());
+     SmartDashboard.putNumber("left CLimber motor rotation", leftClimberMotor.getPosition().getValueAsDouble());
     SmartDashboard.putBoolean("Left Climer Motor Limit Switch", leftLimitSwitch.get());
      SmartDashboard.putBoolean("Right Climer Motor Limit Switch", rightLimitSwitch.get());
   }

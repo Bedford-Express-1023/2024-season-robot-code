@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.FirstTrapdoorSpot;
 import frc.robot.Commands.IntakeToPassOff;
 import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.PointAtSpeaker;
+import frc.robot.Commands.SecondTrapdoorSpot;
 import frc.robot.Commands.SwerveXPattern;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
@@ -145,8 +147,12 @@ public class RobotContainer extends SubsystemBase {
 ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
 ShootUnderStage ShootUnderStage = new ShootUnderStage(ShooterSubsystem);
 ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem);
+FirstTrapdoorSpot FirstTrapdoorSpot = new FirstTrapdoorSpot(ShooterSubsystem, ClimberSubsystem);
+SecondTrapdoorSpot SecondTrapdoorSpot = new SecondTrapdoorSpot(ShooterSubsystem, ClimberSubsystem);
   public RobotContainer() {
-    ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
+   // ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
+    //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
+    //IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
     NamedCommands.registerCommand("ShootSlowWithLimelight", ShootSlowerAuto);
      NamedCommands.registerCommand("ShootFastWithLimelight", ShootFasterAuto);
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
@@ -164,13 +170,13 @@ ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberS
       .whileFalse(intakeStop);
     ManipulatorController.start()
         .whileTrue(climberUp)
-        .whileFalse(ClimberDownWithSwitch);
+        .whileFalse(ClimberStop);
     ManipulatorController.b()
         .whileTrue(OutTake)
         .whileFalse(intakeStop);
     ManipulatorController.back()
         .whileTrue(climberDown)
-        .whileFalse(ClimberDownWithSwitch);
+        .whileFalse(ClimberStop);
     ManipulatorController.leftBumper()
         .whileTrue(FeedShooterFast)
         .whileFalse(stopIndex);
@@ -203,6 +209,14 @@ ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberS
         ManipulatorController.rightTrigger()
         .whileTrue(ShootUnderStage)
         .onFalse(shooterPrepareToIndex);
+        ManipulatorController.leftStick()
+        .whileTrue(FirstTrapdoorSpot)
+        .whileFalse(stopShooter)
+        .whileFalse(ClimberStop);
+        ManipulatorController.rightStick()
+        .whileTrue(SecondTrapdoorSpot)
+        .whileFalse(stopShooter)
+        .whileFalse(ClimberStop);
     DriverController.x()
         .whileTrue(swerveXPattern);
   
