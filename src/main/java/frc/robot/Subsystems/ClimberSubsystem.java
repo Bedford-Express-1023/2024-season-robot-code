@@ -18,8 +18,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private final TalonFX rightClimberMotor = new TalonFX(Constants.Climber.CLIMBER_RIGHT_CAN); // FIXME
   private final TalonFX leftClimberMotor = new TalonFX(Constants.Climber.CLIMBER_LEFT_CAN); // FIXME
-  DigitalInput rightLimitSwitch = new DigitalInput(4);
-  DigitalInput leftLimitSwitch = new DigitalInput(5);
+  DigitalInput rightLimitSwitch = new DigitalInput(5);//4 for the box climber
+  DigitalInput leftLimitSwitch = new DigitalInput(4);// 5 for the box climber
 NeutralModeValue Brake = NeutralModeValue.Brake;
 
   /** Creates a new ClimberSubsystem. */
@@ -47,27 +47,27 @@ NeutralModeValue Brake = NeutralModeValue.Brake;
 
   public void ClimberDownWithSwitch() {
  if(leftLimitSwitch.get() == true){
-leftClimberMotor.set(.2);
+leftClimberMotor.set(.4);
  }
  else if (leftLimitSwitch.get() == false){
   leftClimberMotor.set(0);
  }
  if(rightLimitSwitch.get() == true){
-  rightClimberMotor.set(-.2);
+  rightClimberMotor.set(-.4);
  }
  else if (rightLimitSwitch.get() == false){
 rightClimberMotor.set(0);
  }
 }
     public void ClimberUpWithSwitch() {
-    if (rightClimberMotor.getPosition().getValueAsDouble() <4){
-      rightClimberMotor.set(.1);
+    if (rightClimberMotor.getPosition().getValueAsDouble() < 185){
+      rightClimberMotor.set(.4);
     }
     else{
       rightClimberMotor.set(0);
     }
-    if (leftClimberMotor.getPosition().getValueAsDouble()<4){
-      leftClimberMotor.set(.1);
+    if (leftClimberMotor.getPosition().getValueAsDouble()> -185){
+      leftClimberMotor.set(-.4);
     }
     else{
       leftClimberMotor.set(0);
@@ -80,10 +80,10 @@ rightClimberMotor.set(0);
 
   @Override
   public void periodic() {
-    if (rightLimitSwitch.get() == true){
+    if (rightLimitSwitch.get() == false){
       rightClimberMotor.setPosition(0);
     }
-    if (leftLimitSwitch.get() == true){
+    if (leftLimitSwitch.get() == false){
       leftClimberMotor.setPosition(0);
     }
     SmartDashboard.putNumber("right CLimber motor rotation", rightClimberMotor.getPosition().getValueAsDouble());

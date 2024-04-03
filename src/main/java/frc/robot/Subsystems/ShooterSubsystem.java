@@ -25,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public final TalonFX shooterMotor = new TalonFX(Constants.Shooter.SHOOTER_MOTOR_CAN);
   public final TalonFX shooterPivotMotorMaster = new TalonFX(Constants.Shooter.SHOOTER_LEFT_PIVOT_CAN);
   public final TalonFX shooterPivotMotorFollower = new TalonFX(Constants.Shooter.SHOOTER_RIGHT_PIVOT_CAN);
-  private final CANcoder shooterCANcoder = new CANcoder(Constants.Shooter.SHOOTER_CANCODER_ID);
+  public final CANcoder shooterCANcoder = new CANcoder(Constants.Shooter.SHOOTER_CANCODER_ID);
   private double rotationTolerance;
   private double shooterMotorAngle;
   public double shooterCurrentAngle; // in degrees
@@ -111,8 +111,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public void StopShooter() {
     shooterMotor.set(0);
   }
-
-  public boolean ReadyToShoot() {
+public void StopShooterPivot(){
+  shooterPivotMotorMaster.set(0);
+}  
+public boolean ReadyToShoot() {
     if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)
         && MathUtil.isNear(-4500 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1)// 3750
     // && MathUtil.isNear(0, limelightTX, rotationTolerance)
@@ -182,27 +184,25 @@ public class ShooterSubsystem extends SubsystemBase {
   public void ShootOverStage() {
     shooterPivotMotorMaster
         .set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shootOverStageAngleConstant)
-            + pivotFeedForward.calculate(Constants.Shooter.shootOverStageAngleConstant * 6.2832, 2));
+            + pivotFeedForward.calculate(Constants.Shooter.shootOverStageAngleConstant * 6.2832, 1));
     shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3300 / 60));
   }
 
   public void ShootTrapdoor() {
     shooterPivotMotorMaster
         .set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shootTrapdoorAngleConstant)
-            + pivotFeedForward.calculate(Constants.Shooter.shootTrapdoorAngleConstant * 6.2832, 2));
+            + pivotFeedForward.calculate(Constants.Shooter.shootTrapdoorAngleConstant * 6.2832, 1));
     shooterMotor.setControl(shooterVelocityFast.withVelocity(-4250 / 60)); // 3300/60 works for close shot without
                                                                            // limelight
   }
 
-  public void ShooterToFistClimb(){
-        shooterPivotMotorMaster
-        .set(-shooterPivotPID.calculate(shooterMotorAngle, .1)
-            + pivotFeedForward.calculate(.1 * 6.2832, 2));
+  public void ShooterToFirstClimb(){
+     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .08)// .319 for trap
+        + pivotFeedForward.calculate(.08 * 6.2832, 1));
   }
  public void ShooterToSecondClimb(){
-        shooterPivotMotorMaster
-        .set(-shooterPivotPID.calculate(shooterMotorAngle, .3)
-            + pivotFeedForward.calculate(.3 * 6.2832, 2));
+     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .31)// .319 for trap
+        + pivotFeedForward.calculate(.31 * 6.2832, 1));
   }
 
   @Override

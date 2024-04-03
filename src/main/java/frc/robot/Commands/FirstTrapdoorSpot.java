@@ -5,17 +5,15 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.ClimberSubsystem;
+import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class FirstTrapdoorSpot extends Command {
   ShooterSubsystem s_ShooterSubsystem;
-  ClimberSubsystem s_ClimberSubsystem;
   /** Creates a new ShootInAmp. */
-  public FirstTrapdoorSpot(ShooterSubsystem s_ShooterSubsystem, ClimberSubsystem s_ClimberSubsystem ) {
+  public FirstTrapdoorSpot(ShooterSubsystem s_ShooterSubsystem ) {
     this.s_ShooterSubsystem = s_ShooterSubsystem;
-    this.s_ClimberSubsystem = s_ClimberSubsystem;
-    addRequirements(s_ShooterSubsystem, s_ClimberSubsystem);
+    addRequirements(s_ShooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -29,7 +27,7 @@ public class FirstTrapdoorSpot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_ShooterSubsystem.ShooterToFistClimb();
+    s_ShooterSubsystem.ShooterToFirstClimb();
    
   }
 
