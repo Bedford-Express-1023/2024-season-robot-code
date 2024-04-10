@@ -118,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Maybe"
+                  "pathName": "Middle 4 piece 4"
                 }
               },
               {
@@ -149,7 +149,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Middle"
+                  "pathName": "Middle 4 piece 5"
                 }
               },
               {
@@ -162,9 +162,28 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle 4 piece 6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "PassOff"
+            "name": "ShootOverStage"
           }
         }
       ]

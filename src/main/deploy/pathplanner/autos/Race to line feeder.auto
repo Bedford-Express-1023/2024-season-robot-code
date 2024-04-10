@@ -2,60 +2,23 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 7.28
+      "x": 1.4311279977766789,
+      "y": 1.5809629336805036
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Amp side 1"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeDown"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StartShooter"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 3"
+                  "pathName": "race 1"
                 }
               },
               {
@@ -74,20 +37,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 4"
+                  "pathName": "Race 2"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PassOff"
-                      }
-                    }
-                  ]
+                  "name": "PassOff"
                 }
               }
             ]
@@ -106,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 5"
+                  "pathName": "race 3"
                 }
               },
               {
@@ -125,20 +81,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 6"
+                  "pathName": "race 4"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PassOff"
-                      }
-                    }
-                  ]
+                  "name": "PassOff"
                 }
               }
             ]

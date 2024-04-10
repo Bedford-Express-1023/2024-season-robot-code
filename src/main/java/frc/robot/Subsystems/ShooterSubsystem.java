@@ -39,6 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public VelocityVoltage shooterVelocitySLow = new VelocityVoltage(Constants.Shooter.shooterVelocitySubwooferConstant,
       0, false, 0, 1, false, false, false);
   public PIDController shooterPivotPID = new PIDController(4.2, 0.75, 0);// (.85,0.075,0.0001);
+  public PIDController AmpPivotPID = new PIDController(2, 0.1, 0);
   ArmFeedforward pivotFeedForward = new ArmFeedforward(0, -0.02636717, 0, 0); // 0.027576445
   double LineOfBestFitCalculation;
   NeutralModeValue Coast = NeutralModeValue.Coast;
@@ -50,19 +51,14 @@ public class ShooterSubsystem extends SubsystemBase {
     TalonFXConfiguration Shooterconfigs = new TalonFXConfiguration();
     TalonFXConfiguration pivotConfigs = new TalonFXConfiguration();
 
-    Shooterconfigs.Slot0.kP = 0.6;
-    Shooterconfigs.Slot0.kI = 1.25;
+    Shooterconfigs.Slot0.kP = 0.7;
+    Shooterconfigs.Slot0.kI = 1.8;
     Shooterconfigs.Slot0.kD = 0;
 
     Shooterconfigs.Slot1.kP = .35;
     Shooterconfigs.Slot1.kI = 1;
     Shooterconfigs.Slot1.kD = 0;
 
-    Shooterconfigs.Voltage.PeakForwardVoltage = 10;
-    Shooterconfigs.Voltage.PeakReverseVoltage = -10;
-
-    Shooterconfigs.TorqueCurrent.PeakForwardTorqueCurrent = 40;
-    Shooterconfigs.TorqueCurrent.PeakReverseTorqueCurrent = -40;
     Shooterconfigs.MotorOutput.NeutralMode = Coast;
 
     pivotConfigs.MotorOutput.PeakForwardDutyCycle = .3;
@@ -105,17 +101,23 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void ShooterShoot() {
-    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3750 / 60));
+    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-4500/ 60));
+        shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle,
+        Constants.Shooter.targetShooterPivotIndexAngle)
+        + pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle * 6.2832, 1));
   }
 
   public void StopShooter() {
     shooterMotor.set(0);
+        shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle,
+        Constants.Shooter.targetShooterPivotIndexAngle)
+        + pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle * 6.2832, 1));
   }
 public void StopShooterPivot(){
   shooterPivotMotorMaster.set(0);
 }  
 public boolean ReadyToShoot() {
-    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)
+    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .00425)
         && MathUtil.isNear(-4500 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1)// 3750
     // && MathUtil.isNear(0, limelightTX, rotationTolerance)
     ) {
@@ -138,7 +140,7 @@ public boolean ReadyToShoot() {
   }
 
   public boolean ReadyToShootAutoSlower() {
-    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .01)// .005
+    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .00425)// .005
         && MathUtil.isNear(-4500 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1))// 1
     {
       return true;
@@ -172,7 +174,7 @@ public boolean ReadyToShoot() {
   }
 
   public void ShootInAmp() {
-    shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .27)// .319 for trap
+    shooterPivotMotorMaster.set(-AmpPivotPID.calculate(shooterMotorAngle, .27)// .319 for trap
         + pivotFeedForward.calculate(.27 * 6.2832, 1));
   }
 
@@ -185,7 +187,16 @@ public boolean ReadyToShoot() {
     shooterPivotMotorMaster
         .set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shootOverStageAngleConstant)
             + pivotFeedForward.calculate(Constants.Shooter.shootOverStageAngleConstant * 6.2832, 1));
-    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3300 / 60));
+    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-4000 / 60));
+  }
+  public boolean ReadyToShootOverStage(){
+    if(MathUtil.isNear(-.1, shooterMotorAngle, .05) 
+    && MathUtil.isNear(-4000/60,  shooterMotor.getVelocity().getValueAsDouble(), 3)){
+      return true;
+    }
+   else {
+      return false;
+    }
   }
 
   public void ShootTrapdoor() {
@@ -197,12 +208,12 @@ public boolean ReadyToShoot() {
   }
 
   public void ShooterToFirstClimb(){
-     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .08)// .319 for trap
+     shooterPivotMotorMaster.set(-AmpPivotPID.calculate(shooterMotorAngle, .08)// .319 for trap
         + pivotFeedForward.calculate(.08 * 6.2832, 1));
   }
  public void ShooterToSecondClimb(){
-     shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle, .31)// .319 for trap
-        + pivotFeedForward.calculate(.31 * 6.2832, 1));
+     shooterPivotMotorMaster.set(-AmpPivotPID.calculate(shooterMotorAngle, .32)// .319 for trap
+        + pivotFeedForward.calculate(.32 * 6.2832, 1));
   }
 
   @Override
@@ -215,8 +226,8 @@ public boolean ReadyToShoot() {
     SmartDashboard.getNumber("kD RPM", 0);
 
     AmpShooterRPM = SmartDashboard.getNumber("AmpShooterRpm", 1700);
-    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5)) + .0028)// .0048
-        / -.1285);
+    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5)) + .00255)// .0048
+        / -.1295);
     // -.1325
     shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
     shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);

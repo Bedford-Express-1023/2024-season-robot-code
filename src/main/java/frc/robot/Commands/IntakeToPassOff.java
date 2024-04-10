@@ -50,6 +50,7 @@ public class IntakeToPassOff extends Command {
           ) {
           s_IntakeSubsystem.IntakeNote();
           s_IndexerSubsystem.IndexNote();
+          s_ShooterSubsystem.ShooterShoot();
         } else {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();

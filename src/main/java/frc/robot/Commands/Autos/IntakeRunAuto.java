@@ -9,17 +9,20 @@ import frc.robot.Subsystems.IntakeSubsystem;
 
 public class IntakeRunAuto extends Command {
   IntakeSubsystem s_IntakeSubsystem;
-
+  long shooterStartTime;
   /** Creates a new IntakeRun. */
   public IntakeRunAuto(IntakeSubsystem s_IntakeSubsystem) {
     this.s_IntakeSubsystem = s_IntakeSubsystem;
     addRequirements(s_IntakeSubsystem);
+   
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+      
+    shooterStartTime = -1;
     System.out.println("Starting IntakeRun");
     s_IntakeSubsystem.IntakePivotPID.reset();
   }
@@ -30,6 +33,10 @@ public class IntakeRunAuto extends Command {
         System.out.println(" IntakeRun");
 
     s_IntakeSubsystem.IntakeRun();
+    if (shooterStartTime == -1) {
+
+      shooterStartTime = System.currentTimeMillis();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +51,7 @@ public class IntakeRunAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !s_IntakeSubsystem.intakeBeamBreakValue;
+    return !s_IntakeSubsystem.intakeBeamBreakValue || shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 3500;
+    
   }
 }

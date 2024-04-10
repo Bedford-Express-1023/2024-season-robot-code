@@ -27,9 +27,9 @@ NeutralModeValue Brake = NeutralModeValue.Brake;
      TalonFXConfiguration configs = new TalonFXConfiguration();
      configs.MotorOutput.NeutralMode = Brake;
      configs.CurrentLimits.StatorCurrentLimitEnable = true;
-     configs.CurrentLimits.StatorCurrentLimit = 20;// 30 StatorCurrentLimit for the climber in the box
+     configs.CurrentLimits.StatorCurrentLimit = 25;// 30 StatorCurrentLimit for the climber in the box
      configs.CurrentLimits.SupplyCurrentLimitEnable = true;
-     configs.CurrentLimits.SupplyCurrentLimit = 4; //6  for the climber in the box
+     configs.CurrentLimits.SupplyCurrentLimit = 8.5; //6  for the climber in the box
      rightClimberMotor.getConfigurator().apply(configs);
      leftClimberMotor.getConfigurator().apply(configs);
 
@@ -47,13 +47,13 @@ NeutralModeValue Brake = NeutralModeValue.Brake;
 
   public void ClimberDownWithSwitch() {
  if(leftLimitSwitch.get() == true){
-leftClimberMotor.set(.4);
+leftClimberMotor.set(.8);
  }
  else if (leftLimitSwitch.get() == false){
   leftClimberMotor.set(0);
  }
  if(rightLimitSwitch.get() == true){
-  rightClimberMotor.set(-.4);
+  rightClimberMotor.set(-.8);
  }
  else if (rightLimitSwitch.get() == false){
 rightClimberMotor.set(0);
@@ -61,13 +61,13 @@ rightClimberMotor.set(0);
 }
     public void ClimberUpWithSwitch() {
     if (rightClimberMotor.getPosition().getValueAsDouble() < 185){
-      rightClimberMotor.set(.4);
+      rightClimberMotor.set(.8);
     }
     else{
       rightClimberMotor.set(0);
     }
     if (leftClimberMotor.getPosition().getValueAsDouble()> -185){
-      leftClimberMotor.set(-.4);
+      leftClimberMotor.set(-.8);
     }
     else{
       leftClimberMotor.set(0);
@@ -77,6 +77,15 @@ rightClimberMotor.set(0);
     leftClimberMotor.set(0);
     rightClimberMotor.set(0);
   }
+
+public boolean ClimberOnLimitSwitch(){
+  if (rightLimitSwitch.get() == false && leftLimitSwitch.get() == false){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 
   @Override
   public void periodic() {

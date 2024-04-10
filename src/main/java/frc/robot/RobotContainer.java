@@ -16,22 +16,22 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.FirstTrapdoorSpot;
 import frc.robot.Commands.IntakeToPassOff;
 import frc.robot.Commands.NotePassOff;
 import frc.robot.Commands.PointAtSpeaker;
-import frc.robot.Commands.SecondTrapdoorSpot;
 import frc.robot.Commands.SwerveXPattern;
 import frc.robot.Commands.Autos.IntakeDownAuto;
 import frc.robot.Commands.Autos.IntakeRunAuto;
 import frc.robot.Commands.Autos.NotePassOffAuto;
 import frc.robot.Commands.Autos.ShootBackAuto;
 import frc.robot.Commands.Autos.ShootFasterAuto;
+import frc.robot.Commands.Autos.ShootOverStageAuto;
 import frc.robot.Commands.Autos.ShootSlowerAuto;
 import frc.robot.Commands.Autos.StartShooterAuto;
 import frc.robot.Commands.Climber.ClimberDown;
@@ -62,6 +62,9 @@ import frc.robot.Commands.Shooter.ShooterPrepareToIndex;
 import frc.robot.Commands.Shooter.ShooterShoot;
 import frc.robot.Commands.Shooter.ShooterZero;
 import frc.robot.Commands.Shooter.StopShooter;
+import frc.robot.Commands.TrapDoor.ClimbDownAndTrap;
+import frc.robot.Commands.TrapDoor.FirstTrapdoorSpot;
+import frc.robot.Commands.TrapDoor.SecondTrapdoorSpot;
 import frc.robot.Constants.Shooter;
 import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.IndexerSubsystem;
@@ -97,6 +100,7 @@ public class RobotContainer extends SubsystemBase {
   // private final XboxController ManipulatorController = new XboxController(0);
   private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
+  long intakeBeamBreakBrokenTime;
   Limelight limelightSubsystem = new Limelight();
   IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
@@ -139,6 +143,7 @@ public class RobotContainer extends SubsystemBase {
   NotePassOffAuto notePassOffAuto = new NotePassOffAuto(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ShootBackAuto shootBack = new ShootBackAuto(ShooterSubsystem, IndexerSubsystem);
   StartShooterAuto startShooterAuto = new StartShooterAuto(ShooterSubsystem);
+  ShootOverStageAuto ShootOverStageAuto = new ShootOverStageAuto(ShooterSubsystem, IndexerSubsystem);
   IntakeToPassOff intakeToPassOff = new IntakeToPassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ShooterZero shooterZero = new ShooterZero(ShooterSubsystem);
   SwerveXPattern swerveXPattern = new SwerveXPattern(drivetrain);
@@ -148,11 +153,12 @@ public class RobotContainer extends SubsystemBase {
   PointAtSpeaker PointAtSpeaker = new PointAtSpeaker(drivetrain, limelightSubsystem);
 ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
 ShootUnderStage ShootUnderStage = new ShootUnderStage(ShooterSubsystem);
-ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem);
+ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem, IntakeSubsystem);
 ClimberUpWithSwitch ClimberUpWithSwitch = new ClimberUpWithSwitch(ClimberSubsystem);
-FirstTrapdoorSpot FirstTrapdoorSpot = new FirstTrapdoorSpot(ShooterSubsystem);
+FirstTrapdoorSpot FirstTrapdoorSpot = new FirstTrapdoorSpot(ShooterSubsystem, ClimberSubsystem, IntakeSubsystem);
 SecondTrapdoorSpot SecondTrapdoorSpot = new SecondTrapdoorSpot(ShooterSubsystem);
 ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
+ClimbDownAndTrap ClimbDownAndTrap = new ClimbDownAndTrap(ClimberSubsystem, IndexerSubsystem, IntakeSubsystem);
   public RobotContainer() {
    // ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
     //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
@@ -164,64 +170,66 @@ ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
     NamedCommands.registerCommand("PassOff", notePassOffAuto);
     NamedCommands.registerCommand("ShootBack", shootBack);
     NamedCommands.registerCommand("StartShooter", startShooterAuto);
+    NamedCommands.registerCommand("ShootOverStage", ShootOverStageAuto);
 
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
    ManipulatorController.back()
-        .whileTrue(ClimberDownWithSwitch)
-        .whileFalse(ClimberStop);
+        .whileTrue(ClimbDownAndTrap)
+        .whileFalse(ClimberStop)
+        .whileFalse(stopIndex);
   ManipulatorController.start()
         .whileTrue(ClimberUpWithSwitch)
         .whileFalse(ClimberStop);
-    ManipulatorController.leftTrigger()
-        .whileTrue(intakeRun)
-        .whileFalse(intakeRun);
         ManipulatorController.leftStick()
         .whileTrue(FirstTrapdoorSpot)
-        .whileFalse(ShooterPivotStop);
+        .whileFalse(ShooterPivotStop)
+        .whileFalse(ClimberStop)
+        .whileFalse(intakeRun);
         ManipulatorController.rightStick()
         .whileTrue(SecondTrapdoorSpot)
         .whileFalse(ShooterPivotStop);
-  ManipulatorController.rightBumper()
+
+    ManipulatorController.a()
+        .whileTrue(intakeNote)
+      .whileFalse(intakeStop);
+    ManipulatorController.b()
+        .whileTrue(OutTake)
+        .whileFalse(intakeStop);
+    ManipulatorController.leftBumper()
+        .whileTrue(FeedShooterFast)
+        .whileFalse(stopIndex);
+    ManipulatorController.rightBumper()
         .whileTrue(reverseIndexer)
         .whileFalse(stopIndex);
-    // ManipulatorController.a()
-    //     .whileTrue(intakeNote)
-    //   .whileFalse(intakeStop);
-    // ManipulatorController.b()
-    //     .whileTrue(OutTake)
-    //     .whileFalse(intakeStop);
-    // ManipulatorController.leftBumper()
-    //     .whileTrue(FeedShooterFast)
-    //     .whileFalse(stopIndex);
-    // ManipulatorController.rightBumper()
-    //     .whileTrue(reverseIndexer)
-    //     .whileFalse(stopIndex);
-    // ManipulatorController.pov(180)
-    //     .whileTrue(intakeToPassOff)
-    //     .whileFalse(intakePrepareToIndex);
-    // ManipulatorController.pov(0)
-    //     .whileTrue(intakeRun)
-    //     .whileFalse(intakePrepareToIndex);
-    // ManipulatorController.pov(90)
-    //     .whileTrue(shootAtSubwoofer)
-    //     .whileFalse(shooterPrepareToIndex);
-    // ManipulatorController.pov(270)
-    //     .whileTrue(notePassOff);
-    // ManipulatorController.y()
-    //     .whileTrue(shootInAmp)
-    //     .whileFalse(shooterPrepareToIndex);
-    // ManipulatorController.x()
-    //     .whileTrue(shootWithLimelight)
-    //     .whileFalse(shooterPrepareToIndex);
-    // ManipulatorController.x()
-    //     .whileTrue(shootWithLimelight)
-    //     .whileFalse(shooterPrepareToIndex);
-        // ManipulatorController.rightTrigger()
-        // .whileTrue(ShootUnderStage)
-        // .onFalse(shooterPrepareToIndex);
-
+    ManipulatorController.pov(180)
+        .whileTrue(intakeToPassOff)
+        .whileFalse(intakePrepareToIndex)
+        .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.pov(0)
+        .whileTrue(intakeRun)
+        .whileFalse(intakePrepareToIndex);
+    ManipulatorController.pov(90)
+        .whileTrue(shootAtSubwoofer)
+        .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.pov(270)
+        .whileTrue(notePassOff);
+    ManipulatorController.y()
+        .whileTrue(shootInAmp)
+        .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.x()
+        .whileTrue(shootWithLimelight)
+        .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.x()
+        .whileTrue(shootWithLimelight)
+        .whileFalse(shooterPrepareToIndex);
+        ManipulatorController.rightTrigger()
+        .whileTrue(ShootUnderStage)
+        .onFalse(shooterPrepareToIndex);
+ManipulatorController.leftTrigger()
+.whileTrue(shooterShoot)
+.whileFalse(stopShooter);
     DriverController.x()
         .whileTrue(swerveXPattern);
   
@@ -255,6 +263,10 @@ ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
     if (Conttroller.getRightBumper()) {
       MaxSpeed = 1;
       MaxAngularRate = .5 * Math.PI;
+    } 
+      else if (Conttroller.getYButton()) {
+      MaxSpeed = 1;
+      MaxAngularRate = 1.5 * Math.PI;
     } else {
       MaxSpeed = 4;
       MaxAngularRate = 1.5 * Math.PI;
@@ -279,6 +291,13 @@ ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
     } else {
       LeftXAxis = 0;
     }
+    if(IntakeSubsystem.intakeBeamBreakValue == false){
+    Conttroller.setRumble(RumbleType.kBothRumble,.25);
+    }
+    else if ((System.currentTimeMillis() - intakeBeamBreakBrokenTime) > 250||IntakeSubsystem.intakeBeamBreakValue == true ){
+    Conttroller.setRumble(RumbleType.kBothRumble,0);
+    }
+
   }
   public Command getAutonoCommand() {
 

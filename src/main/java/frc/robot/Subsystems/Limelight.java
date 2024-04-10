@@ -28,7 +28,7 @@ public class Limelight extends SubsystemBase {
    @Override
    public void periodic() {
       if (controller1.getYButton() == true) {
-         pidRotation.setPID(0.004, 0.002, 0);
+         pidRotation.setPID(0.02, 0.0, 0);
 
       } else {
          pidRotation.setPID(.0, 0.0, 0);
@@ -42,17 +42,18 @@ public class Limelight extends SubsystemBase {
       // getting april tags 4 and 7 tx values
       Speakertx = LimelightHelpers.getTX("");
      
-       if (Speakertx < -8){
-      rotationtmp = .09;
-      pidRotation.reset();
-     }
-     else if (Speakertx > 8){
-      rotationtmp = -.09;
-      pidRotation.reset();
-     }
-     else{
- rotationtmp = pidRotation.calculate(Speakertx, 0.0);
-     }
+   //     if (Speakertx < -8){
+   //    rotationtmp = .15;
+   //    pidRotation.reset();
+   //   }
+   //   else if (Speakertx > 8){
+   //    rotationtmp = -.15;
+   //    pidRotation.reset();
+   //   }
+//      else{
+//rotationtmp = pidRotation.calculate(Speakertx, 0.0);
+//      }
+rotationtmp = pidRotation.calculate(Speakertx, 0.0);
       SmartDashboard.putNumber("limelight rotation power",rotationtmp);
       SmartDashboard.putNumber("Speaker tx", Speakertx);
    }

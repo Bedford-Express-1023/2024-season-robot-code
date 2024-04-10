@@ -51,6 +51,7 @@ public class NotePassOffAuto extends Command {
 
       s_IntakeSubsystem.IntakePrepareToIndex();
       s_ShooterSubsystem.ShooterPrepareToIndex();
+      
       //SmartDashboard.putBoolean("NotePassOff is going to indexing angles", true);
 
      
@@ -60,6 +61,7 @@ public class NotePassOffAuto extends Command {
 
           s_IntakeSubsystem.IntakeNote();
           s_IndexerSubsystem.IndexNote();
+          s_ShooterSubsystem.ShooterShoot();
           SmartDashboard.putBoolean("NotePassOff is at indexing angles", true);
         } else {
               System.out.println("waiting for transition Passoff");

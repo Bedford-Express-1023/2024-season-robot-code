@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.42,
+        "x": 2.16,
         "y": 4.85
       },
       "prevControl": {
-        "x": 2.3863293069347113,
+        "x": 2.1263293069347116,
         "y": 4.85
       },
       "nextControl": null,
@@ -45,13 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -22.203113094490078,
+    "rotation": -22.19999999999999,
     "rotateFast": true
   },
   "reversed": false,
   "folder": "Middle 4 piece",
   "previewStartingState": {
-    "rotation": 64.02560603756874,
+    "rotation": 79.25,
     "velocity": 0
   },
   "useDefaultConstraints": false

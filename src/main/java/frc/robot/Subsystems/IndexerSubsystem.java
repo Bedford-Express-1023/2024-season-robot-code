@@ -34,6 +34,10 @@ public class IndexerSubsystem extends SubsystemBase {
   public void ReverseIndexer() {
     indexerMotor.set(ControlMode.PercentOutput, -.9);
   }
+  
+  public void ReverseIndexerTrapdoor(){
+    indexerMotor.set(ControlMode.PercentOutput, -1);
+  }
 
   public void IndexNote() {
     indexerMotor.set(ControlMode.PercentOutput, 0.6);
