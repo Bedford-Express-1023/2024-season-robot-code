@@ -140,7 +140,7 @@ public boolean ReadyToShoot() {
   }
 
   public boolean ReadyToShootAutoSlower() {
-    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .00425)// .005
+    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .005)// .005
         && MathUtil.isNear(-4500 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1))// 1
     {
       return true;
@@ -226,7 +226,7 @@ public boolean ReadyToShoot() {
     SmartDashboard.getNumber("kD RPM", 0);
 
     AmpShooterRPM = SmartDashboard.getNumber("AmpShooterRpm", 1700);
-    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5)) + .00255)// .0048
+    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5)) + .0026)// .0048
         / -.1295);
     // -.1325
     shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();

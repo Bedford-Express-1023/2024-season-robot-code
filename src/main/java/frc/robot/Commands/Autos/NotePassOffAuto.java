@@ -19,6 +19,7 @@ public class NotePassOffAuto extends Command {
   IndexerSubsystem s_IndexerSubsystem;
   boolean betweenBeamBreaksBoolean;
 
+  long shooterStartTime;
   public NotePassOffAuto(IntakeSubsystem s_IntakeSubsystem, ShooterSubsystem s_ShooterSubsystem, IndexerSubsystem s_IndexerSubsystem) {
     this.s_IntakeSubsystem = s_IntakeSubsystem;
     this.s_ShooterSubsystem = s_ShooterSubsystem;
@@ -32,6 +33,7 @@ public class NotePassOffAuto extends Command {
   public void initialize() {
     System.out.println("Starting NotePassoff");
 
+    shooterStartTime = -1;
     s_ShooterSubsystem.shooterPivotPID.reset();
     s_IntakeSubsystem.IntakePivotPID.reset();
 
@@ -76,6 +78,10 @@ public class NotePassOffAuto extends Command {
           s_IndexerSubsystem.StopIndex();
           s_IntakeSubsystem.IntakeStop();
         }
+        if (shooterStartTime == -1) {
+
+          shooterStartTime = System.currentTimeMillis();
+        }
     }
  
 
@@ -96,6 +102,6 @@ public class NotePassOffAuto extends Command {
   public boolean isFinished() {
                   System.out.println("indexer beam break Passoff is " + s_IndexerSubsystem.indexerBeamBreakValue);
 
-    return !s_IndexerSubsystem.indexerBeamBreakValue;
+    return !s_IndexerSubsystem.indexerBeamBreakValue|| shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 3500;
   }
 }

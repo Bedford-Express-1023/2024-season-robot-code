@@ -3,6 +3,13 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "1st gavin auto",
+    "2nd gavin auto",
+    "3rd gavin auto",
+    "4th gavin auto",
+    "5th Gavin auto",
+    "7th gavin auto",
+    "8th gavin auto",
     "Amp side 3 piece",
     "Amp side back up",
     "Feeder side shoot and back up",
@@ -10,12 +17,16 @@
     "Hit Middle 5 Amp Side",
     "Hit Middle 5 Feeder Side",
     "Middle 4 piece",
-    "New Folder",
+    "Amp side 4 piece",
     "Race to the line feeder side",
     "Stage Feeder side 4 piece",
     "feeder side 3 piece away from speaker"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Amp",
+    "Feeder",
+    "Middle"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

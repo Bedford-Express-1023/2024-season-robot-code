@@ -18,8 +18,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private final TalonFX rightClimberMotor = new TalonFX(Constants.Climber.CLIMBER_RIGHT_CAN); // FIXME
   private final TalonFX leftClimberMotor = new TalonFX(Constants.Climber.CLIMBER_LEFT_CAN); // FIXME
-  DigitalInput rightLimitSwitch = new DigitalInput(5);//4 for the box climber
-  DigitalInput leftLimitSwitch = new DigitalInput(4);// 5 for the box climber
+  DigitalInput rightLimitSwitch = new DigitalInput(4);//4 for the box climber
+  DigitalInput leftLimitSwitch = new DigitalInput(3);// 5 for the box climber
 NeutralModeValue Brake = NeutralModeValue.Brake;
 
   /** Creates a new ClimberSubsystem. */

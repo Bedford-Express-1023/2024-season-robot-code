@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.1,
+        "y": 4.17
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.045275935208766,
+        "y": 4.086302468777599
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.912506594243959,
+        "y": 4.01584572399914
+      },
+      "prevControl": {
+        "x": 2.8125103747479017,
+        "y": 4.016715256342584
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 0.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "7th gavin auto",
+  "previewStartingState": {
+    "rotation": -48.24000000000001,
+    "velocity": 0.0
+  },
+  "useDefaultConstraints": false
+}

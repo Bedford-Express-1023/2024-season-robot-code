@@ -35,7 +35,7 @@ public final class Constants {
 
     public static final class Indexer {
         public static final int INDEXER_CAN = 2; //FIXME
-        public static final int INDEXER_BEAM_BREAK_DIO = 3; //FIXME
+        public static final int INDEXER_BEAM_BREAK_DIO = 5; //FIXME
     }
 
     public static final class Intake{

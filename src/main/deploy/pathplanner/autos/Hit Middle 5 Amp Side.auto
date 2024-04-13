@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.41,
-      "y": 7.72
+      "x": 1.3633965729469937,
+      "y": 7.291670737187628
     },
     "rotation": 0
   },
@@ -11,6 +11,12 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp side 1"
+          }
+        },
         {
           "type": "path",
           "data": {
@@ -38,6 +44,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Amp",
   "choreoAuto": false
 }

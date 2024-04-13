@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -159,7 +160,11 @@ FirstTrapdoorSpot FirstTrapdoorSpot = new FirstTrapdoorSpot(ShooterSubsystem, Cl
 SecondTrapdoorSpot SecondTrapdoorSpot = new SecondTrapdoorSpot(ShooterSubsystem);
 ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
 ClimbDownAndTrap ClimbDownAndTrap = new ClimbDownAndTrap(ClimberSubsystem, IndexerSubsystem, IntakeSubsystem);
+
+
   public RobotContainer() {
+    
+   
    // ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
     //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
     //IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
@@ -236,6 +241,7 @@ ManipulatorController.leftTrigger()
   }
 
   private void configureBindings() {
+    var time = DriverStation.getAlliance();
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-LeftYAxis * MaxSpeed) // Drive forward with negative Y
                                                                                  // (forward)
@@ -256,7 +262,12 @@ ManipulatorController.leftTrigger()
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    
   }
+
+   
+                    
 
   @Override
   public void periodic() {

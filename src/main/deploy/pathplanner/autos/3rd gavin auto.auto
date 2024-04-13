@@ -2,54 +2,23 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 7.28
+      "x": 1.43,
+      "y": 1.58
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Amp side 1"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeDown"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 5"
+                  "pathName": "3.5 no preload feeder 1"
                 }
               },
               {
@@ -68,20 +37,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 6"
+                  "pathName": "3.5 feeder no preload 4"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PassOff"
-                      }
-                    }
-                  ]
+                  "name": "PassOff"
                 }
               }
             ]
@@ -100,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 7"
+                  "pathName": "3.5 feeder no preload 5"
                 }
               },
               {
@@ -119,7 +81,51 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side 8"
+                  "pathName": "3.5 no preload feeder 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSlowWithLimelight"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3.5 nopreload feeder 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeRun"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3.5 no preload feeder 4"
                 }
               },
               {
@@ -140,6 +146,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Feeder",
   "choreoAuto": false
 }

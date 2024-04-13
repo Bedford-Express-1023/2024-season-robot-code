@@ -20,18 +20,31 @@
         {
           "type": "named",
           "data": {
-            "name": "LimeLight"
+            "name": "ShootFastWithLimelight"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Amp back up"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp back up"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Amp",
   "choreoAuto": false
 }

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.42,
-      "y": 7.67
+      "x": 1.4,
+      "y": 7.28
     },
     "rotation": 0
   },
@@ -12,9 +12,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "IntakeDown"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp side 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeDown"
+                }
+              }
+            ]
           }
         },
         {
@@ -189,6 +202,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Feeder",
   "choreoAuto": false
 }
