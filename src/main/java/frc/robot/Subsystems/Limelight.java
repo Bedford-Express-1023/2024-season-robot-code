@@ -5,6 +5,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,7 +15,7 @@ public class Limelight extends SubsystemBase {
    public double rotationtmp;
    PIDController pidRotation = new PIDController(.0125, 0, 0);//0.5, 0.5, 0.05);//0.0125, 0.00, 0);
    double Speakertx;
-
+   double feederRotationLine;
    public void RotateWithLimelight() {
       pidRotation.setPID(.01, 0.002, 0);
       rotationtmp = pidRotation.calculate(Speakertx, 0.0);
@@ -27,34 +28,37 @@ public class Limelight extends SubsystemBase {
 
    @Override
    public void periodic() {
+      double distanceWithLimelight =  Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5);
       if (controller1.getYButton() == true) {
          pidRotation.setPID(0.02, 0.0, 0);
-
-      } else {
+     rotationtmp = pidRotation.calculate(Speakertx, 0.0);
+      }
+      else if(controller1.getXButton() == true) {
+         pidRotation.setPID(0.02, 0.0, 0);
+         rotationtmp = pidRotation.calculate(Speakertx, feederRotationLine);
+      }
+      else {
          pidRotation.setPID(.0, 0.0, 0);
          pidRotation.reset();
 
       }
+if(rotationtmp > .15 && controller1.getXButton() ){
+   rotationtmp = .15;
+}
+else if (rotationtmp < -.15 && controller1.getXButton()){
+   rotationtmp = -.15;
+}
 
       // giving us a tolerance + or - .25 degrease.
       pidRotation.setTolerance(0.25);
     
       // getting april tags 4 and 7 tx values
       Speakertx = LimelightHelpers.getTX("");
-     
-   //     if (Speakertx < -8){
-   //    rotationtmp = .15;
-   //    pidRotation.reset();
-   //   }
-   //   else if (Speakertx > 8){
-   //    rotationtmp = -.15;
-   //    pidRotation.reset();
-   //   }
-//      else{
-//rotationtmp = pidRotation.calculate(Speakertx, 0.0);
-//      }
-rotationtmp = pidRotation.calculate(Speakertx, 0.0);
+feederRotationLine = -4000 * distanceWithLimelight +18; 
+
+
       SmartDashboard.putNumber("limelight rotation power",rotationtmp);
       SmartDashboard.putNumber("Speaker tx", Speakertx);
+      SmartDashboard.putNumber("feeder Rotation offset",feederRotationLine);
    }
 }

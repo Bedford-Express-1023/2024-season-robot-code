@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -43,11 +45,14 @@ import frc.robot.Commands.Indexer.FeedShooter;
 import frc.robot.Commands.Indexer.FeedShooterFast;
 import frc.robot.Commands.Indexer.ReverseIndexer;
 import frc.robot.Commands.Indexer.StopIndex;
+import frc.robot.Commands.Intake.DontZeroIntake;
 import frc.robot.Commands.Intake.IntakeNote;
 import frc.robot.Commands.Intake.IntakePrepareToIndex;
 import frc.robot.Commands.Intake.IntakeRun;
 import frc.robot.Commands.Intake.IntakeStop;
 import frc.robot.Commands.Intake.IntakeZero;
+import frc.robot.Commands.Intake.IntakeZeroOnBumber;
+import frc.robot.Commands.Intake.IntakeZeroOnHardStop;
 import frc.robot.Commands.Intake.OutTake;
 import frc.robot.Commands.Shooter.ShootAtFarshot;
 import frc.robot.Commands.Shooter.ShootAtSubwoofer;
@@ -147,24 +152,28 @@ public class RobotContainer extends SubsystemBase {
   IntakeToPassOff intakeToPassOff = new IntakeToPassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ShooterZero shooterZero = new ShooterZero(ShooterSubsystem);
   SwerveXPattern swerveXPattern = new SwerveXPattern(drivetrain);
-  ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
+  ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem, IndexerSubsystem);
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
   IntakeZero intakeZero = new IntakeZero(IntakeSubsystem);
   PointAtSpeaker PointAtSpeaker = new PointAtSpeaker(drivetrain, limelightSubsystem);
-ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
-ShootUnderStage ShootUnderStage = new ShootUnderStage(ShooterSubsystem);
-ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem, IntakeSubsystem);
-ClimberUpWithSwitch ClimberUpWithSwitch = new ClimberUpWithSwitch(ClimberSubsystem);
-FirstTrapdoorSpot FirstTrapdoorSpot = new FirstTrapdoorSpot(ShooterSubsystem, ClimberSubsystem, IntakeSubsystem);
-SecondTrapdoorSpot SecondTrapdoorSpot = new SecondTrapdoorSpot(ShooterSubsystem);
-ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
-ClimbDownAndTrap ClimbDownAndTrap = new ClimbDownAndTrap(ClimberSubsystem, IndexerSubsystem, IntakeSubsystem);
+  ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
+  ShootUnderStage ShootUnderStage = new ShootUnderStage(ShooterSubsystem);
+  ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem, IntakeSubsystem);
+  ClimberUpWithSwitch ClimberUpWithSwitch = new ClimberUpWithSwitch(ClimberSubsystem);
+  FirstTrapdoorSpot FirstTrapdoorSpot = new FirstTrapdoorSpot(ShooterSubsystem, ClimberSubsystem, IntakeSubsystem);
+  SecondTrapdoorSpot SecondTrapdoorSpot = new SecondTrapdoorSpot(ShooterSubsystem);
+  ShooterPivotStop ShooterPivotStop = new ShooterPivotStop(ShooterSubsystem);
+  ClimbDownAndTrap ClimbDownAndTrap = new ClimbDownAndTrap(ClimberSubsystem, IndexerSubsystem, IntakeSubsystem);
+  IntakeZeroOnBumber IntakeZeroOnBumber = new IntakeZeroOnBumber(IntakeSubsystem);
+  IntakeZeroOnHardStop IntakeZeroOnHardStop = new IntakeZeroOnHardStop(IntakeSubsystem);
+  DontZeroIntake DontZeroIntake = new DontZeroIntake(IntakeSubsystem);
+
   public RobotContainer() {
-   // ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
-    //ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
-    //IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
+    // ClimberSubsystem.setDefaultCommand(ClimberDownWithSwitch);
+    // ShooterSubsystem.setDefaultCommand(shooterPrepareToIndex);
+    // IntakeSubsystem.setDefaultCommand(intakePrepareToIndex);
     NamedCommands.registerCommand("ShootSlowWithLimelight", ShootSlowerAuto);
-     NamedCommands.registerCommand("ShootFastWithLimelight", ShootFasterAuto);
+    NamedCommands.registerCommand("ShootFastWithLimelight", ShootFasterAuto);
     NamedCommands.registerCommand("IntakeDown", intakeDownAuto);
     NamedCommands.registerCommand("IntakeRun", intakeRunAuto);
     NamedCommands.registerCommand("PassOff", notePassOffAuto);
@@ -175,25 +184,25 @@ ClimbDownAndTrap ClimbDownAndTrap = new ClimbDownAndTrap(ClimberSubsystem, Index
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
-   ManipulatorController.back()
+    ManipulatorController.back()
         .whileTrue(ClimbDownAndTrap)
         .whileFalse(ClimberStop)
         .whileFalse(stopIndex);
-  ManipulatorController.start()
+    ManipulatorController.start()
         .whileTrue(ClimberUpWithSwitch)
         .whileFalse(ClimberStop);
-        ManipulatorController.leftStick()
+    ManipulatorController.leftStick()
         .whileTrue(FirstTrapdoorSpot)
         .whileFalse(ShooterPivotStop)
         .whileFalse(ClimberStop)
         .whileFalse(intakeRun);
-        ManipulatorController.rightStick()
+    ManipulatorController.rightStick()
         .whileTrue(SecondTrapdoorSpot)
         .whileFalse(ShooterPivotStop);
 
     ManipulatorController.a()
         .whileTrue(intakeNote)
-      .whileFalse(intakeStop);
+        .whileFalse(intakeStop);
     ManipulatorController.b()
         .whileTrue(OutTake)
         .whileFalse(intakeStop);
@@ -224,15 +233,19 @@ ClimbDownAndTrap ClimbDownAndTrap = new ClimbDownAndTrap(ClimberSubsystem, Index
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
-        ManipulatorController.rightTrigger()
-        .whileTrue(ShootUnderStage)
-        .onFalse(shooterPrepareToIndex);
-ManipulatorController.leftTrigger()
-.whileTrue(shooterShoot)
-.whileFalse(stopShooter);
-    DriverController.x()
-        .whileTrue(swerveXPattern);
-  
+    ManipulatorController.rightTrigger()
+        .whileTrue(shootOverStage)
+        .onFalse(shooterPrepareToIndex)
+        .onFalse(stopIndex);
+    ManipulatorController.leftTrigger()
+        .whileTrue(shooterShoot)
+        .whileFalse(stopShooter);
+    DriverController.back()
+        .onTrue(IntakeZeroOnBumber)
+        .whileFalse(DontZeroIntake);
+    DriverController.start()
+        .onTrue(IntakeZeroOnHardStop)
+        .whileFalse(DontZeroIntake);
   }
 
   private void configureBindings() {
@@ -263,8 +276,7 @@ ManipulatorController.leftTrigger()
     if (Conttroller.getRightBumper()) {
       MaxSpeed = 1;
       MaxAngularRate = .5 * Math.PI;
-    } 
-      else if (Conttroller.getYButton()) {
+    } else if (Conttroller.getYButton()) {
       MaxSpeed = 1;
       MaxAngularRate = 1.5 * Math.PI;
     } else {
@@ -274,11 +286,12 @@ ManipulatorController.leftTrigger()
 
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
-    }
-    else if (Conttroller.getYButton()) {
-    RightXAxis = -limelightSubsystem.rotationtmp;
-    }
-    else {
+    } else if (Conttroller.getYButton()) {
+      RightXAxis = -limelightSubsystem.rotationtmp;
+    } 
+    else if (Conttroller.getXButton()) {
+      RightXAxis = -limelightSubsystem.rotationtmp;
+    }else {
       RightXAxis = 0;
     }
     if ((DriverController.getLeftY() > .15) || (DriverController.getLeftY() < -.15)) {
@@ -291,17 +304,18 @@ ManipulatorController.leftTrigger()
     } else {
       LeftXAxis = 0;
     }
-    if(IntakeSubsystem.intakeBeamBreakValue == false){
-    Conttroller.setRumble(RumbleType.kBothRumble,.25);
-    }
-    else if ((System.currentTimeMillis() - intakeBeamBreakBrokenTime) > 250||IntakeSubsystem.intakeBeamBreakValue == true ){
-    Conttroller.setRumble(RumbleType.kBothRumble,0);
+    if (IntakeSubsystem.intakeBeamBreakValue == false) {
+      Conttroller.setRumble(RumbleType.kBothRumble, .25);
+    } else if ((System.currentTimeMillis() - intakeBeamBreakBrokenTime) > 250
+        || IntakeSubsystem.intakeBeamBreakValue == true) {
+      Conttroller.setRumble(RumbleType.kBothRumble, 0);
     }
 
   }
+
   public Command getAutonoCommand() {
 
-   return  autChooser.getSelected();
+    return autChooser.getSelected();
   }
 
 }

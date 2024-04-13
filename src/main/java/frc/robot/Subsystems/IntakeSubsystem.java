@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -40,12 +41,15 @@ public class IntakeSubsystem extends SubsystemBase {
   private final String ZeroIntakeOption = "zeroIntake";
     private final String DontZeroIntakeOption = "Don't Zero Intake";
 private String zeroIntakeSelected;
+double MagnetOffSet = .426;
 
+    CANcoderConfiguration CANcoderConfig = new CANcoderConfiguration();
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
     TalonFXConfiguration configs = new TalonFXConfiguration();
-    CANcoderConfiguration CANcoderConfig = new CANcoderConfiguration();
 
+    CANcoderConfig.MagnetSensor.MagnetOffset = MagnetOffSet;
+  PivotCANCoder.getConfigurator().apply(CANcoderConfig);
 
     configs.Voltage.PeakForwardVoltage = 8;
     configs.Voltage.PeakReverseVoltage = -8;
@@ -55,7 +59,6 @@ private String zeroIntakeSelected;
     configs.TorqueCurrent.PeakForwardTorqueCurrent = 40;
     configs.TorqueCurrent.PeakReverseTorqueCurrent = -40;
     intakePivotMotor.getConfigurator().apply(configs);
-    
   zeroIntake.addOption("Don't Zero Intake", DontZeroIntakeOption);
  zeroIntake.setDefaultOption("Don't Zero Intake", DontZeroIntakeOption);
  zeroIntake.addOption("zeroIntake", ZeroIntakeOption);
@@ -105,6 +108,22 @@ private String zeroIntakeSelected;
     intakePivotMotor.set(intakeFeedForward.calculate(0 * 6.2832, 1));
     intakeMotor.set(0);
   }
+    public void IntakeZeroOnHardStop(){
+    MagnetOffSet = MagnetOffSet + (.23 - intakeAngle );
+    
+    CANcoderConfig.MagnetSensor.MagnetOffset = MagnetOffSet;
+  PivotCANCoder.getConfigurator().apply(CANcoderConfig);
+  }
+  public void IntakeZeroOnBumber(){
+    MagnetOffSet = MagnetOffSet + (0-intakeAngle);
+    
+    CANcoderConfig.MagnetSensor.MagnetOffset = MagnetOffSet;
+  PivotCANCoder.getConfigurator().apply(CANcoderConfig);
+  }
+  public void DontZero(){
+    CANcoderConfig.MagnetSensor.MagnetOffset = MagnetOffSet;
+  }
+
 
   @Override
   public void periodic() {
@@ -122,8 +141,14 @@ private String zeroIntakeSelected;
     } else {
       intakeReadyToIndex = false;
     }
+  if(MagnetOffSet > 1){
+    MagnetOffSet = MagnetOffSet-1;
+  }
     intakeBeamBreakValue = intakeBeamBreak.get();
     SmartDashboard.putBoolean("beam break", intakeBeamBreak.get());
     SmartDashboard.putNumber("Intake Angle", intakeAngle);
+    SmartDashboard.putNumber("intake zero offset", MagnetOffSet);
+
+
   }
 }
