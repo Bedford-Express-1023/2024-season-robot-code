@@ -22,7 +22,7 @@ public final class Constants {
         public static final double shooterAngleSubwooferConstant = -0.16; //tested and works
         public static final double shooterVelocityPlatformConstant = 0;
         public static final double shooterAngleFarshotConstant = 0;
-        public static final double shootOverStageAngleConstant = -.15;
+        public static final double shootOverStageAngleConstant = -.143;
         public static final double shootTrapdoorAngleConstant = -.159; //0.0134 this angle works from pretty close, but cannot see limelight from there
         public static final double[][] pivotTable = {{0.029, 0.017},
                                                     {.033,.0164},// x is the shooter angle  y in the distance
@@ -47,7 +47,7 @@ public final class Constants {
         public static double maxWristAcceleration = 15;
 
         public static double intakeSpeed = 0.8;
-        public static double intakeDownPosition = 0.0;
+        public static double intakeDownPosition = -0.01;
         public static double targetIntakePivotIndexAngle = 0.24;
     }
 

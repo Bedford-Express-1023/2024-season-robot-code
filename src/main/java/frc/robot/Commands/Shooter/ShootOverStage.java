@@ -5,14 +5,17 @@
 package frc.robot.Commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Subsystems.IndexerSubsystem;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class ShootOverStage extends Command {
   ShooterSubsystem s_ShooterSubsystem;
+  IndexerSubsystem s_IndexerSubsystem;
   /** Creates a new ShootOverStage. */
-  public ShootOverStage(ShooterSubsystem s_ShooterSubsystem ) {
+  public ShootOverStage(ShooterSubsystem s_ShooterSubsystem, IndexerSubsystem s_IndexerSubsystem ) {
     this.s_ShooterSubsystem = s_ShooterSubsystem;
-    addRequirements(s_ShooterSubsystem);
+    this.s_IndexerSubsystem = s_IndexerSubsystem;
+    addRequirements(s_ShooterSubsystem, s_IndexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,6 +29,10 @@ public class ShootOverStage extends Command {
   @Override
   public void execute() {
     s_ShooterSubsystem.ShootOverStage();
+    if (s_ShooterSubsystem.ReadyToShootOverStage()){
+      s_IndexerSubsystem.FeedShooterFast();
+    }
+   
   }
 
   // Called once the command ends or is interrupted.

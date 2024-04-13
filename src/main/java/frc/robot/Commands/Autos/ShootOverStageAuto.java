@@ -35,7 +35,7 @@ addRequirements(s_ShooterSubsystem, s_IndexerSubsystem);
   @Override
   public void execute() {
     s_ShooterSubsystem.ShootOverStage();
-    if(s_ShooterSubsystem.ReadyToShootOverStage() )
+    if(s_ShooterSubsystem.ReadyToShootOverStageAuto() )
     {
       s_IndexerSubsystem.IndexNote();
       if (shooterStartTime == -1) {
