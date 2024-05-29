@@ -10,10 +10,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Limelight extends SubsystemBase {
+public class ShooterLimelight extends SubsystemBase {
    XboxController controller1 = new XboxController(0);
    public double rotationtmp;
    PIDController pidRotation = new PIDController(.0125, 0, 0);//0.5, 0.5, 0.05);//0.0125, 0.00, 0);
+   LimelightHelpers intakeLImelight = new LimelightHelpers();
    double Speakertx;
    double feederRotationLine;
    public void RotateWithLimelight() {
@@ -28,7 +29,7 @@ public class Limelight extends SubsystemBase {
 
    @Override
    public void periodic() {
-      double distanceWithLimelight =  Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5);
+      double distanceWithLimelight =  Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5);
       if (controller1.getYButton() == true) {
          pidRotation.setPID(0.02, 0.0, 0);
      rotationtmp = pidRotation.calculate(Speakertx, 0.0);
@@ -53,7 +54,7 @@ else if (rotationtmp < -.15 && controller1.getXButton()){
       pidRotation.setTolerance(0.25);
     
       // getting april tags 4 and 7 tx values
-      Speakertx = LimelightHelpers.getTX("");
+      Speakertx = LimelightHelpers.getTX("limelight-shooter");
 feederRotationLine = -4000 * distanceWithLimelight +18; 
 
 

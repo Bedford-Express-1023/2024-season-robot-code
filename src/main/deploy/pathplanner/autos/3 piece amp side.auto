@@ -53,15 +53,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side 3"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "IntakeRun"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp side 3"
                 }
               }
             ]

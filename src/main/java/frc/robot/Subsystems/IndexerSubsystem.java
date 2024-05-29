@@ -36,7 +36,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
   
   public void ReverseIndexerTrapdoor(){
-    indexerMotor.set(ControlMode.PercentOutput, -1);
+    indexerMotor.set(ControlMode.PercentOutput, -.9);
   }
 
   public void IndexNote() {
@@ -45,6 +45,9 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void StopIndex() {
     indexerMotor.set(ControlMode.PercentOutput, 0);
+  }
+   public void FeedPassoff() {
+    indexerMotor.set(ControlMode.PercentOutput, 0.5);
   }
 
   @Override

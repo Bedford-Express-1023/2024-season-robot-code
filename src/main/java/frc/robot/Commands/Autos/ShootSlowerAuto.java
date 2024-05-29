@@ -8,17 +8,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.IndexerSubsystem;
-import frc.robot.Subsystems.Limelight;
+import frc.robot.Subsystems.ShooterLimelight;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class ShootSlowerAuto extends Command {
   ShooterSubsystem s_ShooterSubsystem;
-  Limelight s_Limelight;
+  ShooterLimelight s_Limelight;
   IndexerSubsystem s_IndexerSubsystem;
   long shooterStartTime;
 
   /** Creates a new ShootWithLimelight. */
-  public ShootSlowerAuto(ShooterSubsystem s_ShooterSubsystem, Limelight s_Limelight,
+  public ShootSlowerAuto(ShooterSubsystem s_ShooterSubsystem, ShooterLimelight s_Limelight,
       IndexerSubsystem s_IndexerSubsystem) {
     this.s_ShooterSubsystem = s_ShooterSubsystem;
     this.s_Limelight = s_Limelight;

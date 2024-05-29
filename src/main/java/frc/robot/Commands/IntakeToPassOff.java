@@ -49,7 +49,7 @@ public class IntakeToPassOff extends Command {
           && (counter == 1)
           ) {
           s_IntakeSubsystem.IntakeNote();
-          s_IndexerSubsystem.IndexNote();
+          s_IndexerSubsystem.FeedPassoff();
           s_ShooterSubsystem.ShooterShoot();
         } else {
           s_IntakeSubsystem.IntakeStop();

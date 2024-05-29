@@ -41,7 +41,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final String ZeroIntakeOption = "zeroIntake";
     private final String DontZeroIntakeOption = "Don't Zero Intake";
 private String zeroIntakeSelected;
-double MagnetOffSet = .426;
+double MagnetOffSet = -.41295;
 
     CANcoderConfiguration CANcoderConfig = new CANcoderConfiguration();
   /** Creates a new IntakeSubsystem. */
@@ -109,7 +109,7 @@ double MagnetOffSet = .426;
     intakeMotor.set(0);
   }
     public void IntakeZeroOnHardStop(){
-    MagnetOffSet = MagnetOffSet + (.23 - intakeAngle );
+    MagnetOffSet = MagnetOffSet + (.24 - intakeAngle );
     
     CANcoderConfig.MagnetSensor.MagnetOffset = MagnetOffSet;
   PivotCANCoder.getConfigurator().apply(CANcoderConfig);
@@ -135,7 +135,7 @@ double MagnetOffSet = .426;
     //  }
     
 
-    if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.08)
+    if ((intakeAngle > Constants.Intake.targetIntakePivotIndexAngle - 0.04)
         && (intakeAngle < Constants.Intake.targetIntakePivotIndexAngle + 0.08)) {
       intakeReadyToIndex = true;
     } else {

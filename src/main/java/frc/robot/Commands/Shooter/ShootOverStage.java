@@ -10,12 +10,12 @@ import frc.robot.Subsystems.ShooterSubsystem;
 
 public class ShootOverStage extends Command {
   ShooterSubsystem s_ShooterSubsystem;
-  IndexerSubsystem s_IndexerSubsystem;
+//  IndexerSubsystem s_IndexerSubsystem;
   /** Creates a new ShootOverStage. */
-  public ShootOverStage(ShooterSubsystem s_ShooterSubsystem, IndexerSubsystem s_IndexerSubsystem ) {
+  public ShootOverStage(ShooterSubsystem s_ShooterSubsystem ) {
     this.s_ShooterSubsystem = s_ShooterSubsystem;
-    this.s_IndexerSubsystem = s_IndexerSubsystem;
-    addRequirements(s_ShooterSubsystem, s_IndexerSubsystem);
+   // this.s_IndexerSubsystem = s_IndexerSubsystem;
+    addRequirements(s_ShooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -29,16 +29,16 @@ public class ShootOverStage extends Command {
   @Override
   public void execute() {
     s_ShooterSubsystem.ShootOverStage();
-    if (s_ShooterSubsystem.ReadyToShootOverStage()){
-      s_IndexerSubsystem.FeedShooterFast();
-    }
+    // if (s_ShooterSubsystem.ReadyToShootOverStage()){
+    //   s_IndexerSubsystem.FeedShooterFast();
+    // }
    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    s_ShooterSubsystem.StopShooter();
+  //  s_ShooterSubsystem.StopShooter();
   }
 
   // Returns true when the command should end.

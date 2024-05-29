@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.PointWheelsAt;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.SwerveDriveBrake;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -37,6 +38,7 @@ import frc.robot.Commands.Autos.ShootFasterAuto;
 import frc.robot.Commands.Autos.ShootOverStageAuto;
 import frc.robot.Commands.Autos.ShootSlowerAuto;
 import frc.robot.Commands.Autos.StartShooterAuto;
+import frc.robot.Commands.Autos.StartingShotAuto;
 import frc.robot.Commands.Climber.ClimberDown;
 import frc.robot.Commands.Climber.ClimberDownWithSwitch;
 import frc.robot.Commands.Climber.ClimberStop;
@@ -74,8 +76,9 @@ import frc.robot.Commands.TrapDoor.SecondTrapdoorSpot;
 import frc.robot.Constants.Shooter;
 import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.IndexerSubsystem;
+import frc.robot.Subsystems.IntakeLimelight;
 import frc.robot.Subsystems.IntakeSubsystem;
-import frc.robot.Subsystems.Limelight;
+import frc.robot.Subsystems.ShooterLimelight;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 public class RobotContainer extends SubsystemBase {
@@ -107,14 +110,17 @@ public class RobotContainer extends SubsystemBase {
   private final CommandXboxController ManipulatorController = new CommandXboxController(1);// My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // drivetrain
   long intakeBeamBreakBrokenTime;
-  Limelight limelightSubsystem = new Limelight();
+  ShooterLimelight limelightSubsystem = new ShooterLimelight();
+  IntakeLimelight IntakeLimelight = new IntakeLimelight();
   IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
   IndexerSubsystem IndexerSubsystem = new IndexerSubsystem();
   ClimberSubsystem ClimberSubsystem = new ClimberSubsystem();
-  private final FieldCentric drive = new FieldCentric()
-      .withDeadband(MaxSpeed * 0.2) // Add a 15% deadband
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric, driving in open loop
+  private final FieldCentric drive = new FieldCentric()    
+  .withDeadband(MaxSpeed * 0.2) // Add a 15% deadband
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
+  private final RobotCentric driveRobotCentric = new RobotCentric();
+  // I want field-centric, driving in open loop
   ShootAtSubwoofer shooterAtAmplifier = new ShootAtSubwoofer(ShooterSubsystem);
   IntakeNote intakeNote = new IntakeNote(IntakeSubsystem);
   IntakeStop intakeStop = new IntakeStop(IntakeSubsystem);
@@ -150,14 +156,14 @@ public class RobotContainer extends SubsystemBase {
   ShootBackAuto shootBack = new ShootBackAuto(ShooterSubsystem, IndexerSubsystem);
   StartShooterAuto startShooterAuto = new StartShooterAuto(ShooterSubsystem);
   ShootOverStageAuto ShootOverStageAuto = new ShootOverStageAuto(ShooterSubsystem, IndexerSubsystem);
+  StartingShotAuto StartingShotAuto = new StartingShotAuto(ShooterSubsystem, IndexerSubsystem);
   IntakeToPassOff intakeToPassOff = new IntakeToPassOff(IntakeSubsystem, ShooterSubsystem, IndexerSubsystem);
   ShooterZero shooterZero = new ShooterZero(ShooterSubsystem);
   SwerveXPattern swerveXPattern = new SwerveXPattern(drivetrain);
-  ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem, IndexerSubsystem);
+  ShootOverStage shootOverStage = new ShootOverStage(ShooterSubsystem);
   ShootTrapdoor shootTrapdoor = new ShootTrapdoor(ShooterSubsystem);
   IntakeZero intakeZero = new IntakeZero(IntakeSubsystem);
   PointAtSpeaker PointAtSpeaker = new PointAtSpeaker(drivetrain, limelightSubsystem);
-
   ShooterDown ShooterDown = new ShooterDown(ShooterSubsystem);
   ShootUnderStage ShootUnderStage = new ShootUnderStage(ShooterSubsystem);
   ClimberDownWithSwitch ClimberDownWithSwitch = new ClimberDownWithSwitch(ClimberSubsystem, IntakeSubsystem);
@@ -182,14 +188,16 @@ public class RobotContainer extends SubsystemBase {
     NamedCommands.registerCommand("ShootBack", shootBack);
     NamedCommands.registerCommand("StartShooter", startShooterAuto);
     NamedCommands.registerCommand("ShootOverStage", ShootOverStageAuto);
+    
+    NamedCommands.registerCommand("SubwooferShot", StartingShotAuto);
 
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
     ManipulatorController.back()
-        .whileTrue(ClimbDownAndTrap)
-        .whileFalse(ClimberStop)
-        .whileFalse(stopIndex);
+        .whileTrue(ClimberDownWithSwitch)
+        .whileFalse(ClimberStop);
+        //.whileFalse(stopIndex);
     ManipulatorController.start()
         .whileTrue(ClimberUpWithSwitch)
         .whileFalse(ClimberStop);
@@ -201,7 +209,6 @@ public class RobotContainer extends SubsystemBase {
     ManipulatorController.rightStick()
         .whileTrue(SecondTrapdoorSpot)
         .whileFalse(ShooterPivotStop);
-
     ManipulatorController.a()
         .whileTrue(intakeNote)
         .whileFalse(intakeStop);
@@ -248,6 +255,9 @@ public class RobotContainer extends SubsystemBase {
     DriverController.start()
         .onTrue(IntakeZeroOnHardStop)
         .whileFalse(DontZeroIntake);
+  DriverController.rightTrigger()
+  .whileTrue(ShootUnderStage)
+  .whileFalse(shooterPrepareToIndex);
   }
 
   private void configureBindings() {
@@ -260,7 +270,10 @@ public class RobotContainer extends SubsystemBase {
                                                                    // counterclockwise
         // with negative X (left)
         ));
-    DriverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+         // Drivetrain will execute this command periodically
+
+
+   // DriverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     DriverController.b().whileTrue(drivetrain
         .applyRequest(() -> point
             .withModuleDirection(new Rotation2d(-DriverController.getLeftY(), -DriverController.getLeftX()))));
@@ -295,8 +308,12 @@ public class RobotContainer extends SubsystemBase {
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
     } else if (Conttroller.getYButton()) {
+
       RightXAxis = -limelightSubsystem.rotationtmp;
     } 
+    else if(Conttroller.getAButton()){
+     drivetrain.run(() -> driveRobotCentric.withRotationalRate( -IntakeLimelight.intakeRotation* MaxAngularRate * 1.1));
+    }
     else if (Conttroller.getXButton()) {
       RightXAxis = -limelightSubsystem.rotationtmp;
     }else {

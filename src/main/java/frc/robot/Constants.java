@@ -15,7 +15,7 @@ public final class Constants {
 
         public static final double minPivotAngle = 0; //FIXME
         public static final double maxPivotAngle = 0; //FIXME
-        public static final double targetShooterPivotIndexAngle = -0.0583; 
+        public static final double targetShooterPivotIndexAngle = -0.06; 
         public static final double minShooterPivotIndexAngle = 0; //FIXME
         public static final double maxShooterPivotIndexAngle = 0; //FIXME
         public static final double shooterVelocitySubwooferConstant = 4000; //tested and works
@@ -48,7 +48,7 @@ public final class Constants {
 
         public static double intakeSpeed = 0.8;
         public static double intakeDownPosition = -0.01;
-        public static double targetIntakePivotIndexAngle = 0.24;
+        public static double targetIntakePivotIndexAngle = 0.25;
     }
 
     public static final class Climber{

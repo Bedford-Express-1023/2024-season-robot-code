@@ -10,13 +10,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Limelight;
+import frc.robot.Subsystems.ShooterLimelight;
 
 public class PointAtSpeaker extends Command {
   private final CommandSwerveDrivetrain drivetrain;
- private final Limelight s_limelightSubsystem;
+ private final ShooterLimelight s_limelightSubsystem;
   /** Creates a new SwerveXPattern. */
-  public PointAtSpeaker(CommandSwerveDrivetrain drivetrain, Limelight s_limelightSubsystem ) {
+  public PointAtSpeaker(CommandSwerveDrivetrain drivetrain, ShooterLimelight s_limelightSubsystem ) {
         this.drivetrain = drivetrain;
         this.s_limelightSubsystem = s_limelightSubsystem;
         addRequirements(drivetrain, s_limelightSubsystem);

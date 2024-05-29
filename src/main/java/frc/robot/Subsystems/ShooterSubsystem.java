@@ -18,6 +18,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -88,6 +89,15 @@ double feederRotationLine;
         .set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shooterAngleSubwooferConstant)
             + pivotFeedForward.calculate(Constants.Shooter.shooterAngleSubwooferConstant * 6.2832, 2));
     shooterMotor.setControl(shooterVelocityFast.withVelocity(-4000 / 60));
+  }
+  public boolean ReadyToShootAtSubwoofer(){
+    if (MathUtil.isNear(Constants.Shooter.shooterAngleSubwooferConstant, shooterMotorAngle, .01)&& 
+    MathUtil.isNear(-4000/60, shooterCurrentRPM, 2)){
+      return true;
+    }
+    else{
+      return  false;
+    }
   }
 
   public void ShootAtFarshot() {
@@ -190,7 +200,7 @@ public boolean ReadyToShoot() {
     shooterPivotMotorMaster
         .set(-shooterPivotPID.calculate(shooterMotorAngle, Constants.Shooter.shootOverStageAngleConstant)
             + pivotFeedForward.calculate(Constants.Shooter.shootOverStageAngleConstant * 6.2832, 1));
-    shooterMotor.setControl(shooterVelocitySLow.withVelocity(FeederRPMLine / 60));
+    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3500 / 60));
   }
   public boolean ReadyToShootOverStage() {
     if (MathUtil.isNear(Constants.Shooter.shootOverStageAngleConstant, shooterMotorAngle, .02)
@@ -226,20 +236,20 @@ public boolean ReadyToShoot() {
         + pivotFeedForward.calculate(.08 * 6.2832, 1));
   }
  public void ShooterToSecondClimb(){
-     shooterPivotMotorMaster.set(-AmpPivotPID.calculate(shooterMotorAngle, .32)// .319 for trap
-        + pivotFeedForward.calculate(.32 * 6.2832, 1));
+     shooterPivotMotorMaster.set(-AmpPivotPID.calculate(shooterMotorAngle, .330)// .319 for trap
+        + pivotFeedForward.calculate(.330 * 6.2832, 1));
   }
 
   @Override
   public void periodic() {
-    double distanceWithLimelight =  Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5);
+    double distanceWithLimelight =  Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5);
     //rotationTolerance = (Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5)) * 550- 1.39869;
-    limelightTX = LimelightHelpers.getTX("");
+    limelightTX = LimelightHelpers.getTX("limelight-shooter");
 FeederRPMLine = 260000 * distanceWithLimelight -4785.31;
 
     AmpShooterRPM = SmartDashboard.getNumber("AmpShooterRpm", 1700);
-    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("") + 29)) / 45.5)) + .0026)// .0048
-        / -.1295);
+    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5)) + 0.003)// .0048
+        / -0.113067);
     // -.1325
     shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
     shooterCurrentRPM = (shooterMotor.getVelocity().getValueAsDouble() * 60);
@@ -253,13 +263,13 @@ FeederRPMLine = 260000 * distanceWithLimelight -4785.31;
     }
 
 if(distanceWithLimelight <.007){
-shooterPivotTolerance = .0075;
+shooterPivotTolerance = .006;
 }
 else if (distanceWithLimelight <.006){
-  shooterPivotTolerance = .00425;
+  shooterPivotTolerance = .006;
 }
 else{
-  shooterPivotTolerance = .01;
+  shooterPivotTolerance = .006;
 }
 if (distanceWithLimelight > .0119){
   rotationTolerance = 5;

@@ -56,44 +56,6 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "3.5 feeder no preload 5"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeRun"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "3.5 no preload feeder 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PassOff"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "ShootSlowWithLimelight"
