@@ -6,6 +6,7 @@ package frc.robot.Subsystems;
 
 import java.lang.Character.Subset;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,29 +20,53 @@ public class IntakeLimelight extends SubsystemBase {
 double intakeTX;
 double intakeTY;
 public double intakeRotation;
-PIDController pidRotation = new PIDController(.0125, 0, 0);
+public PIDController pidRotation = new PIDController(.0125, 0, 0);
+public boolean PointedAtNote(){
+    if(MathUtil.isNear(0, intakeTX, 5)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+    public boolean NoteSeen(){
+    if(intakeTX < 0 || intakeTX > 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+public void resetPID(){
+    pidRotation.reset();
+}
+public void SetPid(){
+     pidRotation.setPID(0.02, 0.0, 0);
+    intakeRotation = pidRotation.calculate(intakeTX, 0);
+}
      @Override
    public void periodic() {
    intakeTX = LimelightHelpers.getTX("limelight-intake");
    intakeTY = LimelightHelpers.getTY("limelight-intake");
 
 
-      if(controller1.getAButton() == true) {
-         pidRotation.setPID(0.02, 0.0, 0);
-        intakeRotation  = pidRotation.calculate(intakeTX, 0);
-      }
-      else {
-         pidRotation.setPID(.0, 0.0, 0);
-         pidRotation.reset();
+    //   if(controller1.getAButton() == true) {
+    //      pidRotation.setPID(0.02, 0.0, 0);
+    //     intakeRotation  = pidRotation.calculate(intakeTX, 0);
+    //   }
+    //   else {
+    //      pidRotation.setPID(.0, 0.0, 0);
+    //      pidRotation.reset();
 
-      }
-if(intakeRotation > .10 && controller1.getAButton() ){
+    //   }
+if(intakeRotation > .10 ){
    intakeRotation = .10;
 }
-else if (intakeRotation < -.10 && controller1.getAButton()){
+else if (intakeRotation < -.10 ){
    intakeRotation = -.10;
 }
 SmartDashboard.putNumber("intaketx", intakeTX);
+SmartDashboard.putNumber("NOteRotationPower",intakeRotation);
    }
 
 }

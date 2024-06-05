@@ -1,0 +1,79 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3842846515935527,
+      "y": 7.330983677659224
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp side tracking 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveAtNoteAuto"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp side tracking 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PointAtSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSlowWithLimelight"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp side tracking 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveAtNoteAuto"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp side tracking 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PointAtSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSlowWithLimelight"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,7 +14,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ShooterLimelight extends SubsystemBase {
    XboxController controller1 = new XboxController(0);
    public double rotationtmp;
-   PIDController pidRotation = new PIDController(.0125, 0, 0);//0.5, 0.5, 0.05);//0.0125, 0.00, 0);
+   double rotationTolerance;
+   public PIDController pidRotation = new PIDController(.0125, 0, 0);//0.5, 0.5, 0.05);//0.0125, 0.00, 0);
    LimelightHelpers intakeLImelight = new LimelightHelpers();
    double Speakertx;
    double feederRotationLine;
@@ -26,7 +28,14 @@ public class ShooterLimelight extends SubsystemBase {
       pidRotation.reset();
       pidRotation.setPID(.0, 0.0, 0);
    }
-
+   public boolean IsRotated(){
+  if(MathUtil.isNear(0.1, Speakertx, rotationTolerance)){
+   return true;
+  }
+  else{
+   return false;
+  }
+   }
    @Override
    public void periodic() {
       double distanceWithLimelight =  Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5);
@@ -57,6 +66,13 @@ else if (rotationtmp < -.15 && controller1.getXButton()){
       Speakertx = LimelightHelpers.getTX("limelight-shooter");
 feederRotationLine = -4000 * distanceWithLimelight +18; 
 
+if (distanceWithLimelight > .0119){
+   rotationTolerance = 5;
+ }
+ else{
+ rotationTolerance = 1.5;
+ }
+ 
 
       SmartDashboard.putNumber("limelight rotation power",rotationtmp);
       SmartDashboard.putNumber("Speaker tx", Speakertx);
