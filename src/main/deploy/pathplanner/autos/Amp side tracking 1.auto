@@ -20,13 +20,44 @@
         {
           "type": "named",
           "data": {
-            "name": "DriveAtNoteAuto"
+            "name": "PointAtSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSlowWithLimelight"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Amp side tracking 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveAtNoteAuto"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp side tracking 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
           }
         },
         {
@@ -44,7 +75,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp side tracking 3"
+            "pathName": "Amp side tracking 4"
           }
         },
         {
@@ -54,9 +85,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Amp side tracking 4"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp side tracking 5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
           }
         },
         {

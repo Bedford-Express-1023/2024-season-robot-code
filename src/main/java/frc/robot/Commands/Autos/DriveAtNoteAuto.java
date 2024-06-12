@@ -45,38 +45,20 @@ public class DriveAtNoteAuto extends Command {
   @Override
   public void execute() {
    // drivetrain.applyRequest(()-> driveRobotCentric.withVelocityX(.1). withVelocityY(.1));
+   s_IntakeLimelight.SetPid();
+   if(s_IntakeLimelight.NoteSeen())
+ {
+drivetrain.driveRobotRelative(new ChassisSpeeds(0,0,s_IntakeLimelight.intakeRotation *3));
+    if (s_IntakeLimelight.PointedAtNote() == true){
+drivetrain.driveRobotRelative(new ChassisSpeeds(1.5,0,s_IntakeLimelight.intakeRotation *3));
 s_ShooterSubsystem.ShooterPrepareToIndex();
-  if (s_IntakeSubsystem.intakeBeamBreakValue == true && counter == 0) {
-    s_IntakeSubsystem.IntakeNote();
-    s_IntakeSubsystem.IntakeDown();
-        s_IntakeLimelight.SetPid();
- drivetrain.driveRobotRelative(new ChassisSpeeds(0,0,s_IntakeLimelight.intakeRotation *3));
-     if (s_IntakeLimelight.PointedAtNote() == true){
-  s_IntakeSubsystem.IntakeRun();
- drivetrain.driveRobotRelative(new ChassisSpeeds(2,0,s_IntakeLimelight.intakeRotation *3));
-    
-  }
-  } else {
-    counter = 1; 
-    s_IntakeSubsystem.IntakePrepareToIndex(); 
-     drivetrain.driveRobotRelative(new ChassisSpeeds(0,0,0));
-    //s_ShooterSubsystem.ShooterPrepareToIndex();
-      if ((s_ShooterSubsystem.shooterReadyToIndex == true)
-       && (s_IntakeSubsystem.intakeReadyToIndex == true)
-        && (s_IndexerSubsystem.indexerBeamBreakValue == true)
-        && (counter == 1)
-        ) {
-        s_IntakeSubsystem.IntakeNote();
-        s_IndexerSubsystem.FeedPassoff();
-      } else {
-        s_IntakeSubsystem.IntakeStop();
-        s_IndexerSubsystem.StopIndex();
-      }
-  }
-       if (s_IndexerSubsystem.indexerBeamBreakValue == false){
- s_IndexerSubsystem.StopIndex();
-    s_IntakeSubsystem.IntakeStop();
-  }
+   s_IntakeSubsystem.IntakeRun();
+    }
+    }
+    if(s_IntakeSubsystem.intakeBeamBreakValue == false){
+      s_IntakeSubsystem.IntakePrepareToIndex();
+    }
+
   }
   // Called once the command ends or is interrupted.
   @Override
@@ -85,7 +67,7 @@ s_ShooterSubsystem.ShooterPrepareToIndex();
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   if (s_IndexerSubsystem.indexerBeamBreakValue == false){
+   if (s_IntakeSubsystem.intakeBeamBreakValue == false){
     return true;
    }
    else{

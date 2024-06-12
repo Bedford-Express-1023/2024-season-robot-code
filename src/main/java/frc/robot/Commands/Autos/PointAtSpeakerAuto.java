@@ -33,9 +33,13 @@ public class PointAtSpeakerAuto extends Command {
   @Override
   public void execute() {
     s_limelightSubsystem.RotateWithLimelight();
-        drivetrain.driveRobotRelative(new ChassisSpeeds(0.0, 0.0, s_limelightSubsystem.rotationtmp * 5));
+        drivetrain.driveRobotRelative(new ChassisSpeeds(0.0, 0.0, s_limelightSubsystem.rotationtmp * 6));
+  
+      if(s_limelightSubsystem.IsRotated())
+    {
+      drivetrain.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+    }
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -46,7 +50,7 @@ public class PointAtSpeakerAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(s_limelightSubsystem.IsRotated())
+    if(s_limelightSubsystem.IsRotated() && s_limelightSubsystem.AprilTagSeen())
     {
       return true;
     }
