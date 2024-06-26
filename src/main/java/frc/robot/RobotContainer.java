@@ -313,8 +313,7 @@ public class RobotContainer extends SubsystemBase {
     if ((DriverController.getRightX() > .15) || (DriverController.getRightX() < -.15)) {
       RightXAxis = DriverController.getRightX();
     } else if (Conttroller.getYButton()) {
-
-      RightXAxis = -limelightSubsystem.rotationtmp;
+      RightXAxis = -limelightSubsystem.rotationtmp *.6;
     } else if (Conttroller.getAButton()) {
       RightXAxis = -IntakeLimelight.intakeRotation;
     } else if (Conttroller.getXButton()) {

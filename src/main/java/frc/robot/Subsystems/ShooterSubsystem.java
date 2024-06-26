@@ -114,7 +114,7 @@ double feederRotationLine;
   }
 
   public void ShooterShoot() {
-    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-4500/ 60));
+    shooterMotor.setControl(shooterVelocitySLow.withVelocity(-3750/ 60));
         shooterPivotMotorMaster.set(-shooterPivotPID.calculate(shooterMotorAngle,
         Constants.Shooter.targetShooterPivotIndexAngle)
         + pivotFeedForward.calculate(Constants.Shooter.targetShooterPivotIndexAngle * 6.2832, 1));
@@ -132,7 +132,7 @@ public void StopShooterPivot(){
 public boolean ReadyToShoot() {
     if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, shooterPivotTolerance)
         && MathUtil.isNear(-4500 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1)// 3750
-     && MathUtil.isNear(0, limelightTX, rotationTolerance)
+     && MathUtil.isNear(0, limelightTX, 3)
     ) {
       return true;
     } else {
@@ -248,7 +248,7 @@ public boolean ReadyToShoot() {
 FeederRPMLine = 260000 * distanceWithLimelight -4785.31;
 
     AmpShooterRPM = SmartDashboard.getNumber("AmpShooterRpm", 1700);
-    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5)) + 0.003)// .0048
+    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5)) + 0.0035)// .0048
         / -0.113067);
     // -.1325
     shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();

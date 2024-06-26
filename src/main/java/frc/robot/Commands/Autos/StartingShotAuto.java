@@ -64,7 +64,7 @@ public class StartingShotAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 400;
+    return shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 700;
   }
 }
 

@@ -102,6 +102,6 @@ public class NotePassOffAuto extends Command {
   public boolean isFinished() {
                   System.out.println("indexer beam break Passoff is " + s_IndexerSubsystem.indexerBeamBreakValue);
 
-    return !s_IndexerSubsystem.indexerBeamBreakValue|| shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 3500;
+    return !s_IndexerSubsystem.indexerBeamBreakValue|| shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 2000;
   }
 }
