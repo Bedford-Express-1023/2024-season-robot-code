@@ -46,9 +46,7 @@ public class NotePassOffAuto extends Command {
     System.out.println("Running Passoff");
 
     //SmartDashboard.putBoolean("NotePassOff is running", true);
-    if((s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() > Constants.Intake.intakeDownPosition - 0.03) ||
-      (s_IntakeSubsystem.PivotCANCoder.getAbsolutePosition().getValueAsDouble() < Constants.Intake.intakeDownPosition + 0.03))
-    {
+    
           System.out.println("prepare to index Passoff");
 
       s_IntakeSubsystem.IntakePrepareToIndex();
@@ -71,7 +69,7 @@ public class NotePassOffAuto extends Command {
           s_IntakeSubsystem.IntakeStop();
           s_IndexerSubsystem.StopIndex();
         }
-      }  if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
+        if (s_IndexerSubsystem.indexerBeamBreakValue == false) {
               System.out.println("indexer beam break Passoff");
 
           SmartDashboard.putBoolean("NotePassedOff ", true);

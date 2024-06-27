@@ -54,17 +54,20 @@ public class DriveAtNoteAuto extends Command {
    s_IntakeLimelight.SetPid();
    if(s_IntakeLimelight.NoteSeen())
  {
+  counter = 1;
 //drivetrain.driveRobotRelative(new ChassisSpeeds(0,0,s_IntakeLimelight.intakeRotation *3));
  //   if (s_IntakeLimelight.PointedAtNote() == true){
-drivetrain.driveRobotRelative(new ChassisSpeeds(1.5,0,s_IntakeLimelight.intakeRotation *3));
+drivetrain.driveRobotRelative(new ChassisSpeeds(2,0,s_IntakeLimelight.intakeRotation *3));
 s_ShooterSubsystem.ShooterPrepareToIndex();
    s_IntakeSubsystem.IntakeRun();
    // }
     }
-    else{
+    else {
       s_ShooterSubsystem.ShooterPrepareToIndex();
       drivetrain.driveRobotRelative(new ChassisSpeeds(0,0,0));
-      s_IntakeSubsystem.IntakePrepareToIndex();
+    }
+    if (!s_IntakeLimelight.NoteSeen()&& !(counter == 1) ){
+    s_IntakeSubsystem.IntakePrepareToIndex();
     }
     if(s_IntakeSubsystem.intakeBeamBreakValue == false){
       s_IntakeSubsystem.IntakePrepareToIndex();

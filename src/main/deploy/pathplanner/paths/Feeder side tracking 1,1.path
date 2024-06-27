@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2931510085559395,
-        "y": 1.6746496260467554
+        "x": 2.976958421819838,
+        "y": 2.096239741694889
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.12,
-        "y": 2.2719022898816124
+        "x": 6.98,
+        "y": 2.143083087878016
       },
       "prevControl": {
-        "x": 6.595606914466325,
-        "y": 0.1873733847325037
+        "x": 6.830353683931333,
+        "y": 0.22250589436984908
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.5,
+    "maxVelocity": 4.0,
     "maxAcceleration": 5.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Feeder side tracking 1",
   "previewStartingState": {
     "rotation": -58.5704343851615,
     "velocity": 0
