@@ -57,7 +57,7 @@ public class DriveAtNoteAuto extends Command {
   counter = 1;
 //drivetrain.driveRobotRelative(new ChassisSpeeds(0,0,s_IntakeLimelight.intakeRotation *3));
  //   if (s_IntakeLimelight.PointedAtNote() == true){
-drivetrain.driveRobotRelative(new ChassisSpeeds(2,0,s_IntakeLimelight.intakeRotation *3));
+drivetrain.driveRobotRelative(new ChassisSpeeds(1.5,0,s_IntakeLimelight.intakeRotation *3));
 s_ShooterSubsystem.ShooterPrepareToIndex();
    s_IntakeSubsystem.IntakeRun();
    // }
@@ -81,7 +81,7 @@ s_ShooterSubsystem.ShooterPrepareToIndex();
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   if (s_IntakeSubsystem.intakeBeamBreakValue == false || shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 1000){
+   if (s_IntakeSubsystem.intakeBeamBreakValue == false || shooterStartTime != -1 && (System.currentTimeMillis() - shooterStartTime) > 1500){
     return true;
    }
    else{
@@ -89,3 +89,4 @@ s_ShooterSubsystem.ShooterPrepareToIndex();
    }
   }
 }
+
