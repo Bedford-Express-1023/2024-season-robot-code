@@ -29,7 +29,7 @@ public class ShooterLimelight extends SubsystemBase {
       pidRotation.setPID(.0, 0.0, 0);
    }
    public boolean IsRotated(){
-  if(MathUtil.isNear(0.1, Speakertx, 3)){
+  if(MathUtil.isNear(0.1, Speakertx, 2)){
    return true;
   }
   else{
@@ -37,7 +37,7 @@ public class ShooterLimelight extends SubsystemBase {
   }
    }
    public boolean AprilTagSeen(){
-  if(Speakertx < .1 || Speakertx > -.1)
+  if(Speakertx > .1 || Speakertx < -.1)
   {
    return true;
   }

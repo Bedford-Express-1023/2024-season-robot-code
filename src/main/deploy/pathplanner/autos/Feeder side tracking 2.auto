@@ -100,12 +100,6 @@
         {
           "type": "named",
           "data": {
-            "name": "PointAtSpeaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "ShootSlowWithLimelight"
           }
         }

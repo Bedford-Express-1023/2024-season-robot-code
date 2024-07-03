@@ -33,7 +33,7 @@ public class PointAtSpeakerAuto extends Command {
   @Override
   public void execute() {
     s_limelightSubsystem.RotateWithLimelight();
-        drivetrain.driveRobotRelative(new ChassisSpeeds(0.0, 0.0, s_limelightSubsystem.rotationtmp * 6));
+        drivetrain.driveRobotRelative(new ChassisSpeeds(0.0, 0.0, s_limelightSubsystem.rotationtmp * 8));
   
       if(s_limelightSubsystem.IsRotated())
     {

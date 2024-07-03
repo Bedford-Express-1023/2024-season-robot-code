@@ -153,7 +153,7 @@ public boolean ReadyToShoot() {
   }
 
   public boolean ReadyToShootAutoSlower() {
-    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .005)// .005
+    if (MathUtil.isNear(LineOfBestFitCalculation, shooterMotorAngle, .004)// .005
         && MathUtil.isNear(-4500 / 60, shooterMotor.getVelocity().getValueAsDouble(), 1))// 1
     {
       return true;
