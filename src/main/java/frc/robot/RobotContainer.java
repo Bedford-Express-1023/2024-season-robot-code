@@ -205,20 +205,20 @@ public class RobotContainer extends SubsystemBase {
     autChooser = AutoBuilder.buildAutoChooser();
     configureBindings();
     SmartDashboard.putData("AutoChooser", autChooser);
-    // ManipulatorController.back()
-    //     .whileTrue(ClimberDownWithSwitch)
-    //     .whileFalse(ClimberStop);
-    // ManipulatorController.start()
-    //     .whileTrue(ClimberUpWithSwitch)
-    //     .whileFalse(ClimberStop);
-    // ManipulatorController.leftStick()
-    //     .whileTrue(FirstTrapdoorSpot)
-    //     .whileFalse(ShooterPivotStop)
-    //     .whileFalse(ClimberStop)
-    //     .whileFalse(intakeRun);
-    // ManipulatorController.rightStick()
-    //     .whileTrue(SecondTrapdoorSpot)
-    //     .whileFalse(ShooterPivotStop);
+    ManipulatorController.back()
+        .whileTrue(ClimberDownWithSwitch)
+        .whileFalse(ClimberStop);
+    ManipulatorController.start()
+        .whileTrue(ClimberUpWithSwitch)
+        .whileFalse(ClimberStop);
+    ManipulatorController.leftStick()
+        .whileTrue(FirstTrapdoorSpot)
+        .whileFalse(ShooterPivotStop)
+        .whileFalse(ClimberStop)
+        .whileFalse(intakeRun);
+    ManipulatorController.rightStick()
+        .whileTrue(SecondTrapdoorSpot)
+        .whileFalse(ShooterPivotStop);
     ManipulatorController.a()
         .whileTrue(intakeNote)
         .whileFalse(intakeStop);
@@ -235,17 +235,17 @@ public class RobotContainer extends SubsystemBase {
         .whileTrue(intakeToPassOff)
         .whileFalse(intakePrepareToIndex)
         .whileFalse(shooterPrepareToIndex);
-    // ManipulatorController.pov(0)
-    //     .whileTrue(intakeRun)
-    // //     .whileFalse(intakePrepareToIndex);
-    // ManipulatorController.pov(90)
-    //     .whileTrue(shootAtSubwoofer)
-    //     .whileFalse(shooterPrepareToIndex);
-    // ManipulatorController.pov(270)
-    //     .whileTrue(notePassOff);
-    // ManipulatorController.y()
-    //     .whileTrue(shootInAmp)
-    //     .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.pov(0)
+        .whileTrue(intakeRun)
+        .whileFalse(intakePrepareToIndex);
+    ManipulatorController.pov(90)
+        .whileTrue(shootAtSubwoofer)
+        .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.pov(270)
+        .whileTrue(notePassOff);
+    ManipulatorController.y()
+        .whileTrue(shootInAmp)
+        .whileFalse(shooterPrepareToIndex);
     ManipulatorController.x()
         .whileTrue(shootWithLimelight)
         .whileFalse(shooterPrepareToIndex);
@@ -253,18 +253,18 @@ public class RobotContainer extends SubsystemBase {
         .whileTrue(shootOverStage)
         .onFalse(shooterPrepareToIndex)
         .onFalse(stopIndex);
-    // ManipulatorController.leftTrigger()
-    //     .whileTrue(shooterShoot)
-    //     .whileFalse(stopShooter);
-    // DriverController.back()
-    //     .onTrue(IntakeZeroOnBumber)
-    //     .whileFalse(DontZeroIntake);
-    // DriverController.start()
-    //     .onTrue(IntakeZeroOnHardStop)
-    //     .whileFalse(DontZeroIntake);
-    // DriverController.rightTrigger()
-    //     .whileTrue(ShootUnderStage)
-    //     .whileFalse(shooterPrepareToIndex);
+    ManipulatorController.leftTrigger()
+        .whileTrue(shooterShoot)
+        .whileFalse(stopShooter);
+    DriverController.back()
+        .onTrue(IntakeZeroOnBumber)
+        .whileFalse(DontZeroIntake);
+    DriverController.start()
+        .onTrue(IntakeZeroOnHardStop)
+        .whileFalse(DontZeroIntake);
+    DriverController.rightTrigger()
+        .whileTrue(ShootUnderStage)
+        .whileFalse(shooterPrepareToIndex);
     DriverController.povDown()
         .whileTrue(DriveAtNote);
   }
