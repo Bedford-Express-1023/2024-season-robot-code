@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.41,
-      "y": 7.330983677659224
+      "x": 1.2671762861357376,
+      "y": 5.58606903233778
     },
     "rotation": 0
   },
@@ -20,31 +20,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp side tracking 2,1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PointAtSpeaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
+            "pathName": "trickshot 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Amp side tracking 2,2"
+            "pathName": "trickshot 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "trickshot 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "trickshot 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "trickshot 5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "DriveAtNoteAuto"
+            "name": "ShootFastWithLimelight"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
           }
         },
         {
@@ -54,34 +66,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side tracking 2,3"
+                  "pathName": "trickshot 6"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PassOff"
+                  "name": "IntakeRun"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Amp side tracking 2,4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveAtNoteAuto"
           }
         },
         {
@@ -91,22 +85,10 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side tracking 2,5"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PassOff"
+                  "pathName": "trickshot X"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
           }
         }
       ]

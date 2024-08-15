@@ -211,14 +211,15 @@ public class RobotContainer extends SubsystemBase {
     ManipulatorController.start()
         .whileTrue(ClimberUpWithSwitch)
         .whileFalse(ClimberStop);
-    ManipulatorController.leftStick()
-        .whileTrue(FirstTrapdoorSpot)
-        .whileFalse(ShooterPivotStop)
-        .whileFalse(ClimberStop)
-        .whileFalse(intakeRun);
-    ManipulatorController.rightStick()
-        .whileTrue(SecondTrapdoorSpot)
-        .whileFalse(ShooterPivotStop);
+    // ManipulatorController.leftStick()
+    //     .whileTrue(FirstTrapdoorSpot)
+    //     .whileFalse(ShooterPivotStop)
+    //     .whileFalse(ClimberStop)
+    //     .whileFalse(intakeRun);
+    // ManipulatorController.rightStick()
+    //     .whileTrue(SecondTrapdoorSpot)
+    //     .whileFalse(ShooterPivotStop);
+
     ManipulatorController.a()
         .whileTrue(intakeNote)
         .whileFalse(intakeStop);

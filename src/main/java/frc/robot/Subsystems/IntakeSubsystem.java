@@ -41,7 +41,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final String ZeroIntakeOption = "zeroIntake";
     private final String DontZeroIntakeOption = "Don't Zero Intake";
 private String zeroIntakeSelected;
-double MagnetOffSet = -.41295;
+double MagnetOffSet = 0.16455;
 
     CANcoderConfiguration CANcoderConfig = new CANcoderConfiguration();
   /** Creates a new IntakeSubsystem. */

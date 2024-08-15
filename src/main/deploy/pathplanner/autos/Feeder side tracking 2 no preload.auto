@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.41,
-      "y": 7.330983677659224
+      "x": 1.407706324685116,
+      "y": 1.5575412605889405
     },
-    "rotation": 0
+    "rotation": -1.0230301886679254
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp side tracking 2,1"
+            "pathName": "Feeder side tracking 2 no preload 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveAtNoteAuto"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "feeder side tracking 2,2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PassOff"
+                }
+              }
+            ]
           }
         },
         {
@@ -38,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp side tracking 2,2"
+            "pathName": " feeder side tracking 2,3"
           }
         },
         {
@@ -54,44 +79,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp side tracking 2,3"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PassOff"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSlowWithLimelight"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Amp side tracking 2,4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveAtNoteAuto"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp side tracking 2,5"
+                  "pathName": "feeder side tracking 2,4"
                 }
               },
               {

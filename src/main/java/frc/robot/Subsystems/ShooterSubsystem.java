@@ -248,7 +248,7 @@ public boolean ReadyToShoot() {
 FeederRPMLine = 260000 * distanceWithLimelight -4785.31;
 
     AmpShooterRPM = SmartDashboard.getNumber("AmpShooterRpm", 1700);
-    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5)) + 0.0035)// .0048
+    LineOfBestFitCalculation = (((Math.tan((Math.toRadians(LimelightHelpers.getTY("limelight-shooter") + 29)) / 45.5)) + 0.004)// .0048
         / -0.113067);
     // -.1325
     shooterMotorAngle = shooterCANcoder.getAbsolutePosition().getValueAsDouble();
